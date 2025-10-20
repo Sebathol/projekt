@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Icon Generator - Wetter App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #667eea;
+        }
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        canvas {
+            display: none;
+        }
+        .preview {
+            margin: 20px 0;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .preview img {
+            border: 2px solid #ddd;
+            border-radius: 10px;
+        }
+        .instructions {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .success {
+            background: #c8e6c9;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Wetter App - Icon Generator</h1>
+
+        <div class="instructions">
+            <h3>Anleitung:</h3>
+            <ol>
+                <li>Klicke auf die Buttons unten, um die Icons zu generieren</li>
+                <li>Die Icons werden automatisch heruntergeladen</li>
+                <li>Speichere die Dateien im Projekt-Ordner</li>
+            </ol>
+        </div>
+
+        <button onclick="generateIcon(192)">192x192 Icon generieren</button>
+        <button onclick="generateIcon(512)">512x512 Icon generieren</button>
+
+        <div class="success" id="success">
+            Icons erfolgreich generiert! Speichere sie im Hauptordner deiner App.
+        </div>
+
+        <div class="preview" id="preview"></div>
+
+        <canvas id="canvas"></canvas>
+    </div>
+
+    <script>
+        function generateIcon(size) {
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = size;
+            canvas.height = size;
+
+            // Gradient Hintergrund
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#667eea');
+            gradient.addColorStop(1, '#764ba2');
+            ctx.fillStyle = gradient;
+
+            // Abgerundete Ecken
+            const radius = size * 0.2;
+            ctx.beginPath();
+            ctx.moveTo(radius, 0);
+            ctx.lineTo(size - radius, 0);
+            ctx.quadraticCurveTo(size, 0, size, radius);
+            ctx.lineTo(size, size - radius);
+            ctx.quadraticCurveTo(size, size, size - radius, size);
+            ctx.lineTo(radius, size);
+            ctx.quadraticCurveTo(0, size, 0, size - radius);
+            ctx.lineTo(0, radius);
+            ctx.quadraticCurveTo(0, 0, radius, 0);
+            ctx.closePath();
+            ctx.fill();
+
+            // Sonne
+            const sunRadius = size * 0.12;
+            const sunY = size * 0.35;
+            ctx.fillStyle = '#FFD700';
+            ctx.globalAlpha = 0.9;
+            ctx.beginPath();
+            ctx.arc(size / 2, sunY, sunRadius, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.globalAlpha = 1.0;
+
+            // Wolke
+            ctx.fillStyle = 'white';
+            ctx.globalAlpha = 0.95;
+            const cloudY = size * 0.58;
+            const cloudSize = size * 0.14;
+
+            // Linke Wolke
+            ctx.beginPath();
+            ctx.ellipse(size * 0.39, cloudY, cloudSize, cloudSize * 0.7, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Mittlere Wolke (größer)
+            ctx.beginPath();
+            ctx.ellipse(size * 0.49, cloudY - size * 0.04, cloudSize * 1.15, cloudSize * 0.85, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Rechte Wolke
+            ctx.beginPath();
+            ctx.ellipse(size * 0.59, cloudY, cloudSize, cloudSize * 0.7, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.globalAlpha = 1.0;
+
+            // Temperatur Text
+            ctx.fillStyle = 'white';
+            ctx.font = `bold ${size * 0.2}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('°C', size / 2, size * 0.82);
+
+            // Download
+            canvas.toBlob((blob) => {
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `icon-${size}.png`;
+                link.click();
+                URL.revokeObjectURL(url);
+
+                // Preview anzeigen
+                const preview = document.getElementById('preview');
+                const img = document.createElement('img');
+                img.src = url;
+                img.width = size > 192 ? 192 : size;
+                img.title = `${size}x${size}`;
+                preview.appendChild(img);
+
+                document.getElementById('success').style.display = 'block';
+            });
+        }
+    </script>
+</body>
+</html>

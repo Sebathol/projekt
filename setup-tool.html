@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Weather App - Setup Tool</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .login-form, .setup-panel {
+            display: none;
+        }
+
+        .login-form.active, .setup-panel.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        input[type="password"],
+        input[type="text"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            padding: 14px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            margin-top: 10px;
+        }
+
+        .btn-success {
+            background: #28a745;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+        }
+
+        .btn-small {
+            padding: 8px 16px;
+            width: auto;
+            display: inline-block;
+            margin: 5px;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .error.active {
+            display: block;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .success.active {
+            display: block;
+        }
+
+        .api-list {
+            margin-top: 30px;
+        }
+
+        .api-item {
+            background: #f8f9ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .api-item h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .api-item .api-info {
+            display: grid;
+            gap: 10px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .api-item .api-key-display {
+            font-family: monospace;
+            background: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            word-break: break-all;
+            font-size: 12px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .tab {
+            padding: 12px 24px;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            color: #666;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .code-output {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            overflow-x: auto;
+            margin: 20px 0;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .warning {
+            background: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #ffc107;
+        }
+
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #17a2b8;
+        }
+
+        .logout-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .header {
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔧 Simple Weather App Setup</h1>
+            <p>API-Konfiguration & Implementierung</p>
+            <button class="logout-btn" id="logout-btn" style="display: none;" onclick="logout()">Abmelden</button>
+        </div>
+
+        <div class="content">
+            <!-- Login Form -->
+            <div class="login-form active" id="login-form">
+                <h2 style="margin-bottom: 20px;">🔐 Authentifizierung</h2>
+
+                <div class="warning">
+                    <strong>⚠️ Sicherheitshinweis:</strong> Dieses Tool ermöglicht die Konfiguration sensibler API-Keys.
+                    Zugang nur für autorisierte Entwickler!
+                </div>
+
+                <div class="error" id="login-error"></div>
+
+                <form onsubmit="login(event)">
+                    <div class="form-group">
+                        <label for="password">Setup-Passwort:</label>
+                        <input type="password" id="password" placeholder="Passwort eingeben" required autocomplete="off">
+                    </div>
+                    <button type="submit" class="btn">🔓 Zugang freischalten</button>
+                </form>
+
+                <div class="info" style="margin-top: 30px;">
+                    <strong>📝 Hinweis:</strong> Das Passwort wurde vom Entwickler festgelegt.
+                    Falls Sie es nicht kennen, kontaktieren Sie den Projektverantwortlichen.
+                </div>
+            </div>
+
+            <!-- Setup Panel -->
+            <div class="setup-panel" id="setup-panel">
+                <div class="tabs">
+                    <button class="tab active" onclick="switchTab('manage')">🔑 API-Keys verwalten</button>
+                    <button class="tab" onclick="switchTab('generate')">📝 Code generieren</button>
+                    <button class="tab" onclick="switchTab('help')">❓ Hilfe</button>
+                </div>
+
+                <!-- Tab: Manage API Keys -->
+                <div class="tab-content active" id="tab-manage">
+                    <h2>API-Keys verwalten</h2>
+
+                    <div class="success" id="save-success"></div>
+                    <div class="error" id="save-error"></div>
+
+                    <div class="form-group">
+                        <label for="api-provider">API-Anbieter:</label>
+                        <select id="api-provider">
+                            <option value="weatherapi">WeatherAPI.com (Empfohlen - 1M calls/Monat)</option>
+                            <option value="openweather">OpenWeatherMap</option>
+                            <option value="visualcrossing">Visual Crossing</option>
+                            <option value="openmeteo">Open-Meteo (Kostenlos, kein Key nötig)</option>
+                            <option value="custom">Eigener Anbieter</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="api-name">Bezeichnung (z.B. "Production", "Test", "Backup"):</label>
+                        <input type="text" id="api-name" placeholder="Production API">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="api-key">API-Key:</label>
+                        <input type="text" id="api-key" placeholder="Dein API-Key hier einfügen">
+                        <small style="color: #666; display: block; margin-top: 5px;">
+                            💡 Tipp: Den API-Key bekommst du nach der Registrierung beim Anbieter
+                        </small>
+                    </div>
+
+                    <div class="form-group" id="custom-url-group" style="display: none;">
+                        <label for="api-url">Custom API-URL:</label>
+                        <input type="text" id="api-url" placeholder="https://api.example.com/weather">
+                    </div>
+
+                    <button class="btn" onclick="saveApiKey()">💾 API-Key speichern</button>
+
+                    <div class="api-list">
+                        <h3>Gespeicherte API-Keys:</h3>
+                        <div id="api-keys-container">
+                            <p style="color: #999; text-align: center; padding: 40px;">
+                                Noch keine API-Keys gespeichert
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: Generate Code -->
+                <div class="tab-content" id="tab-generate">
+                    <h2>Code generieren & implementieren</h2>
+
+                    <div class="info">
+                        <strong>ℹ️ Anleitung:</strong>
+                        <ol style="margin: 10px 0 0 20px; line-height: 1.8;">
+                            <li>Wähle den API-Key aus, den du verwenden möchtest</li>
+                            <li>Klicke auf "Code generieren"</li>
+                            <li>Kopiere den generierten Code</li>
+                            <li>Ersetze den entsprechenden Abschnitt in <code>script.js</code></li>
+                            <li>Speichere die Datei und teste die App</li>
+                        </ol>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="select-api">API-Key auswählen:</label>
+                        <select id="select-api">
+                            <option value="">-- Bitte wählen --</option>
+                        </select>
+                    </div>
+
+                    <button class="btn" onclick="generateCode()">🔨 Code generieren</button>
+
+                    <div id="generated-code-container" style="display: none;">
+                        <h3 style="margin: 30px 0 15px;">Generierter Code:</h3>
+
+                        <div class="warning">
+                            <strong>⚠️ Sicherheit:</strong> Niemals API-Keys in öffentlichen Repositories committen!
+                            Verwende Umgebungsvariablen für Production.
+                        </div>
+
+                        <pre class="code-output" id="generated-code"></pre>
+
+                        <div style="display: flex; gap: 10px;">
+                            <button class="btn btn-success" onclick="copyCode()">📋 Code kopieren</button>
+                            <button class="btn btn-secondary" onclick="downloadCode()">💾 Als Datei herunterladen</button>
+                        </div>
+
+                        <div class="info" style="margin-top: 20px;">
+                            <strong>📂 Wo einfügen?</strong><br>
+                            Öffne die Datei <code>script.js</code> und ersetze den Abschnitt ab Zeile ~5
+                            (von <code>const API_KEY</code> bis <code>const USE_DEMO_API</code>) mit dem generierten Code.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: Help -->
+                <div class="tab-content" id="tab-help">
+                    <h2>❓ Hilfe & Anleitungen</h2>
+
+                    <div class="info">
+                        <h3>🎯 Was ist dieses Tool?</h3>
+                        <p>
+                            Dieses Setup-Tool hilft dir dabei, API-Keys sicher in deine Weather App zu integrieren.
+                            Du kannst mehrere API-Keys verwalten, zwischen ihnen wechseln und automatisch den
+                            richtigen Code generieren lassen.
+                        </p>
+                    </div>
+
+                    <h3 style="margin-top: 30px;">📋 Schritt-für-Schritt Anleitung:</h3>
+
+                    <div style="background: #f8f9ff; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                        <h4>1️⃣ API-Key besorgen</h4>
+                        <p><strong>WeatherAPI.com (Empfohlen):</strong></p>
+                        <ol style="margin-left: 20px; line-height: 1.8;">
+                            <li>Gehe zu <a href="https://www.weatherapi.com/signup.aspx" target="_blank">weatherapi.com/signup</a></li>
+                            <li>Registriere dich (kostenlos)</li>
+                            <li>Bestätige deine E-Mail</li>
+                            <li>Login → Dashboard</li>
+                            <li>Kopiere deinen API-Key (beginnt mit <code>a1b2c3...</code>)</li>
+                        </ol>
+                    </div>
+
+                    <div style="background: #f8f9ff; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                        <h4>2️⃣ API-Key in diesem Tool speichern</h4>
+                        <ol style="margin-left: 20px; line-height: 1.8;">
+                            <li>Wechsle zum Tab "API-Keys verwalten"</li>
+                            <li>Wähle "WeatherAPI.com"</li>
+                            <li>Gib eine Bezeichnung ein (z.B. "Production")</li>
+                            <li>Füge deinen API-Key ein</li>
+                            <li>Klicke auf "API-Key speichern"</li>
+                        </ol>
+                    </div>
+
+                    <div style="background: #f8f9ff; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                        <h4>3️⃣ Code generieren & implementieren</h4>
+                        <ol style="margin-left: 20px; line-height: 1.8;">
+                            <li>Wechsle zum Tab "Code generieren"</li>
+                            <li>Wähle deinen gespeicherten API-Key</li>
+                            <li>Klicke auf "Code generieren"</li>
+                            <li>Klicke auf "Code kopieren"</li>
+                            <li>Öffne <code>script.js</code></li>
+                            <li>Ersetze den Code ab Zeile ~5</li>
+                            <li>Speichere die Datei</li>
+                        </ol>
+                    </div>
+
+                    <div style="background: #f8f9ff; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                        <h4>4️⃣ Testen</h4>
+                        <ol style="margin-left: 20px; line-height: 1.8;">
+                            <li>Öffne <code>index.html</code> im Browser</li>
+                            <li>Gib eine Stadt ein (z.B. "London")</li>
+                            <li>Klicke auf "Suchen"</li>
+                            <li>✅ Wetterdaten sollten angezeigt werden!</li>
+                        </ol>
+                    </div>
+
+                    <div class="warning">
+                        <h4>🔐 Sicherheitshinweise:</h4>
+                        <ul style="margin-left: 20px; line-height: 1.8;">
+                            <li>Teile niemals deine API-Keys öffentlich</li>
+                            <li>Committe API-Keys nicht in Git (außer für Development)</li>
+                            <li>Für Production: Verwende Backend oder Umgebungsvariablen</li>
+                            <li>Rotiere Keys regelmäßig bei verdächtiger Aktivität</li>
+                            <li>Nutze separate Keys für Development/Production</li>
+                        </ul>
+                    </div>
+
+                    <h3 style="margin-top: 30px;">🔄 API-Key wechseln:</h3>
+                    <p>
+                        Um zwischen verschiedenen API-Keys zu wechseln (z.B. von Test auf Production):
+                    </p>
+                    <ol style="margin-left: 20px; line-height: 1.8;">
+                        <li>Tab "Code generieren" öffnen</li>
+                        <li>Anderen API-Key auswählen</li>
+                        <li>Neuen Code generieren und kopieren</li>
+                        <li>In <code>script.js</code> ersetzen</li>
+                    </ol>
+
+                    <h3 style="margin-top: 30px;">📞 Support:</h3>
+                    <p>
+                        Bei Problemen siehe <code>API_DOCUMENTATION.md</code> oder
+                        <code>DEVELOPER_GUIDE.md</code> für detaillierte Informationen.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="setup-tool.js"></script>
+</body>
+</html>

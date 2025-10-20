@@ -82,16 +82,52 @@ git push origin main
 npx vercel
 ```
 
-## API-Konfiguration
+## 🔧 API-Konfiguration (NEU!)
 
-Die App verwendet standardmäßig die kostenlose wttr.in API, die keine Registrierung benötigt.
+### Methode 1: Setup-Tool verwenden (Empfohlen - Einfach!)
 
-Falls du die OpenWeatherMap API verwenden möchtest:
+**Wir haben ein spezielles Setup-Tool für dich erstellt!**
 
-1. Registriere dich bei [OpenWeatherMap](https://openweathermap.org/api) und hole dir einen kostenlosen API-Key
-2. Öffne `script.js`
-3. Ersetze `YOUR_API_KEY_HERE` mit deinem API-Key
-4. Ändere `USE_DEMO_API` auf `false`
+1. **Öffne `setup-tool.html` im Browser**
+2. **Login mit Passwort:** `JoHanna268219$`
+3. **Folge den Anweisungen im Tool**
+
+Das Setup-Tool bietet:
+- ✅ Passwort-geschützte Oberfläche
+- ✅ API-Key Management (mehrere Keys speichern)
+- ✅ Automatische Code-Generierung
+- ✅ Unterstützung für alle großen Wetter-APIs
+- ✅ Schritt-für-Schritt Anleitungen
+- ✅ Sichere Implementierung
+
+**Verfügbare APIs:**
+- **WeatherAPI.com** (Empfohlen) - 1 Million calls/Monat kostenlos
+- **OpenWeatherMap** - 1000 calls/Tag
+- **Visual Crossing** - 1000 records/Tag
+- **Open-Meteo** - Kein API-Key nötig!
+- **Custom API** - Eigene API verwenden
+
+**Detaillierte Infos:** Siehe `API_DOCUMENTATION.md`
+
+### Methode 2: Manuell (Fortgeschritten)
+
+Falls du den Code direkt bearbeiten möchtest:
+
+1. Registriere dich bei [WeatherAPI.com](https://www.weatherapi.com/signup.aspx)
+2. Hole dir deinen kostenlosen API-Key
+3. Öffne `script.js`
+4. Ersetze `YOUR_API_KEY_HERE` mit deinem API-Key
+5. Setze `USE_DEMO_API = false`
+
+### Methode 3: Automatisches Update-Script (Node.js)
+
+Für automatische Updates via Terminal:
+
+```bash
+node update-api.js
+# Passwort: JoHanna268219$
+# Folge den Anweisungen
+```
 
 ## Technologien
 

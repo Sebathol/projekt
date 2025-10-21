@@ -1,6 +1,8 @@
 # Von der Idee zum Prototyp
 
-Ein innovatives Tool, das dir hilft, von einer ersten Idee zu einem funktionsfähigen Prototypen zu gelangen - alles in einem einzigen Workflow!
+Ein innovatives KI-gestütztes Tool, das dir hilft, von einer ersten Idee zu einem funktionsfähigen Prototypen zu gelangen - alles in einem einzigen Workflow!
+
+**💰 Jetzt verfügbar für nur €29,99 einmalig!** → [Zur Landing Page](landing.html)
 
 ## Features
 
@@ -88,3 +90,48 @@ Dieses Projekt ist für den persönlichen und kommerziellen Gebrauch frei verfü
 ---
 
 **Von der Idee zum Prototyp** - Dein Werkzeug für schnelle Innovation! 🚀
+
+---
+
+## 💰 Monetarisierung
+
+Dieses Tool ist kommerziell verfügbar:
+
+**Pricing:** €29,99 einmalig (Lifetime Access)
+- Keine Abos, keine versteckten Kosten
+- Unlimitierte Nutzung
+- Alle zukünftigen Updates inklusive
+- 30 Tage Geld-zurück-Garantie
+
+**Warum kaufen?**
+- Spare durchschnittlich €12.470 pro Projekt (vs. Agentur-Prototypen)
+- Von Wochen auf Minuten reduziert
+- Professionelle Ergebnisse mit KI-Power
+
+👉 **[Zur Landing Page & Kaufoptionen](landing.html)**
+
+---
+
+## 📚 Dokumentation
+
+- **[API Setup Guide](API_SETUP_GUIDE.md)** - Schritt-für-Schritt Anleitung für Claude API
+- **[Monetization Guide](MONETIZATION_GUIDE.md)** - Geschäftsmodell & Strategie
+- **[Store Listings](store-listings/PRODUCT_DESCRIPTION.md)** - Marketing-Materialien
+
+---
+
+## 🚀 Business Model
+
+**Zielgruppe:**
+- Entrepreneurs & Startup-Gründer
+- Product Manager
+- UX/UI Designer
+- Innovation Teams
+- Business Consultants
+
+**Value Proposition:**
+- 99,76% günstiger als traditionelle Prototyping-Services
+- Sofortige Ergebnisse statt Wochen Wartezeit
+- Unlimitierte Prototypen für einmalig €29,99
+
+**Support:** support@idea-to-prototype.app

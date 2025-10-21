@@ -482,13 +482,22 @@ IMPORTANT:
                       <lucide-icon icon-name="lightbulb" class="w-8 h-8"></lucide-icon>
                       <h1 className="text-2xl font-bold">{t[lang].title}</h1>
                     </div>
-                    <button
-                      onClick={() => setLang(lang === 'de' ? 'en' : 'de')}
-                      className="flex items-center gap-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition"
-                    >
-                      <lucide-icon icon-name="globe" class="w-5 h-5"></lucide-icon>
-                      {lang.toUpperCase()}
-                    </button>
+                    <div className="flex items-center gap-3">
+                      <a
+                        href="landing.html"
+                        className="hidden sm:flex items-center gap-2 bg-white text-amber-700 px-4 py-2 rounded-lg font-semibold hover:bg-stone-100 transition shadow-lg"
+                      >
+                        <lucide-icon icon-name="sparkles" class="w-4 h-4"></lucide-icon>
+                        Lifetime Access - €29,99
+                      </a>
+                      <button
+                        onClick={() => setLang(lang === 'de' ? 'en' : 'de')}
+                        className="flex items-center gap-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition"
+                      >
+                        <lucide-icon icon-name="globe" class="w-5 h-5"></lucide-icon>
+                        {lang.toUpperCase()}
+                      </button>
+                    </div>
                   </div>
 
                   {/* Progress Steps */}

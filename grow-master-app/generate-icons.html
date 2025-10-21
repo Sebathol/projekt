@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grow Master - Icon Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        h1 {
+            color: #4CAF50;
+        }
+        .canvas-container {
+            margin: 20px 0;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .icon-preview {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        canvas {
+            border: 2px solid #ddd;
+            border-radius: 8px;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #388E3C;
+        }
+        .info {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🌱 Grow Master - Icon Generator</h1>
+
+    <div class="info">
+        <strong>Anleitung:</strong> Klicke auf die Download-Buttons um die Icons zu speichern.
+        Die Icons werden automatisch generiert.
+    </div>
+
+    <div class="canvas-container">
+        <div class="icon-preview">
+            <h3>192x192</h3>
+            <canvas id="canvas-192" width="192" height="192"></canvas>
+            <br>
+            <button onclick="downloadIcon('canvas-192', 'icon-192.png')">Download 192x192</button>
+        </div>
+
+        <div class="icon-preview">
+            <h3>512x512</h3>
+            <canvas id="canvas-512" width="512" height="512"></canvas>
+            <br>
+            <button onclick="downloadIcon('canvas-512', 'icon-512.png')">Download 512x512</button>
+        </div>
+    </div>
+
+    <script>
+        function drawIcon(canvas) {
+            const ctx = canvas.getContext('2d');
+            const size = canvas.width;
+            const scale = size / 100; // Base size is 100
+
+            // Clear canvas
+            ctx.clearRect(0, 0, size, size);
+
+            // Background gradient circle
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#4CAF50');
+            gradient.addColorStop(1, '#388E3C');
+
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.arc(size / 2, size / 2, size * 0.48, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Plant stem
+            ctx.strokeStyle = '#2E7D32';
+            ctx.lineWidth = 3 * scale;
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            ctx.moveTo(50 * scale, 70 * scale);
+            ctx.quadraticCurveTo(48 * scale, 55 * scale, 50 * scale, 40 * scale);
+            ctx.stroke();
+
+            // Leaf gradient
+            const leafGradient = ctx.createLinearGradient(0, 0, size, size);
+            leafGradient.addColorStop(0, '#81C784');
+            leafGradient.addColorStop(1, '#66BB6A');
+
+            // Left leaf
+            ctx.fillStyle = leafGradient;
+            ctx.strokeStyle = '#2E7D32';
+            ctx.lineWidth = 1.5 * scale;
+            ctx.beginPath();
+            ctx.moveTo(50 * scale, 50 * scale);
+            ctx.quadraticCurveTo(35 * scale, 45 * scale, 30 * scale, 42 * scale);
+            ctx.quadraticCurveTo(35 * scale, 50 * scale, 50 * scale, 52 * scale);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+
+            // Right leaf
+            ctx.beginPath();
+            ctx.moveTo(50 * scale, 45 * scale);
+            ctx.quadraticCurveTo(65 * scale, 40 * scale, 70 * scale, 37 * scale);
+            ctx.quadraticCurveTo(65 * scale, 45 * scale, 50 * scale, 47 * scale);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+
+            // Top leaf
+            ctx.beginPath();
+            ctx.moveTo(50 * scale, 40 * scale);
+            ctx.quadraticCurveTo(48 * scale, 30 * scale, 50 * scale, 25 * scale);
+            ctx.quadraticCurveTo(52 * scale, 30 * scale, 50 * scale, 40 * scale);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+
+            // Pot
+            ctx.fillStyle = '#8D6E63';
+            ctx.strokeStyle = '#5D4037';
+            ctx.lineWidth = 2 * scale;
+            ctx.beginPath();
+            ctx.moveTo(35 * scale, 70 * scale);
+            ctx.lineTo(38 * scale, 82 * scale);
+            ctx.lineTo(62 * scale, 82 * scale);
+            ctx.lineTo(65 * scale, 70 * scale);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+
+            // Pot top (ellipse)
+            ctx.fillStyle = '#6D4C41';
+            ctx.beginPath();
+            ctx.ellipse(50 * scale, 70 * scale, 15 * scale, 4 * scale, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            // AI Sparkle
+            ctx.fillStyle = '#FFD700';
+            ctx.beginPath();
+            ctx.arc(70 * scale, 25 * scale, 3 * scale, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Sparkle lines
+            ctx.strokeStyle = '#FFD700';
+            ctx.lineWidth = 1.5 * scale;
+            ctx.beginPath();
+            ctx.moveTo(70 * scale, 20 * scale);
+            ctx.lineTo(70 * scale, 30 * scale);
+            ctx.moveTo(65 * scale, 25 * scale);
+            ctx.lineTo(75 * scale, 25 * scale);
+            ctx.stroke();
+        }
+
+        function downloadIcon(canvasId, filename) {
+            const canvas = document.getElementById(canvasId);
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+
+        // Generate icons on load
+        window.onload = function() {
+            drawIcon(document.getElementById('canvas-192'));
+            drawIcon(document.getElementById('canvas-512'));
+        };
+    </script>
+</body>
+</html>

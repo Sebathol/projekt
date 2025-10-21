@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#4CAF50">
+    <title>Grow Master - Dein Pflanzen-Experte</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="../icon-192.png">
+</head>
+<body>
+    <!-- Premium Paywall Overlay -->
+    <div id="paywall-overlay" class="paywall-overlay hidden">
+        <div class="paywall-content">
+            <div class="paywall-close" onclick="closePaywall()">×</div>
+            <h2>🌱 Grow Master Premium</h2>
+            <p class="paywall-subtitle">Schalte alle Premium-Features frei!</p>
+
+            <div class="premium-features">
+                <div class="feature-item">
+                    <span class="feature-icon">🤖</span>
+                    <div class="feature-text">
+                        <h4>KI-Pflanzenexperte</h4>
+                        <p>Unbegrenzte Chat-Nachrichten mit unserem KI-Experten</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">📸</span>
+                    <div class="feature-text">
+                        <h4>Pflanzenanalyse per Foto</h4>
+                        <p>Lade Bilder hoch und erhalte sofortige Diagnosen</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">📚</span>
+                    <div class="feature-text">
+                        <h4>Pflanzendatenbank</h4>
+                        <p>Zugriff auf über 10.000 Pflanzenlexikon-Einträge</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">🔔</span>
+                    <div class="feature-text">
+                        <h4>Gieß-Erinnerungen</h4>
+                        <p>Personalisierte Pflegeplan-Erinnerungen</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">🌍</span>
+                    <div class="feature-text">
+                        <h4>Wetter-Integration</h4>
+                        <p>Automatische Pflegetipps basierend auf lokalem Wetter</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">🚫</span>
+                    <div class="feature-text">
+                        <h4>Keine Werbung</h4>
+                        <p>100% werbefrei für immer</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pricing-box">
+                <div class="old-price">Andere Apps: €9,99/Monat</div>
+                <div class="new-price">€1,99 <span>einmalig</span></div>
+                <div class="price-note">✓ Alle Features ✓ Alle Updates ✓ Keine Abos</div>
+            </div>
+
+            <button class="premium-btn" onclick="purchasePremium()">
+                Jetzt Premium werden - €1,99
+            </button>
+
+            <div class="paywall-footer">
+                <p>30 Tage Geld-zurück-Garantie</p>
+                <p class="privacy-note">Sichere Zahlung via Stripe • DSGVO-konform</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <h1 class="app-title">🌱 Grow Master</h1>
+                <p class="app-subtitle">Dein KI-Pflanzenexperte</p>
+            </div>
+            <button class="premium-badge" onclick="showPaywall()">
+                <span class="badge-icon">👑</span> Premium
+            </button>
+        </header>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <!-- Welcome Section -->
+            <div id="welcome-section" class="welcome-section">
+                <div class="welcome-icon">🌿</div>
+                <h2>Willkommen beim Grow Master!</h2>
+                <p>Dein persönlicher KI-Assistent für die perfekte Pflanzenpflege.</p>
+                <div class="welcome-features">
+                    <div class="welcome-feature">
+                        <span>💬</span>
+                        <p>Stelle Fragen zu deinen Pflanzen</p>
+                    </div>
+                    <div class="welcome-feature">
+                        <span>📸</span>
+                        <p>Lade Fotos für Diagnosen hoch</p>
+                    </div>
+                    <div class="welcome-feature">
+                        <span>🌱</span>
+                        <p>Erhalte personalisierte Pflegetipps</p>
+                    </div>
+                </div>
+                <button class="start-chat-btn" onclick="startChat()">
+                    Chat starten
+                </button>
+            </div>
+
+            <!-- Chat Section -->
+            <div id="chat-section" class="chat-section hidden">
+                <div id="chat-messages" class="chat-messages">
+                    <!-- Messages will be appended here -->
+                </div>
+
+                <!-- Input Area -->
+                <div class="input-area">
+                    <div class="input-controls">
+                        <label for="image-upload" class="upload-btn" title="Foto hochladen">
+                            <input type="file" id="image-upload" accept="image/*" style="display:none;" onchange="handleImageUpload(event)">
+                            📸
+                        </label>
+                        <input type="text" id="message-input" placeholder="Frage zu deinen Pflanzen..." />
+                        <button id="send-btn" onclick="sendMessage()">
+                            <span>➤</span>
+                        </button>
+                    </div>
+                    <div id="image-preview" class="image-preview hidden">
+                        <img id="preview-img" src="" alt="Preview">
+                        <button class="remove-image" onclick="removeImage()">×</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Draggable Chatbot Companion -->
+    <div id="chatbot-companion" class="chatbot-companion">
+        <div class="companion-avatar" id="companion-avatar">
+            <div class="avatar-face">
+                <div class="avatar-eyes">
+                    <div class="eye left-eye">
+                        <div class="pupil"></div>
+                    </div>
+                    <div class="eye right-eye">
+                        <div class="pupil"></div>
+                    </div>
+                </div>
+                <div class="avatar-mouth">
+                    <div class="smile"></div>
+                </div>
+            </div>
+            <div class="companion-badge">🌱</div>
+        </div>
+        <div class="companion-tooltip hidden" id="companion-tooltip">
+            Zieh mich! 👋
+        </div>
+    </div>
+
+    <!-- Free Trial Counter -->
+    <div id="trial-counter" class="trial-counter hidden">
+        <span id="trial-text">Kostenlos: 3 Nachrichten übrig</span>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

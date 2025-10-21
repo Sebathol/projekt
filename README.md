@@ -1,149 +1,90 @@
-# Wetter App
+# Von der Idee zum Prototyp
 
-Eine einfache Wetter-Anwendung, die aktuelle Wetterdaten für beliebige Städte anzeigt. Jetzt als Progressive Web App (PWA) - installierbar auf Smartphone und Desktop!
+Ein innovatives Tool, das dir hilft, von einer ersten Idee zu einem funktionsfähigen Prototypen zu gelangen - alles in einem einzigen Workflow!
 
 ## Features
 
-- Aktuelle Temperatur
-- Gefühlte Temperatur
-- Luftfeuchtigkeit
-- Windgeschwindigkeit
-- Wetterbeschreibung
-- Responsive Design
-- **PWA-Funktionalität** - Installierbar wie eine native App!
-- **Offline-Unterstützung** - Funktioniert auch ohne Internet (mit Cache)
-- **Native App-Feeling** - Läuft im Vollbild ohne Browser-UI
+### 🧠 Schritt 1: Ideen-Generator
+- **Brainstorming Modus**: Generiere 5 innovative Geschäftsideen zu einem bestimmten Thema
+- **Ideen-Funke Modus**: Erhalte 3 außergewöhnliche, kreative Ideen mit Überraschungseffekt
+- **Interaktiver Chat**: Verfeinere deine Ideen mit bis zu 15 Iterationen durch AI-gestütztes Feedback
+- Bewertung jeder Idee nach Priorität, Aufwand und Marktrelevanz
 
-## Installation auf dem Smartphone
+### 📝 Schritt 2: PRD-Ersteller
+- Automatische Erstellung eines professionellen Product Requirements Document (PRD)
+- Editierbare PRD-Vorlage
+- Download als TXT oder MD
 
-### Android (Chrome/Edge):
+### 💻 Schritt 3: Prototyp-Generator
+- Automatische Generierung eines funktionsfähigen HTML-Prototypen
+- Live-Vorschau des Prototyps
+- Modern und responsive
+- Tailwind CSS mit Erdtönen (Amber, Orange, Stone)
+- Download als standalone HTML-Datei
 
-1. Öffne die App in Chrome/Edge: Lade die Dateien auf einen Webserver hoch (z.B. GitHub Pages, Netlify, oder deinen eigenen Server)
-2. Gehe zur URL der App
-3. Tippe auf das Menü (⋮) oben rechts
-4. Wähle **"App installieren"** oder **"Zum Startbildschirm hinzufügen"**
-5. Die App erscheint auf deinem Homescreen wie jede andere App!
+## Design
 
-### iOS (Safari):
+- **Farbschema**: Warme Erdtöne mit Orange-Akzenten (Amber, Orange, Stone)
+- **Orangene Buttons**: Charakteristisches Design mit `from-amber-600 to-orange-600` Gradient
+- **Responsive**: Funktioniert perfekt auf Desktop und Mobile
+- **Modern**: Sauberes, professionelles UI mit Tailwind CSS
 
-1. Öffne die App in Safari
-2. Tippe auf das Teilen-Symbol (□↑)
-3. Wähle **"Zum Home-Bildschirm"**
-4. Tippe auf "Hinzufügen"
-5. Die App erscheint auf deinem Homescreen!
+## Verwendung
 
-## Verwendung (Entwicklung/Test)
+1. Öffne `index.html` in deinem Browser
+2. Füge deinen Claude API-Key in Zeile 21 ein (ersetze `DEIN_API_KEY_HIER`)
+3. Wähle einen Modus:
+   - **Brainstorming**: Gib ein Thema ein und generiere Ideen
+   - **Ideen-Funke**: Lass dich von Zufalls-Inspirationen überraschen
+4. Verfeinere deine Ideen im Chat (optional)
+5. Wähle eine Idee aus und erstelle ein PRD
+6. Generiere einen funktionsfähigen HTML-Prototypen
 
-### Methode 1: PWA lokal testen
+## Technische Details
 
-**WICHTIG:** PWAs benötigen HTTPS oder localhost. Für lokale Tests:
+- **Framework**: React 18 (über CDN)
+- **Styling**: Tailwind CSS
+- **Icons**: Lucide Icons
+- **AI**: Claude API (Anthropic)
+- **Sprachen**: Deutsch und Englisch
 
-```bash
-# Mit Python 3
-python3 -m http.server 8000
+## API-Key Setup
 
-# Oder mit Node.js
-npx http-server -p 8000
-```
+⚠️ **Wichtig**: Du benötigst einen Claude API-Key von Anthropic.
 
-Dann öffne `http://localhost:8000` in deinem Browser.
+1. Besuche https://console.anthropic.com/
+2. Erstelle einen Account und generiere einen API-Key
+3. Füge den Key in `index.html` Zeile 21 ein:
+   ```javascript
+   const API_KEY = 'sk-ant-api03-...';
+   ```
 
-### Methode 2: Direkt im Browser öffnen
+## Hinweis zur Sicherheit
 
-Für einfaches Testen (ohne PWA-Features):
-1. Öffne die Datei `index.html` in deinem Browser (Doppelklick oder Rechtsklick → Öffnen mit → Browser)
-2. Gib eine Stadt ein und klicke auf "Suchen"
-3. Die App verwendet standardmäßig eine kostenlose API (wttr.in), die keine Registrierung erfordert
+⚠️ Der API-Key ist direkt im Code eingebettet und für **Test- und Entwicklungszwecke** gedacht. Für Produktivumgebungen sollte der Key über ein Backend verwaltet werden.
 
-### Methode 3: Online deployen
+## Features im Detail
 
-Für die volle PWA-Funktionalität mit Installation auf dem Smartphone:
+### Iterativer Chat
+- Verfeinere deine Ideen durch Konversation mit der AI
+- Bis zu 15 Iterationen pro Session
+- Die AI merkt sich den gesamten Gesprächsverlauf
+- Automatische Aktualisierung der Ideen basierend auf dem Feedback
 
-**GitHub Pages (Kostenlos & Einfach):**
-```bash
-# 1. Erstelle ein GitHub Repository
-# 2. Push dein Projekt
-git add .
-git commit -m "Wetter App PWA"
-git push origin main
+### Multi-Language Support
+- Vollständige Unterstützung für Deutsch und Englisch
+- Umschalten mit einem Klick
+- Alle UI-Elemente und AI-Prompts werden übersetzt
 
-# 3. Gehe zu Settings → Pages
-# 4. Wähle Branch: main
-# 5. Deine App ist verfügbar unter: https://DEIN-USERNAME.github.io/REPO-NAME
-```
-
-**Netlify (Kostenlos & Einfach):**
-1. Gehe zu [netlify.com](https://netlify.com)
-2. Ziehe den Projekt-Ordner per Drag & Drop
-3. Fertig! Du bekommst eine URL wie `https://dein-projekt.netlify.app`
-
-**Vercel:**
-```bash
-npx vercel
-```
-
-## 🔧 API-Konfiguration (NEU!)
-
-### Methode 1: Setup-Tool verwenden (Empfohlen - Einfach!)
-
-**Wir haben ein spezielles Setup-Tool für dich erstellt!**
-
-1. **Öffne `setup-tool.html` im Browser**
-2. **Login mit Passwort:** `JoHanna268219$`
-3. **Folge den Anweisungen im Tool**
-
-Das Setup-Tool bietet:
-- ✅ Passwort-geschützte Oberfläche
-- ✅ API-Key Management (mehrere Keys speichern)
-- ✅ Automatische Code-Generierung
-- ✅ Unterstützung für alle großen Wetter-APIs
-- ✅ Schritt-für-Schritt Anleitungen
-- ✅ Sichere Implementierung
-
-**Verfügbare APIs:**
-- **WeatherAPI.com** (Empfohlen) - 1 Million calls/Monat kostenlos
-- **OpenWeatherMap** - 1000 calls/Tag
-- **Visual Crossing** - 1000 records/Tag
-- **Open-Meteo** - Kein API-Key nötig!
-- **Custom API** - Eigene API verwenden
-
-**Detaillierte Infos:** Siehe `API_DOCUMENTATION.md`
-
-### Methode 2: Manuell (Fortgeschritten)
-
-Falls du den Code direkt bearbeiten möchtest:
-
-1. Registriere dich bei [WeatherAPI.com](https://www.weatherapi.com/signup.aspx)
-2. Hole dir deinen kostenlosen API-Key
-3. Öffne `script.js`
-4. Ersetze `YOUR_API_KEY_HERE` mit deinem API-Key
-5. Setze `USE_DEMO_API = false`
-
-### Methode 3: Automatisches Update-Script (Node.js)
-
-Für automatische Updates via Terminal:
-
-```bash
-node update-api.js
-# Passwort: JoHanna268219$
-# Folge den Anweisungen
-```
-
-## Technologien
-
-- HTML5
-- CSS3
-- Vanilla JavaScript
-- wttr.in API (Demo-Modus) oder OpenWeatherMap API
-
-## Browser-Kompatibilität
-
-Funktioniert in allen modernen Browsern:
-- Chrome
-- Firefox
-- Safari
-- Edge
+### Download-Funktionen
+- Ideen als JSON exportieren
+- PRD als TXT oder Markdown speichern
+- Prototyp als vollständige, standalone HTML-Datei
 
 ## Lizenz
 
-MIT
+Dieses Projekt ist für den persönlichen und kommerziellen Gebrauch frei verfügbar.
+
+---
+
+**Von der Idee zum Prototyp** - Dein Werkzeug für schnelle Innovation! 🚀

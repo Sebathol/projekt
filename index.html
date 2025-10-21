@@ -3,63 +3,912 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Eine einfache Wetter-App für aktuelle Wetterdaten">
-    <meta name="theme-color" content="#667eea">
-    <title>Wetter App</title>
-
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="manifest.json">
-
-    <!-- iOS Support -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Wetter App">
-    <link rel="apple-touch-icon" href="icon-192.png">
-
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
-    <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
-
-    <link rel="stylesheet" href="style.css">
+    <title>Idea-to-Prototype Tool</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
-    <div class="container">
-        <div class="weather-app">
-            <h1>Wetter App</h1>
+    <div id="root"></div>
 
-            <div class="search-box">
-                <input type="text" id="city-input" placeholder="Stadt eingeben..." value="Berlin">
-                <button id="search-btn">Suchen</button>
-            </div>
+    <script type="text/babel">
+        const { useState } = React;
+        const { Lightbulb, FileText, Code, Download, Edit2, Sparkles, Brain, Globe, AlertCircle, Loader, Send, MessageCircle, RefreshCw } = lucide;
 
-            <div id="loading" class="loading hidden">Lädt...</div>
-            <div id="error" class="error hidden"></div>
+        // API Key - NUR FÜR TESTS! In Produktion anders handhaben!
+        const API_KEY = 'DEIN_API_KEY_HIER';
 
-            <div id="weather-info" class="weather-info hidden">
-                <h2 id="city-name"></h2>
-                <div class="temperature">
-                    <span id="temp" class="temp"></span>
+        const IdeaToPrototypeTool = () => {
+          const [lang, setLang] = useState('de');
+          const [step, setStep] = useState(1);
+          const [loading, setLoading] = useState(false);
+          const [error, setError] = useState('');
+
+          // Ideen-Generator States
+          const [ideaMode, setIdeaMode] = useState('brainstorming');
+          const [ideaInput, setIdeaInput] = useState('');
+          const [ideas, setIdeas] = useState([]);
+          const [selectedIdea, setSelectedIdea] = useState(null);
+
+          // Chat/Iteration States
+          const [showChat, setShowChat] = useState(false);
+          const [chatMessages, setChatMessages] = useState([]);
+          const [chatInput, setChatInput] = useState('');
+          const [iterationCount, setIterationCount] = useState(0);
+          const maxIterations = 15;
+
+          // PRD States
+          const [prd, setPrd] = useState('');
+          const [editedPrd, setEditedPrd] = useState('');
+
+          // Prototyp States
+          const [prototype, setPrototype] = useState('');
+
+          const t = {
+            de: {
+              title: 'Idea-to-Prototype Tool',
+              step1: 'Schritt 1: Ideen-Generator',
+              step2: 'Schritt 2: PRD-Ersteller',
+              step3: 'Schritt 3: Prototyp-Generator',
+              brainstormingMode: 'Brainstorming Modus',
+              funkeMode: 'Ideen-Funke Modus',
+              brainstormingDesc: 'Generiere mehrere Ideen zu einem Thema',
+              funkeDesc: 'Zünde einen kreativen Funken mit Zufalls-Inspirationen',
+              inputPlaceholder: 'Dein Thema oder Problem...',
+              generate: 'Generieren',
+              generateIdeas: 'Ideen generieren',
+              ideas: 'Ideen',
+              selectIdea: 'Idee auswählen',
+              priority: 'Priorität',
+              effort: 'Aufwand',
+              market: 'Marktrelevanz',
+              high: 'Hoch',
+              medium: 'Mittel',
+              low: 'Niedrig',
+              createPrd: 'PRD erstellen',
+              editPrd: 'PRD bearbeiten',
+              generatePrototype: 'Prototyp generieren',
+              download: 'Download',
+              back: 'Zurück',
+              next: 'Weiter',
+              loading: 'Lädt...',
+              error: 'Fehler',
+              noApiKey: 'Bitte API-Key im Code eintragen!',
+              prdTitle: 'Product Requirements Document',
+              prototypeTitle: 'HTML Prototyp',
+              testPrototype: 'Prototyp testen',
+              refineIdeas: 'Ideen verfeinern',
+              chatPlaceholder: 'Stelle Fragen oder fordere Änderungen an...',
+              send: 'Senden',
+              iterationsLeft: 'Iterationen übrig',
+              startChat: 'Idee weiterentwickeln',
+              closeChat: 'Chat schließen',
+              applyChanges: 'Änderungen übernehmen',
+              chatInfo: 'Stelle Fragen oder fordere Änderungen an. Die KI merkt sich den gesamten Verlauf.',
+              you: 'Du',
+              assistant: 'Assistent',
+            },
+            en: {
+              title: 'Idea-to-Prototype Tool',
+              step1: 'Step 1: Idea Generator',
+              step2: 'Step 2: PRD Creator',
+              step3: 'Step 3: Prototype Generator',
+              brainstormingMode: 'Brainstorming Mode',
+              funkeMode: 'Idea Spark Mode',
+              brainstormingDesc: 'Generate multiple ideas for a topic',
+              funkeDesc: 'Ignite creativity with random inspirations',
+              inputPlaceholder: 'Your topic or problem...',
+              generate: 'Generate',
+              generateIdeas: 'Generate Ideas',
+              ideas: 'Ideas',
+              selectIdea: 'Select Idea',
+              priority: 'Priority',
+              effort: 'Effort',
+              market: 'Market Relevance',
+              high: 'High',
+              medium: 'Medium',
+              low: 'Low',
+              createPrd: 'Create PRD',
+              editPrd: 'Edit PRD',
+              generatePrototype: 'Generate Prototype',
+              download: 'Download',
+              back: 'Back',
+              next: 'Next',
+              loading: 'Loading...',
+              error: 'Error',
+              noApiKey: 'Please add API key in code!',
+              prdTitle: 'Product Requirements Document',
+              prototypeTitle: 'HTML Prototype',
+              testPrototype: 'Test Prototype',
+              refineIdeas: 'Refine Ideas',
+              chatPlaceholder: 'Ask questions or request changes...',
+              send: 'Send',
+              iterationsLeft: 'Iterations left',
+              startChat: 'Develop idea further',
+              closeChat: 'Close chat',
+              applyChanges: 'Apply changes',
+              chatInfo: 'Ask questions or request changes. The AI remembers the entire conversation.',
+              you: 'You',
+              assistant: 'Assistant',
+            }
+          };
+
+          const callClaude = async (messages) => {
+            if (API_KEY === 'DEIN_API_KEY_HIER') {
+              throw new Error(t[lang].noApiKey);
+            }
+
+            const response = await fetch("https://api.anthropic.com/v1/messages", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "x-api-key": API_KEY,
+                "anthropic-version": "2023-06-01"
+              },
+              body: JSON.stringify({
+                model: "claude-sonnet-4-20250514",
+                max_tokens: 4000,
+                messages: messages
+              })
+            });
+
+            if (!response.ok) {
+              throw new Error(`API Error: ${response.status}`);
+            }
+
+            const data = await response.json();
+            return data.content[0].text;
+          };
+
+          const generateIdeas = async () => {
+            setLoading(true);
+            setError('');
+
+            try {
+              let prompt = '';
+
+              if (ideaMode === 'brainstorming') {
+                prompt = lang === 'de'
+                  ? `Generiere 5 innovative Geschäftsideen zum Thema: "${ideaInput}".
+
+Für jede Idee gib an:
+- Titel (kurz und prägnant)
+- Beschreibung (2-3 Sätze)
+- Priorität (Hoch/Mittel/Niedrig)
+- Aufwand (Hoch/Mittel/Niedrig)
+- Marktrelevanz (Hoch/Mittel/Niedrig)
+
+Format als JSON Array:
+[
+  {
+    "title": "...",
+    "description": "...",
+    "priority": "Hoch",
+    "effort": "Mittel",
+    "market": "Hoch"
+  }
+]
+
+WICHTIG: Antworte NUR mit dem JSON Array, ohne weitere Erklärungen oder Markdown.`
+                  : `Generate 5 innovative business ideas for: "${ideaInput}".
+
+For each idea provide:
+- Title (short and catchy)
+- Description (2-3 sentences)
+- Priority (High/Medium/Low)
+- Effort (High/Medium/Low)
+- Market Relevance (High/Medium/Low)
+
+Format as JSON Array:
+[
+  {
+    "title": "...",
+    "description": "...",
+    "priority": "High",
+    "effort": "Medium",
+    "market": "High"
+  }
+]
+
+IMPORTANT: Respond ONLY with the JSON array, no additional explanations or markdown.`;
+              } else {
+                prompt = lang === 'de'
+                  ? `Erstelle einen kreativen "Ideen-Funken" - eine unerwartete Kombination oder einen überraschenden Ansatz für ein Produkt oder Service. Sei innovativ und inspirierend!
+
+Generiere 3 außergewöhnliche Ideen mit Funken-Charakter.
+
+Für jede Idee gib an:
+- Titel (kreativ und einprägsam)
+- Beschreibung (2-3 Sätze, beschreibe den innovativen Funken)
+- Priorität (Hoch/Mittel/Niedrig)
+- Aufwand (Hoch/Mittel/Niedrig)
+- Marktrelevanz (Hoch/Mittel/Niedrig)
+
+Format als JSON Array:
+[
+  {
+    "title": "...",
+    "description": "...",
+    "priority": "Hoch",
+    "effort": "Mittel",
+    "market": "Hoch"
+  }
+]
+
+WICHTIG: Antworte NUR mit dem JSON Array, ohne weitere Erklärungen oder Markdown.`
+                  : `Create a creative "idea spark" - an unexpected combination or surprising approach for a product or service. Be innovative and inspiring!
+
+Generate 3 extraordinary ideas with spark character.
+
+For each idea provide:
+- Title (creative and memorable)
+- Description (2-3 sentences, describe the innovative spark)
+- Priority (High/Medium/Low)
+- Effort (High/Medium/Low)
+- Market Relevance (High/Medium/Low)
+
+Format as JSON Array:
+[
+  {
+    "title": "...",
+    "description": "...",
+    "priority": "High",
+    "effort": "Medium",
+    "market": "High"
+  }
+]
+
+IMPORTANT: Respond ONLY with the JSON array, no additional explanations or markdown.`;
+              }
+
+              const response = await callClaude([{ role: "user", content: prompt }]);
+              const cleanedResponse = response.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+              const parsedIdeas = JSON.parse(cleanedResponse);
+              setIdeas(parsedIdeas);
+
+              // Initialize chat with context
+              setChatMessages([{
+                role: 'system',
+                content: lang === 'de'
+                  ? `Hier sind die generierten Ideen:\n\n${JSON.stringify(parsedIdeas, null, 2)}\n\nIch kann dir helfen, diese Ideen weiterzuentwickeln, Fragen zu beantworten oder Änderungen vorzunehmen.`
+                  : `Here are the generated ideas:\n\n${JSON.stringify(parsedIdeas, null, 2)}\n\nI can help you develop these ideas further, answer questions, or make changes.`
+              }]);
+              setIterationCount(0);
+            } catch (err) {
+              setError(err.message);
+            } finally {
+              setLoading(false);
+            }
+          };
+
+          const sendChatMessage = async () => {
+            if (!chatInput.trim() || iterationCount >= maxIterations) return;
+
+            setLoading(true);
+            setError('');
+
+            try {
+              // Add user message to chat
+              const userMessage = { role: 'user', content: chatInput };
+              const updatedMessages = [...chatMessages, userMessage];
+              setChatMessages(updatedMessages);
+              setChatInput('');
+
+              // Build conversation history for API
+              const apiMessages = updatedMessages
+                .filter(msg => msg.role !== 'system')
+                .map(msg => ({
+                  role: msg.role === 'assistant' ? 'assistant' : 'user',
+                  content: msg.content
+                }));
+
+              // Add system context as first user message if this is the first interaction
+              if (apiMessages.length === 1) {
+                const contextPrompt = lang === 'de'
+                  ? `Kontext: Wir entwickeln Geschäftsideen weiter. Hier sind die aktuellen Ideen:\n\n${JSON.stringify(ideas, null, 2)}\n\nDer Nutzer möchte jetzt Folgendes: ${chatInput}\n\nBitte hilf dabei, die Ideen zu verbessern oder zu erweitern. Wenn du neue/geänderte Ideen generierst, nutze IMMER das gleiche JSON-Format wie zuvor.`
+                  : `Context: We are developing business ideas further. Here are the current ideas:\n\n${JSON.stringify(ideas, null, 2)}\n\nThe user now wants: ${chatInput}\n\nPlease help improve or expand the ideas. If you generate new/changed ideas, ALWAYS use the same JSON format as before.`;
+
+                apiMessages[0].content = contextPrompt;
+              }
+
+              // Call Claude API
+              const response = await callClaude(apiMessages);
+
+              // Add assistant response to chat
+              const assistantMessage = { role: 'assistant', content: response };
+              setChatMessages([...updatedMessages, assistantMessage]);
+
+              // Try to extract updated ideas from response
+              const jsonMatch = response.match(/\[[\s\S]*?\]/);
+              if (jsonMatch) {
+                try {
+                  const cleanedJson = jsonMatch[0].replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+                  const updatedIdeas = JSON.parse(cleanedJson);
+                  if (Array.isArray(updatedIdeas) && updatedIdeas.length > 0) {
+                    setIdeas(updatedIdeas);
+                  }
+                } catch (e) {
+                  // JSON parsing failed, just show the text response
+                }
+              }
+
+              setIterationCount(prev => prev + 1);
+            } catch (err) {
+              setError(err.message);
+            } finally {
+              setLoading(false);
+            }
+          };
+
+          const createPRD = async () => {
+            if (!selectedIdea) return;
+
+            setLoading(true);
+            setError('');
+            setStep(2);
+
+            try {
+              const prompt = lang === 'de'
+                ? `Erstelle ein ausführliches Product Requirements Document (PRD) für folgende Idee:
+
+Titel: ${selectedIdea.title}
+Beschreibung: ${selectedIdea.description}
+
+Das PRD sollte folgende Abschnitte enthalten:
+1. Executive Summary
+2. Produktvision und Ziele
+3. Zielgruppe
+4. Funktionale Anforderungen
+5. User Stories
+6. Technische Anforderungen
+7. Design-Anforderungen
+8. Erfolgsmetriken
+9. Risiken und Abhängigkeiten
+10. Zeitplan und Meilensteine
+
+Schreibe in professionellem, aber verständlichem Deutsch.`
+                : `Create a comprehensive Product Requirements Document (PRD) for this idea:
+
+Title: ${selectedIdea.title}
+Description: ${selectedIdea.description}
+
+The PRD should include these sections:
+1. Executive Summary
+2. Product Vision and Goals
+3. Target Audience
+4. Functional Requirements
+5. User Stories
+6. Technical Requirements
+7. Design Requirements
+8. Success Metrics
+9. Risks and Dependencies
+10. Timeline and Milestones
+
+Write in professional but understandable English.`;
+
+              const response = await callClaude([{ role: 'user', content: prompt }]);
+              setPrd(response);
+              setEditedPrd(response);
+            } catch (err) {
+              setError(err.message);
+              setStep(1);
+            } finally {
+              setLoading(false);
+            }
+          };
+
+          const generatePrototype = async () => {
+            setLoading(true);
+            setError('');
+            setStep(3);
+
+            try {
+              const prdToUse = editedPrd || prd;
+              const prompt = lang === 'de'
+                ? `Basierend auf diesem PRD, erstelle einen vollständigen, funktionsfähigen HTML-Prototyp:
+
+${prdToUse}
+
+Anforderungen:
+- Erstelle eine VOLLSTÄNDIGE, selbstständige HTML-Datei
+- Nutze Tailwind CSS (via CDN)
+- Implementiere die Kern-Features
+- Modernes, ansprechendes Design
+- Mobile-responsive
+- Interaktive Elemente mit JavaScript
+- Erdtöne (Amber, Orange, Stone) als Farbschema
+
+WICHTIG:
+- Antworte NUR mit dem kompletten HTML-Code
+- Keine Erklärungen oder Markdown
+- Der Code muss sofort lauffähig sein
+- Beginne direkt mit <!DOCTYPE html>`
+                : `Based on this PRD, create a complete, functional HTML prototype:
+
+${prdToUse}
+
+Requirements:
+- Create a COMPLETE, standalone HTML file
+- Use Tailwind CSS (via CDN)
+- Implement core features
+- Modern, appealing design
+- Mobile-responsive
+- Interactive elements with JavaScript
+- Earth tones (Amber, Orange, Stone) as color scheme
+
+IMPORTANT:
+- Respond ONLY with the complete HTML code
+- No explanations or markdown
+- Code must be immediately runnable
+- Start directly with <!DOCTYPE html>`;
+
+              const response = await callClaude([{ role: 'user', content: prompt }]);
+              const cleanedHtml = response.replace(/```html\n?/g, '').replace(/```\n?/g, '').trim();
+              setPrototype(cleanedHtml);
+            } catch (err) {
+              setError(err.message);
+              setStep(2);
+            } finally {
+              setLoading(false);
+            }
+          };
+
+          const downloadFile = (content, filename, type) => {
+            const blob = new Blob([content], { type });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+          };
+
+          const getRatingColor = (rating) => {
+            const normalized = rating?.toLowerCase() || rating;
+            if (normalized === 'hoch' || normalized === 'high') return 'text-orange-600';
+            if (normalized === 'mittel' || normalized === 'medium') return 'text-amber-600';
+            return 'text-stone-600';
+          };
+
+          return (
+            <div className="min-h-screen bg-gradient-to-br from-stone-50 to-amber-50">
+              {/* Header */}
+              <div className="bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-lg">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center gap-3">
+                      <lucide-icon icon-name="lightbulb" class="w-8 h-8"></lucide-icon>
+                      <h1 className="text-2xl font-bold">{t[lang].title}</h1>
+                    </div>
+                    <button
+                      onClick={() => setLang(lang === 'de' ? 'en' : 'de')}
+                      className="flex items-center gap-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition"
+                    >
+                      <lucide-icon icon-name="globe" class="w-5 h-5"></lucide-icon>
+                      {lang.toUpperCase()}
+                    </button>
+                  </div>
+
+                  {/* Progress Steps */}
+                  <div className="flex gap-4 mt-6">
+                    {[1, 2, 3].map((s) => (
+                      <div key={s} className="flex-1">
+                        <div className={`h-2 rounded-full ${step >= s ? 'bg-white' : 'bg-white/30'}`} />
+                        <p className="text-sm mt-2">{t[lang][`step${s}`]}</p>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                <div id="description" class="description"></div>
+              </div>
 
-                <div class="details">
-                    <div class="detail-item">
-                        <span class="label">Gefühlt:</span>
-                        <span id="feels-like"></span>
+              {/* Error Display */}
+              {error && (
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
+                  <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded">
+                    <div className="flex items-center gap-2">
+                      <lucide-icon icon-name="alert-circle" class="w-5 h-5 text-red-500"></lucide-icon>
+                      <p className="text-red-700">{t[lang].error}: {error}</p>
                     </div>
-                    <div class="detail-item">
-                        <span class="label">Luftfeuchtigkeit:</span>
-                        <span id="humidity"></span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="label">Wind:</span>
-                        <span id="wind"></span>
-                    </div>
+                  </div>
                 </div>
-            </div>
-        </div>
-    </div>
+              )}
 
-    <script src="script.js"></script>
+              {/* Main Content */}
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                {/* Step 1: Idea Generator */}
+                {step === 1 && (
+                  <div className="grid lg:grid-cols-2 gap-6">
+                    {/* Left Column: Generator */}
+                    <div className="space-y-6">
+                      <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-amber-200">
+                        <div className="flex items-center gap-3 mb-6">
+                          <lucide-icon icon-name="lightbulb" class="w-6 h-6 text-amber-600"></lucide-icon>
+                          <h2 className="text-2xl font-bold text-stone-800">{t[lang].step1}</h2>
+                        </div>
+
+                        {/* Mode Selection */}
+                        <div className="grid md:grid-cols-2 gap-4 mb-6">
+                          <button
+                            onClick={() => setIdeaMode('brainstorming')}
+                            className={`p-4 rounded-lg border-2 transition ${
+                              ideaMode === 'brainstorming'
+                                ? 'border-amber-500 bg-amber-50'
+                                : 'border-stone-200 hover:border-amber-300'
+                            }`}
+                          >
+                            <div className="flex items-center gap-3 mb-2">
+                              <lucide-icon icon-name="brain" class="w-5 h-5 text-amber-600"></lucide-icon>
+                              <h3 className="font-semibold text-stone-800">{t[lang].brainstormingMode}</h3>
+                            </div>
+                            <p className="text-sm text-stone-600">{t[lang].brainstormingDesc}</p>
+                          </button>
+
+                          <button
+                            onClick={() => setIdeaMode('funke')}
+                            className={`p-4 rounded-lg border-2 transition ${
+                              ideaMode === 'funke'
+                                ? 'border-orange-500 bg-orange-50'
+                                : 'border-stone-200 hover:border-orange-300'
+                            }`}
+                          >
+                            <div className="flex items-center gap-3 mb-2">
+                              <lucide-icon icon-name="sparkles" class="w-5 h-5 text-orange-600"></lucide-icon>
+                              <h3 className="font-semibold text-stone-800">{t[lang].funkeMode}</h3>
+                            </div>
+                            <p className="text-sm text-stone-600">{t[lang].funkeDesc}</p>
+                          </button>
+                        </div>
+
+                        {/* Input */}
+                        {ideaMode === 'brainstorming' && (
+                          <div className="mb-4">
+                            <input
+                              type="text"
+                              value={ideaInput}
+                              onChange={(e) => setIdeaInput(e.target.value)}
+                              placeholder={t[lang].inputPlaceholder}
+                              className="w-full px-4 py-3 border-2 border-stone-200 rounded-lg focus:border-amber-500 focus:outline-none"
+                            />
+                          </div>
+                        )}
+
+                        <button
+                          onClick={generateIdeas}
+                          disabled={loading || (ideaMode === 'brainstorming' && !ideaInput)}
+                          className="w-full bg-gradient-to-r from-amber-600 to-orange-600 text-white py-3 rounded-lg font-semibold hover:from-amber-700 hover:to-orange-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                        >
+                          {loading ? (
+                            <>
+                              <lucide-icon icon-name="loader" class="w-5 h-5 animate-spin"></lucide-icon>
+                              {t[lang].loading}
+                            </>
+                          ) : (
+                            <>
+                              <lucide-icon icon-name="sparkles" class="w-5 h-5"></lucide-icon>
+                              {t[lang].generateIdeas}
+                            </>
+                          )}
+                        </button>
+                      </div>
+
+                      {/* Ideas Display */}
+                      {ideas.length > 0 && (
+                        <div className="space-y-4">
+                          <div className="flex items-center justify-between">
+                            <h3 className="text-xl font-bold text-stone-800 flex items-center gap-2">
+                              <lucide-icon icon-name="lightbulb" class="w-5 h-5 text-amber-600"></lucide-icon>
+                              {t[lang].ideas}
+                            </h3>
+                            {!showChat && (
+                              <button
+                                onClick={() => setShowChat(true)}
+                                className="flex items-center gap-2 px-4 py-2 bg-amber-100 text-amber-700 rounded-lg hover:bg-amber-200 transition"
+                              >
+                                <lucide-icon icon-name="message-circle" class="w-4 h-4"></lucide-icon>
+                                {t[lang].startChat}
+                              </button>
+                            )}
+                          </div>
+
+                          {ideas.map((idea, idx) => (
+                            <div
+                              key={idx}
+                              className={`bg-white rounded-lg shadow p-6 border-2 transition cursor-pointer ${
+                                selectedIdea?.title === idea.title
+                                  ? 'border-amber-500 bg-amber-50'
+                                  : 'border-stone-200 hover:border-amber-300'
+                              }`}
+                              onClick={() => setSelectedIdea(idea)}
+                            >
+                              <h4 className="text-lg font-bold text-stone-800 mb-2">{idea.title}</h4>
+                              <p className="text-stone-600 mb-4">{idea.description}</p>
+
+                              <div className="flex flex-wrap gap-4 text-sm">
+                                <div>
+                                  <span className="text-stone-500">{t[lang].priority}: </span>
+                                  <span className={`font-semibold ${getRatingColor(idea.priority)}`}>
+                                    {idea.priority}
+                                  </span>
+                                </div>
+                                <div>
+                                  <span className="text-stone-500">{t[lang].effort}: </span>
+                                  <span className={`font-semibold ${getRatingColor(idea.effort)}`}>
+                                    {idea.effort}
+                                  </span>
+                                </div>
+                                <div>
+                                  <span className="text-stone-500">{t[lang].market}: </span>
+                                  <span className={`font-semibold ${getRatingColor(idea.market)}`}>
+                                    {idea.market}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+
+                          {selectedIdea && (
+                            <div className="flex gap-4">
+                              <button
+                                onClick={createPRD}
+                                disabled={loading}
+                                className="flex-1 bg-gradient-to-r from-amber-600 to-orange-600 text-white py-3 rounded-lg font-semibold hover:from-amber-700 hover:to-orange-700 disabled:opacity-50 flex items-center justify-center gap-2"
+                              >
+                                {loading ? (
+                                  <>
+                                    <lucide-icon icon-name="loader" class="w-5 h-5 animate-spin"></lucide-icon>
+                                    {t[lang].loading}
+                                  </>
+                                ) : (
+                                  <>
+                                    <lucide-icon icon-name="file-text" class="w-5 h-5"></lucide-icon>
+                                    {t[lang].createPrd}
+                                  </>
+                                )}
+                              </button>
+
+                              <button
+                                onClick={() => downloadFile(JSON.stringify(ideas, null, 2), 'ideas.json', 'application/json')}
+                                className="px-6 py-3 bg-stone-600 text-white rounded-lg hover:bg-stone-700 flex items-center gap-2"
+                              >
+                                <lucide-icon icon-name="download" class="w-5 h-5"></lucide-icon>
+                                JSON
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Right Column: Chat */}
+                    {showChat && ideas.length > 0 && (
+                      <div className="lg:sticky lg:top-4 h-fit">
+                        <div className="bg-white rounded-xl shadow-lg border-2 border-amber-200 overflow-hidden">
+                          <div className="bg-gradient-to-r from-amber-600 to-orange-600 text-white p-4">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-3">
+                                <lucide-icon icon-name="message-circle" class="w-5 h-5"></lucide-icon>
+                                <h3 className="font-bold">{t[lang].refineIdeas}</h3>
+                              </div>
+                              <button
+                                onClick={() => setShowChat(false)}
+                                className="text-white/80 hover:text-white"
+                              >
+                                ✕
+                              </button>
+                            </div>
+                            <div className="flex items-center gap-2 mt-2 text-sm">
+                              <lucide-icon icon-name="refresh-cw" class="w-4 h-4"></lucide-icon>
+                              <span>{t[lang].iterationsLeft}: {maxIterations - iterationCount}</span>
+                            </div>
+                          </div>
+
+                          <div className="h-96 overflow-y-auto p-4 space-y-4 bg-stone-50">
+                            <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 text-sm text-stone-700">
+                              {t[lang].chatInfo}
+                            </div>
+
+                            {chatMessages.filter(msg => msg.role !== 'system').map((msg, idx) => (
+                              <div
+                                key={idx}
+                                className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                              >
+                                <div
+                                  className={`max-w-[80%] rounded-lg p-3 ${
+                                    msg.role === 'user'
+                                      ? 'bg-amber-600 text-white'
+                                      : 'bg-white border border-stone-200 text-stone-800'
+                                  }`}
+                                >
+                                  <p className="text-xs font-semibold mb-1 opacity-70">
+                                    {msg.role === 'user' ? t[lang].you : t[lang].assistant}
+                                  </p>
+                                  <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                                </div>
+                              </div>
+                            ))}
+
+                            {loading && (
+                              <div className="flex justify-start">
+                                <div className="bg-white border border-stone-200 rounded-lg p-3">
+                                  <lucide-icon icon-name="loader" class="w-5 h-5 animate-spin text-amber-600"></lucide-icon>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+
+                          <div className="p-4 bg-white border-t border-stone-200">
+                            <div className="flex gap-2">
+                              <input
+                                type="text"
+                                value={chatInput}
+                                onChange={(e) => setChatInput(e.target.value)}
+                                onKeyPress={(e) => e.key === 'Enter' && sendChatMessage()}
+                                placeholder={t[lang].chatPlaceholder}
+                                disabled={iterationCount >= maxIterations || loading}
+                                className="flex-1 px-4 py-2 border-2 border-stone-200 rounded-lg focus:border-amber-500 focus:outline-none disabled:bg-stone-100"
+                              />
+                              <button
+                                onClick={sendChatMessage}
+                                disabled={!chatInput.trim() || iterationCount >= maxIterations || loading}
+                                className="px-4 py-2 bg-gradient-to-r from-amber-600 to-orange-600 text-white rounded-lg hover:from-amber-700 hover:to-orange-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                              >
+                                <lucide-icon icon-name="send" class="w-4 h-4"></lucide-icon>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Step 2: PRD Creator */}
+                {step === 2 && (
+                  <div className="space-y-6">
+                    <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-amber-200">
+                      <div className="flex items-center justify-between mb-6">
+                        <div className="flex items-center gap-3">
+                          <lucide-icon icon-name="file-text" class="w-6 h-6 text-amber-600"></lucide-icon>
+                          <h2 className="text-2xl font-bold text-stone-800">{t[lang].step2}</h2>
+                        </div>
+                        <button
+                          onClick={() => setStep(1)}
+                          className="px-4 py-2 bg-stone-200 text-stone-700 rounded-lg hover:bg-stone-300 flex items-center gap-2"
+                        >
+                          {t[lang].back}
+                        </button>
+                      </div>
+
+                      {loading ? (
+                        <div className="flex items-center justify-center py-12">
+                          <lucide-icon icon-name="loader" class="w-8 h-8 animate-spin text-amber-600"></lucide-icon>
+                        </div>
+                      ) : (
+                        <>
+                          <textarea
+                            value={editedPrd}
+                            onChange={(e) => setEditedPrd(e.target.value)}
+                            className="w-full h-96 px-4 py-3 border-2 border-stone-200 rounded-lg focus:border-amber-500 focus:outline-none font-mono text-sm"
+                          />
+
+                          <div className="flex gap-4 mt-6">
+                            <button
+                              onClick={generatePrototype}
+                              disabled={loading}
+                              className="flex-1 bg-gradient-to-r from-amber-600 to-orange-600 text-white py-3 rounded-lg font-semibold hover:from-amber-700 hover:to-orange-700 disabled:opacity-50 flex items-center justify-center gap-2"
+                            >
+                              {loading ? (
+                                <>
+                                  <lucide-icon icon-name="loader" class="w-5 h-5 animate-spin"></lucide-icon>
+                                  {t[lang].loading}
+                                </>
+                              ) : (
+                                <>
+                                  <lucide-icon icon-name="code" class="w-5 h-5"></lucide-icon>
+                                  {t[lang].generatePrototype}
+                                </>
+                              )}
+                            </button>
+
+                            <button
+                              onClick={() => downloadFile(editedPrd, 'prd.txt', 'text/plain')}
+                              className="px-6 py-3 bg-stone-600 text-white rounded-lg hover:bg-stone-700 flex items-center gap-2"
+                            >
+                              <lucide-icon icon-name="download" class="w-5 h-5"></lucide-icon>
+                              TXT
+                            </button>
+
+                            <button
+                              onClick={() => downloadFile(editedPrd, 'prd.md', 'text/markdown')}
+                              className="px-6 py-3 bg-stone-600 text-white rounded-lg hover:bg-stone-700 flex items-center gap-2"
+                            >
+                              <lucide-icon icon-name="download" class="w-5 h-5"></lucide-icon>
+                              MD
+                            </button>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* Step 3: Prototype Generator */}
+                {step === 3 && (
+                  <div className="space-y-6">
+                    <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-amber-200">
+                      <div className="flex items-center justify-between mb-6">
+                        <div className="flex items-center gap-3">
+                          <lucide-icon icon-name="code" class="w-6 h-6 text-amber-600"></lucide-icon>
+                          <h2 className="text-2xl font-bold text-stone-800">{t[lang].step3}</h2>
+                        </div>
+                        <button
+                          onClick={() => setStep(2)}
+                          className="px-4 py-2 bg-stone-200 text-stone-700 rounded-lg hover:bg-stone-300 flex items-center gap-2"
+                        >
+                          {t[lang].back}
+                        </button>
+                      </div>
+
+                      {loading ? (
+                        <div className="flex items-center justify-center py-12">
+                          <lucide-icon icon-name="loader" class="w-8 h-8 animate-spin text-amber-600"></lucide-icon>
+                        </div>
+                      ) : (
+                        <>
+                          {/* Preview */}
+                          <div className="mb-6">
+                            <h3 className="font-semibold text-stone-800 mb-3">{t[lang].testPrototype}</h3>
+                            <div className="border-2 border-stone-200 rounded-lg overflow-hidden">
+                              <iframe
+                                srcDoc={prototype}
+                                className="w-full h-96"
+                                sandbox="allow-scripts"
+                                title="Prototype Preview"
+                              />
+                            </div>
+                          </div>
+
+                          {/* Code Editor */}
+                          <textarea
+                            value={prototype}
+                            onChange={(e) => setPrototype(e.target.value)}
+                            className="w-full h-64 px-4 py-3 border-2 border-stone-200 rounded-lg focus:border-amber-500 focus:outline-none font-mono text-xs"
+                          />
+
+                          <div className="flex gap-4 mt-6">
+                            <button
+                              onClick={() => downloadFile(prototype, 'prototype.html', 'text/html')}
+                              className="flex-1 bg-gradient-to-r from-amber-600 to-orange-600 text-white py-3 rounded-lg font-semibold hover:from-amber-700 hover:to-orange-700 flex items-center justify-center gap-2"
+                            >
+                              <lucide-icon icon-name="download" class="w-5 h-5"></lucide-icon>
+                              {t[lang].download} HTML
+                            </button>
+
+                            <button
+                              onClick={() => setStep(1)}
+                              className="px-6 py-3 bg-stone-600 text-white rounded-lg hover:bg-stone-700"
+                            >
+                              {t[lang].back} {t[lang].step1}
+                            </button>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        };
+
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Render the app
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<IdeaToPrototypeTool />);
+    </script>
 </body>
 </html>

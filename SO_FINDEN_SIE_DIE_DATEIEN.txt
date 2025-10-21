@@ -1,0 +1,55 @@
+═══════════════════════════════════════════════════════════════
+    SO FINDEN SIE IHRE WEATHER APP - GANZ EINFACH!
+═══════════════════════════════════════════════════════════════
+
+📁 SCHRITT 1: DATEI-EXPLORER ÖFFNEN
+   ➤ Drücken Sie: Windows-Taste + E
+
+📍 SCHRITT 2: ADRESSE EINGEBEN
+   ➤ Klicken Sie oben in die Adressleiste
+   ➤ Kopieren Sie diese Adresse und drücken Enter:
+
+   \\wsl.localhost\Ubuntu\home\user\projekt
+
+💾 SCHRITT 3: ZIP-DATEI FINDEN
+   ➤ Sie sehen jetzt alle Dateien
+   ➤ Suchen Sie die Datei: SIMPLE-WEATHER-APP-KOMPLETT.zip
+   ➤ Das ist Ihre komplette Weather App!
+
+🖱️ SCHRITT 4: AUF USB-STICK KOPIEREN
+
+   Option A - Direkt kopieren:
+   ➤ Rechtsklick auf SIMPLE-WEATHER-APP-KOMPLETT.zip
+   ➤ Klick auf "Kopieren"
+   ➤ Öffnen Sie Ihren USB-Stick (D:\)
+   ➤ Rechtsklick → "Einfügen"
+
+   Option B - Erst auf Desktop:
+   ➤ Ziehen Sie SIMPLE-WEATHER-APP-KOMPLETT.zip auf Ihren Desktop
+   ➤ Dann vom Desktop auf USB-Stick (D:\) ziehen
+
+✅ FERTIG!
+   ➤ Auf dem USB-Stick können Sie die ZIP-Datei entpacken
+   ➤ Doppelklick auf SIMPLE-WEATHER-APP-KOMPLETT.zip
+   ➤ Klick auf "Alle extrahieren"
+
+═══════════════════════════════════════════════════════════════
+
+❓ WENN ES NICHT KLAPPT - ALTERNATIVE:
+
+Drücken Sie: Windows-Taste
+Tippen Sie: \\wsl.localhost\Ubuntu\home\user\projekt
+Drücken Sie: Enter
+
+═══════════════════════════════════════════════════════════════
+
+📦 WAS IST IN DER ZIP-DATEI?
+   ✓ Ihre komplette Weather App
+   ✓ Alle HTML/CSS/JavaScript Dateien
+   ✓ API Setup Tool (Passwort: JoHanna268219$)
+   ✓ Landingpage für Verkauf (1,99 EUR)
+   ✓ Alle rechtlichen Dokumente
+   ✓ Store-Anleitungen für Google Play & App Store
+   ✓ Komplette Dokumentation
+
+═══════════════════════════════════════════════════════════════

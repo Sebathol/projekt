@@ -4,6 +4,18 @@ Ein innovatives KI-gestütztes Tool, das dir hilft, von einer ersten Idee zu ein
 
 **💰 Jetzt verfügbar für nur €29,99 einmalig!** → [Zur Landing Page](landing.html)
 
+## ⚡ Neu: Progressive Web App (PWA)!
+
+Die App ist jetzt installierbar wie eine native App:
+- 📱 **Installierbar auf Handy & Desktop**
+- ⚡ **Offline-fähig** - Funktioniert ohne Internet
+- 🚀 **Schneller** - Gecachte Ressourcen
+- 📲 **Home-Screen** - Wie eine native App
+
+→ **[PWA Setup Guide](PWA_GUIDE.md)** für Installation & Deployment
+
+---
+
 ## Features
 
 ### 🧠 Schritt 1: Ideen-Generator
@@ -114,9 +126,11 @@ Dieses Tool ist kommerziell verfügbar:
 
 ## 📚 Dokumentation
 
+- **[PWA Setup Guide](PWA_GUIDE.md)** - Progressive Web App Installation & Deployment
 - **[API Setup Guide](API_SETUP_GUIDE.md)** - Schritt-für-Schritt Anleitung für Claude API
 - **[Monetization Guide](MONETIZATION_GUIDE.md)** - Geschäftsmodell & Strategie
 - **[Store Listings](store-listings/PRODUCT_DESCRIPTION.md)** - Marketing-Materialien
+- **[Icons Guide](icons/README.md)** - PWA Icons generieren
 
 ---
 

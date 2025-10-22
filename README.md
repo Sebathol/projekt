@@ -1,6 +1,25 @@
-# Wetter App
+# 🌤️ Simple Weather App
 
 Eine einfache Wetter-Anwendung, die aktuelle Wetterdaten für beliebige Städte anzeigt. Jetzt als Progressive Web App (PWA) - installierbar auf Smartphone und Desktop!
+
+## 🚀 SCHNELLSTART
+
+### Windows CMD (wie Grow Master):
+
+```cmd
+# Repository klonen
+git clone -b claude/fix-weather-app-011CUK3ejTvamsHndDe3YDJZ https://github.com/Sebathol/projekt.git simple-weather-app
+
+# In den Ordner wechseln
+cd simple-weather-app
+
+# App testen
+TEST_APP.bat
+```
+
+**Oder noch einfacher:** Führen Sie `INSTALLATION.bat` aus - das Script macht alles automatisch!
+
+📖 **Detaillierte Anleitung:** Siehe [SCHNELLSTART.md](SCHNELLSTART.md)
 
 ## Features
 

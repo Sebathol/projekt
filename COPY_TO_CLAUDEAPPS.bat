@@ -7,12 +7,12 @@ REM ============================================================
 echo.
 echo ============================================================
 echo   API Master - Multi-API Management Platform
-echo   Kopiere nach D:\claudeapps\API Multiplattform
+echo   Kopiere nach D:\claudeapps\multi api management plattform
 echo ============================================================
 echo.
 
 REM Zielpfad definieren
-set "TARGET_DIR=D:\claudeapps\API Multiplattform"
+set "TARGET_DIR=D:\claudeapps\multi api management plattform"
 
 REM Prüfe ob Zielverzeichnis existiert
 if not exist "D:\claudeapps\" (

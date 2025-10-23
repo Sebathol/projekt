@@ -7,12 +7,12 @@ REM ============================================================
 echo.
 echo ============================================================
 echo   API Master - Multi-API Management Platform
-echo   Kopiere nach D:\claudeapps\Multi-API Management Platform
+echo   Kopiere nach D:\claudeapps\API Multiplattform
 echo ============================================================
 echo.
 
 REM Zielpfad definieren
-set "TARGET_DIR=D:\claudeapps\Multi-API Management Platform"
+set "TARGET_DIR=D:\claudeapps\API Multiplattform"
 
 REM Prüfe ob Zielverzeichnis existiert
 if not exist "D:\claudeapps\" (
@@ -45,10 +45,13 @@ xcopy /E /I /Y "api-master\desktop" "%TARGET_DIR%\desktop\"
 echo [4/6] Kopiere Mobile App...
 xcopy /E /I /Y "api-master\mobile" "%TARGET_DIR%\mobile\"
 
-echo [5/6] Kopiere Templates...
+echo [5/7] Kopiere Templates...
 xcopy /E /I /Y "api-master\templates" "%TARGET_DIR%\templates\"
 
-echo [6/6] Kopiere Dokumentation...
+echo [6/7] Kopiere Store-Assets...
+xcopy /E /I /Y "api-master\store-assets" "%TARGET_DIR%\store-assets\"
+
+echo [7/7] Kopiere Dokumentation...
 copy /Y "api-master\README.md" "%TARGET_DIR%\"
 copy /Y "api-master\USER_GUIDE.md" "%TARGET_DIR%\"
 copy /Y "api-master\TEST_SETUP.md" "%TARGET_DIR%\"
@@ -57,6 +60,8 @@ copy /Y "api-master\MARKETING_PLAN.md" "%TARGET_DIR%\"
 copy /Y "api-master\INFLUENCER_OUTREACH.md" "%TARGET_DIR%\"
 copy /Y "api-master\STORE_PUBLISHING.md" "%TARGET_DIR%\"
 copy /Y "api-master\COMPLIANCE_GUIDE.md" "%TARGET_DIR%\"
+copy /Y "api-master\LAUNCH_PLAN_4_PLATFORMS.md" "%TARGET_DIR%\"
+copy /Y "api-master\VERCEL_DEPLOY_GUIDE.md" "%TARGET_DIR%\"
 copy /Y "api-master\.gitignore" "%TARGET_DIR%\"
 
 echo.

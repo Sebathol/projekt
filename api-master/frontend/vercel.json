@@ -1,39 +1,10 @@
 {
-  "version": 2,
-  "name": "api-master-frontend",
-  "builds": [
+  "rewrites": [
     {
-      "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist"
-      }
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ],
-  "routes": [
-    {
-      "src": "/assets/(.*)",
-      "dest": "/assets/$1"
-    },
-    {
-      "src": "/(.*\\.(js|css|png|jpg|jpeg|gif|svg|ico|json|woff|woff2))",
-      "dest": "/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
-    }
-  ],
-  "env": {
-    "VITE_API_URL": "@api_url",
-    "VITE_SOCKET_URL": "@socket_url",
-    "VITE_APP_ENV": "production"
-  },
-  "build": {
-    "env": {
-      "NODE_VERSION": "18"
-    }
-  },
   "headers": [
     {
       "source": "/(.*)",

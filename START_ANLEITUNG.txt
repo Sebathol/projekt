@@ -1,0 +1,180 @@
+===========================================
+  VON DER IDEE ZUM PROTOTYP - START
+===========================================
+
+SCHNELLSTART (3 Schritte):
+
+1. ICONS GENERIEREN
+   - Öffne: generate-icons.html im Browser
+   - Klicke "Icons Generieren"
+   - Download alle 8 Icons in den "icons" Ordner
+
+2. API-KEY EINTRAGEN
+   - Öffne: index.html mit Editor (Notepad++)
+   - Finde Zeile 21: const API_KEY = 'DEIN_API_KEY_HIER';
+   - Ersetze mit deinem Claude API-Key
+   - Speichern!
+
+3. STARTEN
+   - Öffne: index.html im Browser (Chrome/Edge)
+   - Fertig! App läuft!
+
+===========================================
+VOLLVERSION KAUFEN - €29,99
+===========================================
+
+Öffne: landing.html für Kaufoptionen
+
+Features:
+✓ KI-Ideengenerator (Brainstorming + Ideen-Funke)
+✓ Automatische PRD-Erstellung
+✓ HTML-Prototyp-Generator
+✓ Interaktiver Chat (15 Iterationen)
+✓ Offline-fähig (PWA)
+✓ Installierbar auf Handy & Desktop
+
+===========================================
+API-KEY HOLEN (Claude AI)
+===========================================
+
+1. Gehe zu: https://console.anthropic.com/
+2. Registrieren / Einloggen
+3. API Keys → Create Key
+4. Key kopieren (beginnt mit sk-ant-api03-...)
+5. In index.html eintragen (Zeile 21)
+
+KOSTEN: ~€0,01-0,05 pro Generierung
+(Für €5 Credits = 100-500 Prototypen!)
+
+===========================================
+ALS APP INSTALLIEREN (PWA)
+===========================================
+
+HANDY (Android):
+1. Öffne index.html im Chrome Browser
+2. Menü (⋮) → "App installieren"
+3. Fertig!
+
+HANDY (iPhone):
+1. Öffne index.html in Safari
+2. Teilen → "Zum Home-Bildschirm"
+3. Fertig!
+
+DESKTOP (Windows):
+1. Öffne index.html in Chrome/Edge
+2. Klicke Install-Icon in Adressleiste
+3. Fertig!
+
+===========================================
+DATEIEN ÜBERSICHT
+===========================================
+
+WICHTIG:
+├── index.html              ← HAUPTAPP (hier starten!)
+├── landing.html            ← Verkaufsseite
+├── generate-icons.html     ← Icons generieren
+├── manifest.json           ← PWA-Konfiguration
+├── service-worker.js       ← Offline-Modus
+
+DOKUMENTATION:
+├── README.md               ← Projekt-Übersicht
+├── API_SETUP_GUIDE.md      ← API einrichten
+├── PWA_GUIDE.md            ← App installieren
+├── MONETIZATION_GUIDE.md   ← Business-Infos
+
+ORDNER:
+├── icons/                  ← App-Icons (generieren!)
+└── store-listings/         ← Marketing-Texte
+
+===========================================
+HÄUFIGE PROBLEME
+===========================================
+
+PROBLEM: "Bitte API-Key eintragen"
+LÖSUNG:
+→ index.html öffnen (Notepad++)
+→ Zeile 21: API_KEY eintragen
+→ Speichern!
+
+PROBLEM: Icons fehlen
+LÖSUNG:
+→ generate-icons.html öffnen
+→ Alle Icons downloaden
+→ In "icons" Ordner speichern
+
+PROBLEM: Offline funktioniert nicht
+LÖSUNG:
+→ Muss auf HTTPS-Server liegen
+→ ODER localhost nutzen
+→ Nicht von file:// öffnen
+
+===========================================
+DEPLOYMENT (Online stellen)
+===========================================
+
+KOSTENLOS HOSTING:
+
+1. NETLIFY (empfohlen):
+   - Drag & Drop: netlify.com/drop
+   - Ordner hochladen
+   - Fertig!
+
+2. VERCEL:
+   - vercel.com
+   - Projekt importieren
+   - Auto-Deploy
+
+3. GITHUB PAGES:
+   - Auf GitHub pushen
+   - Settings → Pages
+   - Branch wählen
+
+WICHTIG: PWA braucht HTTPS!
+
+===========================================
+SUPPORT & HILFE
+===========================================
+
+📧 Email: support@idea-to-prototype.app
+
+📚 Dokumentation:
+   - API_SETUP_GUIDE.md
+   - PWA_GUIDE.md
+   - MONETIZATION_GUIDE.md
+
+🌐 Claude API Docs:
+   - docs.anthropic.com
+
+===========================================
+ENTWICKELT VON
+===========================================
+
+Ai Storm Create
+Sebastian Beyer
+Bahnhofstraße 71
+66636 Tholey, Deutschland
+
+Tel: 068738579828
+Email: aistormcreate.service@gmail.com
+Web: [coming soon]
+
+Steuernummer: 060/206/00215
+
+===========================================
+VERSION & LICENSE
+===========================================
+
+Version: 1.0.0 PWA
+Datum: 2025-10-26
+Preis: €29,99 einmalig
+
+License: Kommerziell
+Alle Rechte vorbehalten.
+
+===========================================
+
+VIEL ERFOLG! 🚀
+
+Erstelle deinen ersten Prototyp in unter 10 Minuten!
+
+===========================================

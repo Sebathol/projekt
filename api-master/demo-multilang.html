@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Master - Sichere API-Verwaltung</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #1e293b;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Language Switcher */
+        .language-switcher {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 0.5rem;
+            background: rgba(15, 23, 42, 0.9);
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .lang-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid transparent;
+            background: transparent;
+            color: #94a3b8;
+            cursor: pointer;
+            border-radius: 0.25rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .lang-btn:hover {
+            color: #0ea5e9;
+            border-color: #0ea5e9;
+        }
+
+        .lang-btn.active {
+            background: #0ea5e9;
+            color: white;
+            border-color: #0ea5e9;
+        }
+
+        header {
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #0ea5e9;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #e2e8f0;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #0ea5e9;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(14, 165, 233, 0.6);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #0ea5e9;
+            border: 2px solid #0ea5e9;
+        }
+
+        .hero {
+            padding: 6rem 2rem;
+            text-align: center;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: #cbd5e1;
+            margin-bottom: 2rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .features {
+            padding: 4rem 2rem;
+            background: white;
+        }
+
+        .features h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            padding: 2rem;
+            background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 100%);
+            border-radius: 1rem;
+            border: 2px solid #e0f2fe;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(14, 165, 233, 0.2);
+            border-color: #0ea5e9;
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Compliance Section */
+        .compliance {
+            padding: 4rem 2rem;
+            background: #f8fafc;
+        }
+
+        .compliance h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #0f172a;
+        }
+
+        .compliance-dashboard {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .tax-calculator {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: #f1f5f9;
+            border-radius: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #475569;
+            font-weight: 600;
+        }
+
+        .form-group select,
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #0ea5e9;
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+        }
+
+        .tax-result {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: #dbeafe;
+            border-left: 4px solid #0ea5e9;
+            border-radius: 0.5rem;
+        }
+
+        .tax-result h4 {
+            color: #0f172a;
+            margin-bottom: 1rem;
+        }
+
+        .tax-detail {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #bfdbfe;
+        }
+
+        .tax-detail:last-child {
+            border-bottom: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .compliance-alerts {
+            margin-top: 2rem;
+        }
+
+        .alert {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 0.5rem;
+            border-left: 4px solid;
+        }
+
+        .alert-info {
+            background: #dbeafe;
+            border-color: #0ea5e9;
+            color: #0c4a6e;
+        }
+
+        .alert-warning {
+            background: #fef3c7;
+            border-color: #f59e0b;
+            color: #78350f;
+        }
+
+        .alert-success {
+            background: #d1fae5;
+            border-color: #10b981;
+            color: #064e3b;
+        }
+
+        .pricing {
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        }
+
+        .pricing h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 3rem;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .pricing-card {
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 1rem;
+            border: 2px solid rgba(14, 165, 233, 0.3);
+            color: white;
+            transition: all 0.3s;
+        }
+
+        .pricing-card:hover {
+            transform: scale(1.05);
+            border-color: #0ea5e9;
+        }
+
+        .plan-price {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #0ea5e9;
+            margin: 1rem 0;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .close-btn {
+            float: right;
+            font-size: 2rem;
+            border: none;
+            background: none;
+            cursor: pointer;
+            color: #64748b;
+        }
+
+        .company-info {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #475569;
+        }
+
+        footer {
+            background: #0f172a;
+            color: #94a3b8;
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .language-switcher {
+                top: 10px;
+                right: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Language Switcher -->
+    <div class="language-switcher">
+        <button class="lang-btn active" onclick="changeLanguage('de')" data-lang="de">🇩🇪 DE</button>
+        <button class="lang-btn" onclick="changeLanguage('en')" data-lang="en">🇬🇧 EN</button>
+        <button class="lang-btn" onclick="changeLanguage('pl')" data-lang="pl">🇵🇱 PL</button>
+        <button class="lang-btn" onclick="changeLanguage('fr')" data-lang="fr">🇫🇷 FR</button>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <nav class="container">
+            <div class="logo">🔐 API Master</div>
+            <ul class="nav-links">
+                <li><a href="#features" data-i18n="nav.features">Features</a></li>
+                <li><a href="#compliance" data-i18n="nav.compliance">Compliance</a></li>
+                <li><a href="#pricing" data-i18n="nav.pricing">Preise</a></li>
+            </ul>
+            <button class="btn btn-primary" onclick="openModal()" data-i18n="nav.cta">Kostenlos testen</button>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1 data-i18n="hero.title">Sichere API-Verwaltung für Entwickler</h1>
+            <p data-i18n="hero.subtitle">Verwalte alle deine API-Keys mit militär-grade Verschlüsselung. Automatische Compliance für EU, USA & UK.</p>
+            <div class="cta-buttons">
+                <button class="btn btn-primary" onclick="openModal()" data-i18n="hero.cta">14 Tage kostenlos testen</button>
+                <button class="btn btn-secondary" onclick="document.getElementById('compliance').scrollIntoView({behavior: 'smooth'})" data-i18n="hero.compliance">Compliance-Agent ansehen</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <h2 data-i18n="features.title">Warum API Master?</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🔐</div>
+                <h3 data-i18n="features.proxy.title">Sichere Proxy-Keys</h3>
+                <p data-i18n="features.proxy.desc">Nutze Proxy-Keys in deinem Code, während deine echten API-Keys AES-256 verschlüsselt bleiben.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3 data-i18n="features.switch.title">Environment Switching</h3>
+                <p data-i18n="features.switch.desc">Wechsle sofort zwischen Test und Production - ohne Code-Änderung.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3 data-i18n="features.analytics.title">Echtzeit-Analytics</h3>
+                <p data-i18n="features.analytics.desc">Monitoring von Requests, Kosten und Performance in Echtzeit.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🤖</div>
+                <h3 data-i18n="features.compliance.title">Automatische Compliance</h3>
+                <p data-i18n="features.compliance.desc">Digitale Rechnungen, Steuerberechnung für EU/USA/UK, Kleinunternehmer-Regelungen.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🌍</div>
+                <h3 data-i18n="features.international.title">International verkaufen</h3>
+                <p data-i18n="features.international.desc">Automatische Anpassung an lokale Steuergesetze, Währungen und Vorschriften.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📄</div>
+                <h3 data-i18n="features.invoice.title">Digitale Rechnungen</h3>
+                <p data-i18n="features.invoice.desc">Automatische Erstellung rechtskonformer Rechnungen nach EU-Richtlinien.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Compliance Section -->
+    <section id="compliance" class="compliance">
+        <h2 data-i18n="compliance.title">Compliance-Agent für Kleinunternehmer</h2>
+        <div class="compliance-dashboard">
+            <div class="company-info">
+                <strong>Sebastian Beyer - Ai Storm Create</strong><br>
+                Softwareentwicklung und KI-Lösungen<br>
+                Bahnhofstraße 71, 66636 Tholey, Deutschland<br>
+                Klein- und Nebengewerbe | Tel: 06873 8579828<br>
+                Email: aistormcreate.service@gmail.com<br>
+                Steuernummer: 060/206/00215
+            </div>
+
+            <div class="tax-calculator">
+                <h3 data-i18n="compliance.calculator.title">Steuer-Rechner für internationalen Verkauf</h3>
+
+                <div class="form-group">
+                    <label data-i18n="compliance.calculator.country">Verkaufsland:</label>
+                    <select id="country" onchange="calculateTax()">
+                        <option value="de">🇩🇪 Deutschland</option>
+                        <option value="fr">🇫🇷 Frankreich</option>
+                        <option value="pl">🇵🇱 Polen</option>
+                        <option value="uk">🇬🇧 Großbritannien</option>
+                        <option value="us">🇺🇸 USA</option>
+                        <option value="eu-b2b">🇪🇺 EU (B2B Reverse-Charge)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label data-i18n="compliance.calculator.amount">Betrag (netto):</label>
+                    <input type="number" id="amount" value="19.99" step="0.01" onchange="calculateTax()">
+                </div>
+
+                <div class="form-group">
+                    <label data-i18n="compliance.calculator.type">Kundentyp:</label>
+                    <select id="customerType" onchange="calculateTax()">
+                        <option value="b2c">B2C (Privatkunde)</option>
+                        <option value="b2b">B2B (Firmenkunde)</option>
+                    </select>
+                </div>
+
+                <div id="taxResult" class="tax-result" style="display: none;">
+                    <h4 data-i18n="compliance.result.title">Berechnungsergebnis:</h4>
+                    <div class="tax-detail">
+                        <span data-i18n="compliance.result.net">Nettobetrag:</span>
+                        <span id="netAmount">€0.00</span>
+                    </div>
+                    <div class="tax-detail">
+                        <span id="taxLabel">Steuer:</span>
+                        <span id="taxAmount">€0.00</span>
+                    </div>
+                    <div class="tax-detail">
+                        <span data-i18n="compliance.result.gross">Bruttobetrag:</span>
+                        <span id="grossAmount">€0.00</span>
+                    </div>
+                    <div class="tax-detail">
+                        <span data-i18n="compliance.result.notes">Hinweise:</span>
+                        <span id="taxNotes"></span>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" onclick="generateInvoice()" style="margin-top: 1rem; width: 100%;" data-i18n="compliance.generate">Digitale Rechnung erstellen</button>
+            </div>
+
+            <div class="compliance-alerts">
+                <h3 data-i18n="compliance.alerts.title">Compliance-Status</h3>
+                <div class="alert alert-success">
+                    <strong>✓ Kleinunternehmer-Regelung aktiv</strong><br>
+                    <span data-i18n="compliance.alerts.kleinunternehmer">Sie sind von der Umsatzsteuer befreit gemäß §19 UStG. Bei B2C-Verkäufen keine MwSt. ausweisen.</span>
+                </div>
+                <div class="alert alert-info">
+                    <strong>ℹ️ EU B2B Reverse-Charge</strong><br>
+                    <span data-i18n="compliance.alerts.reverse">Bei Verkäufen an EU-Firmenkunden: Keine MwSt. berechnen, Kunde versteuert selbst. USt-IdNr. erforderlich.</span>
+                </div>
+                <div class="alert alert-warning">
+                    <strong>⚠️ Umsatzgrenze beachten</strong><br>
+                    <span data-i18n="compliance.alerts.limit">Kleinunternehmer-Regelung gilt bis €22.000 Jahresumsatz. System überwacht automatisch.</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="pricing">
+        <h2 data-i18n="pricing.title">Transparente Preise</h2>
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <h3 data-i18n="pricing.individual.name">Individual</h3>
+                <div class="plan-price">€19.99</div>
+                <p data-i18n="pricing.individual.features">20 APIs • Unlimited Keys • Basic Analytics • Compliance-Agent</p>
+                <button class="btn btn-primary" onclick="openModal()" style="width: 100%; margin-top: 1rem;" data-i18n="pricing.cta">Jetzt starten</button>
+            </div>
+            <div class="pricing-card">
+                <h3 data-i18n="pricing.ultimate.name">Ultimate</h3>
+                <div class="plan-price">€99.99</div>
+                <p data-i18n="pricing.ultimate.features">50 APIs • 5 Team-Member • Team Chat • Automatische Rechnungen</p>
+                <button class="btn btn-primary" onclick="openModal()" style="width: 100%; margin-top: 1rem;" data-i18n="pricing.cta">Jetzt starten</button>
+            </div>
+            <div class="pricing-card">
+                <h3 data-i18n="pricing.enterprise.name">Enterprise</h3>
+                <div class="plan-price">€299.99</div>
+                <p data-i18n="pricing.enterprise.features">100 APIs • 10 Team-Member • SLA • DATEV-Export</p>
+                <button class="btn btn-primary" onclick="openModal()" style="width: 100%; margin-top: 1rem;" data-i18n="pricing.cta">Jetzt starten</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Ai Storm Create - Sebastian Beyer | Made with ❤️ in Germany</p>
+            <p style="margin-top: 0.5rem;">
+                <a href="#" style="color: #94a3b8; margin: 0 1rem;" data-i18n="footer.privacy">Datenschutz</a>
+                <a href="#" style="color: #94a3b8; margin: 0 1rem;" data-i18n="footer.terms">AGB</a>
+                <a href="#" style="color: #94a3b8; margin: 0 1rem;" data-i18n="footer.imprint">Impressum</a>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal()">&times;</button>
+            <h2 data-i18n="modal.title">Kostenlos registrieren</h2>
+            <p data-i18n="modal.subtitle">14 Tage testen - keine Kreditkarte erforderlich</p>
+            <form onsubmit="handleSubmit(event)" style="margin-top: 1.5rem;">
+                <div class="form-group">
+                    <label data-i18n="modal.name">Name:</label>
+                    <input type="text" placeholder="Max Mustermann" required>
+                </div>
+                <div class="form-group">
+                    <label data-i18n="modal.email">Email:</label>
+                    <input type="email" placeholder="ihre.email@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label data-i18n="modal.password">Passwort:</label>
+                    <input type="password" placeholder="••••••••" required>
+                </div>
+                <div class="form-group">
+                    <label data-i18n="modal.company">Firma (optional):</label>
+                    <input type="text" placeholder="Ihre Firma GmbH">
+                </div>
+                <div class="form-group">
+                    <label data-i18n="modal.country">Land:</label>
+                    <select>
+                        <option value="de">🇩🇪 Deutschland</option>
+                        <option value="fr">🇫🇷 Frankreich</option>
+                        <option value="pl">🇵🇱 Polen</option>
+                        <option value="uk">🇬🇧 Großbritannien</option>
+                        <option value="us">🇺🇸 USA</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;" data-i18n="modal.submit">Jetzt starten</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Translations
+        const translations = {
+            de: {
+                'nav.features': 'Features',
+                'nav.compliance': 'Compliance',
+                'nav.pricing': 'Preise',
+                'nav.cta': 'Kostenlos testen',
+                'hero.title': 'Sichere API-Verwaltung für Entwickler',
+                'hero.subtitle': 'Verwalte alle deine API-Keys mit militär-grade Verschlüsselung. Automatische Compliance für EU, USA & UK.',
+                'hero.cta': '14 Tage kostenlos testen',
+                'hero.compliance': 'Compliance-Agent ansehen',
+                'features.title': 'Warum API Master?',
+                'features.proxy.title': 'Sichere Proxy-Keys',
+                'features.proxy.desc': 'Nutze Proxy-Keys in deinem Code, während deine echten API-Keys AES-256 verschlüsselt bleiben.',
+                'features.switch.title': 'Environment Switching',
+                'features.switch.desc': 'Wechsle sofort zwischen Test und Production - ohne Code-Änderung.',
+                'features.analytics.title': 'Echtzeit-Analytics',
+                'features.analytics.desc': 'Monitoring von Requests, Kosten und Performance in Echtzeit.',
+                'features.compliance.title': 'Automatische Compliance',
+                'features.compliance.desc': 'Digitale Rechnungen, Steuerberechnung für EU/USA/UK, Kleinunternehmer-Regelungen.',
+                'features.international.title': 'International verkaufen',
+                'features.international.desc': 'Automatische Anpassung an lokale Steuergesetze, Währungen und Vorschriften.',
+                'features.invoice.title': 'Digitale Rechnungen',
+                'features.invoice.desc': 'Automatische Erstellung rechtskonformer Rechnungen nach EU-Richtlinien.',
+                'compliance.title': 'Compliance-Agent für Kleinunternehmer',
+                'compliance.calculator.title': 'Steuer-Rechner für internationalen Verkauf',
+                'compliance.calculator.country': 'Verkaufsland:',
+                'compliance.calculator.amount': 'Betrag (netto):',
+                'compliance.calculator.type': 'Kundentyp:',
+                'compliance.result.title': 'Berechnungsergebnis:',
+                'compliance.result.net': 'Nettobetrag:',
+                'compliance.result.gross': 'Bruttobetrag:',
+                'compliance.result.notes': 'Hinweise:',
+                'compliance.generate': 'Digitale Rechnung erstellen',
+                'compliance.alerts.title': 'Compliance-Status',
+                'compliance.alerts.kleinunternehmer': 'Sie sind von der Umsatzsteuer befreit gemäß §19 UStG. Bei B2C-Verkäufen keine MwSt. ausweisen.',
+                'compliance.alerts.reverse': 'Bei Verkäufen an EU-Firmenkunden: Keine MwSt. berechnen, Kunde versteuert selbst. USt-IdNr. erforderlich.',
+                'compliance.alerts.limit': 'Kleinunternehmer-Regelung gilt bis €22.000 Jahresumsatz. System überwacht automatisch.',
+                'pricing.title': 'Transparente Preise',
+                'pricing.individual.name': 'Individual',
+                'pricing.individual.features': '20 APIs • Unlimited Keys • Basic Analytics • Compliance-Agent',
+                'pricing.ultimate.name': 'Ultimate',
+                'pricing.ultimate.features': '50 APIs • 5 Team-Member • Team Chat • Automatische Rechnungen',
+                'pricing.enterprise.name': 'Enterprise',
+                'pricing.enterprise.features': '100 APIs • 10 Team-Member • SLA • DATEV-Export',
+                'pricing.cta': 'Jetzt starten',
+                'footer.privacy': 'Datenschutz',
+                'footer.terms': 'AGB',
+                'footer.imprint': 'Impressum',
+                'modal.title': 'Kostenlos registrieren',
+                'modal.subtitle': '14 Tage testen - keine Kreditkarte erforderlich',
+                'modal.name': 'Name:',
+                'modal.email': 'Email:',
+                'modal.password': 'Passwort:',
+                'modal.company': 'Firma (optional):',
+                'modal.country': 'Land:',
+                'modal.submit': 'Jetzt starten'
+            },
+            en: {
+                'nav.features': 'Features',
+                'nav.compliance': 'Compliance',
+                'nav.pricing': 'Pricing',
+                'nav.cta': 'Try for Free',
+                'hero.title': 'Secure API Management for Developers',
+                'hero.subtitle': 'Manage all your API keys with military-grade encryption. Automatic compliance for EU, USA & UK.',
+                'hero.cta': 'Start 14-day free trial',
+                'hero.compliance': 'See Compliance Agent',
+                'features.title': 'Why API Master?',
+                'features.proxy.title': 'Secure Proxy Keys',
+                'features.proxy.desc': 'Use proxy keys in your code while your real API keys stay AES-256 encrypted.',
+                'features.switch.title': 'Environment Switching',
+                'features.switch.desc': 'Switch instantly between test and production - no code changes needed.',
+                'features.analytics.title': 'Real-time Analytics',
+                'features.analytics.desc': 'Monitor requests, costs and performance in real-time.',
+                'features.compliance.title': 'Automatic Compliance',
+                'features.compliance.desc': 'Digital invoices, tax calculation for EU/USA/UK, small business regulations.',
+                'features.international.title': 'Sell Internationally',
+                'features.international.desc': 'Automatic adaptation to local tax laws, currencies and regulations.',
+                'features.invoice.title': 'Digital Invoices',
+                'features.invoice.desc': 'Automatic creation of legally compliant invoices according to EU guidelines.',
+                'compliance.title': 'Compliance Agent for Small Businesses',
+                'compliance.calculator.title': 'Tax Calculator for International Sales',
+                'compliance.calculator.country': 'Sales Country:',
+                'compliance.calculator.amount': 'Amount (net):',
+                'compliance.calculator.type': 'Customer Type:',
+                'compliance.result.title': 'Calculation Result:',
+                'compliance.result.net': 'Net Amount:',
+                'compliance.result.gross': 'Gross Amount:',
+                'compliance.result.notes': 'Notes:',
+                'compliance.generate': 'Generate Digital Invoice',
+                'compliance.alerts.title': 'Compliance Status',
+                'compliance.alerts.kleinunternehmer': 'You are exempt from VAT according to §19 UStG (German small business regulation).',
+                'compliance.alerts.reverse': 'For sales to EU business customers: No VAT charged, customer self-accounts. VAT ID required.',
+                'compliance.alerts.limit': 'Small business regulation applies up to €22,000 annual turnover. System monitors automatically.',
+                'pricing.title': 'Transparent Pricing',
+                'pricing.individual.name': 'Individual',
+                'pricing.individual.features': '20 APIs • Unlimited Keys • Basic Analytics • Compliance Agent',
+                'pricing.ultimate.name': 'Ultimate',
+                'pricing.ultimate.features': '50 APIs • 5 Team Members • Team Chat • Automatic Invoices',
+                'pricing.enterprise.name': 'Enterprise',
+                'pricing.enterprise.features': '100 APIs • 10 Team Members • SLA • DATEV Export',
+                'pricing.cta': 'Get Started',
+                'footer.privacy': 'Privacy',
+                'footer.terms': 'Terms',
+                'footer.imprint': 'Imprint',
+                'modal.title': 'Sign Up Free',
+                'modal.subtitle': '14-day trial - no credit card required',
+                'modal.name': 'Name:',
+                'modal.email': 'Email:',
+                'modal.password': 'Password:',
+                'modal.company': 'Company (optional):',
+                'modal.country': 'Country:',
+                'modal.submit': 'Get Started'
+            },
+            pl: {
+                'nav.features': 'Funkcje',
+                'nav.compliance': 'Zgodność',
+                'nav.pricing': 'Ceny',
+                'nav.cta': 'Wypróbuj za darmo',
+                'hero.title': 'Bezpieczne zarządzanie API dla programistów',
+                'hero.subtitle': 'Zarządzaj wszystkimi kluczami API z szyfrowaniem wojskowym. Automatyczna zgodność dla UE, USA i Wielkiej Brytanii.',
+                'hero.cta': 'Rozpocznij 14-dniowy bezpłatny okres próbny',
+                'hero.compliance': 'Zobacz agenta zgodności',
+                'features.title': 'Dlaczego API Master?',
+                'features.proxy.title': 'Bezpieczne klucze proxy',
+                'features.proxy.desc': 'Używaj kluczy proxy w swoim kodzie, podczas gdy prawdziwe klucze API pozostają zaszyfrowane AES-256.',
+                'features.switch.title': 'Przełączanie środowisk',
+                'features.switch.desc': 'Przełączaj natychmiast między testowym a produkcyjnym - bez zmian w kodzie.',
+                'features.analytics.title': 'Analityka w czasie rzeczywistym',
+                'features.analytics.desc': 'Monitoruj żądania, koszty i wydajność w czasie rzeczywistym.',
+                'features.compliance.title': 'Automatyczna zgodność',
+                'features.compliance.desc': 'Faktury cyfrowe, obliczanie podatków dla UE/USA/UK, przepisy dla małych firm.',
+                'features.international.title': 'Sprzedawaj międzynarodowo',
+                'features.international.desc': 'Automatyczne dostosowanie do lokalnych przepisów podatkowych, walut i regulacji.',
+                'features.invoice.title': 'Faktury cyfrowe',
+                'features.invoice.desc': 'Automatyczne tworzenie faktur zgodnych z prawem według wytycznych UE.',
+                'compliance.title': 'Agent zgodności dla małych firm',
+                'compliance.calculator.title': 'Kalkulator podatkowy dla sprzedaży międzynarodowej',
+                'compliance.calculator.country': 'Kraj sprzedaży:',
+                'compliance.calculator.amount': 'Kwota (netto):',
+                'compliance.calculator.type': 'Typ klienta:',
+                'compliance.result.title': 'Wynik obliczeń:',
+                'compliance.result.net': 'Kwota netto:',
+                'compliance.result.gross': 'Kwota brutto:',
+                'compliance.result.notes': 'Uwagi:',
+                'compliance.generate': 'Wygeneruj fakturę cyfrową',
+                'compliance.alerts.title': 'Status zgodności',
+                'compliance.alerts.kleinunternehmer': 'Jesteś zwolniony z VAT zgodnie z §19 UStG (niemieckie przepisy dla małych firm).',
+                'compliance.alerts.reverse': 'W przypadku sprzedaży firmom z UE: Brak VAT, klient sam rozlicza. Wymagany numer VAT UE.',
+                'compliance.alerts.limit': 'Przepisy dla małych firm obowiązują do €22,000 rocznego obrotu. System monitoruje automatycznie.',
+                'pricing.title': 'Przejrzyste ceny',
+                'pricing.individual.name': 'Indywidualny',
+                'pricing.individual.features': '20 API • Nielimitowane klucze • Podstawowa analityka • Agent zgodności',
+                'pricing.ultimate.name': 'Ultimate',
+                'pricing.ultimate.features': '50 API • 5 członków zespołu • Czat zespołowy • Automatyczne faktury',
+                'pricing.enterprise.name': 'Enterprise',
+                'pricing.enterprise.features': '100 API • 10 członków zespołu • SLA • Eksport DATEV',
+                'pricing.cta': 'Rozpocznij',
+                'footer.privacy': 'Prywatność',
+                'footer.terms': 'Warunki',
+                'footer.imprint': 'Informacje prawne',
+                'modal.title': 'Zarejestruj się za darmo',
+                'modal.subtitle': '14-dniowy okres próbny - bez karty kredytowej',
+                'modal.name': 'Imię i nazwisko:',
+                'modal.email': 'Email:',
+                'modal.password': 'Hasło:',
+                'modal.company': 'Firma (opcjonalnie):',
+                'modal.country': 'Kraj:',
+                'modal.submit': 'Rozpocznij'
+            },
+            fr: {
+                'nav.features': 'Fonctionnalités',
+                'nav.compliance': 'Conformité',
+                'nav.pricing': 'Tarifs',
+                'nav.cta': 'Essai gratuit',
+                'hero.title': 'Gestion sécurisée des API pour développeurs',
+                'hero.subtitle': 'Gérez toutes vos clés API avec un chiffrement de niveau militaire. Conformité automatique pour UE, USA et Royaume-Uni.',
+                'hero.cta': 'Commencer l\'essai gratuit de 14 jours',
+                'hero.compliance': 'Voir l\'agent de conformité',
+                'features.title': 'Pourquoi API Master?',
+                'features.proxy.title': 'Clés proxy sécurisées',
+                'features.proxy.desc': 'Utilisez des clés proxy dans votre code pendant que vos vraies clés API restent chiffrées AES-256.',
+                'features.switch.title': 'Changement d\'environnement',
+                'features.switch.desc': 'Basculez instantanément entre test et production - sans changement de code.',
+                'features.analytics.title': 'Analytique en temps réel',
+                'features.analytics.desc': 'Surveillez les requêtes, les coûts et les performances en temps réel.',
+                'features.compliance.title': 'Conformité automatique',
+                'features.compliance.desc': 'Factures numériques, calcul fiscal pour UE/USA/UK, réglementations pour petites entreprises.',
+                'features.international.title': 'Vendre à l\'international',
+                'features.international.desc': 'Adaptation automatique aux lois fiscales locales, devises et réglementations.',
+                'features.invoice.title': 'Factures numériques',
+                'features.invoice.desc': 'Création automatique de factures conformes selon les directives UE.',
+                'compliance.title': 'Agent de conformité pour petites entreprises',
+                'compliance.calculator.title': 'Calculateur fiscal pour ventes internationales',
+                'compliance.calculator.country': 'Pays de vente:',
+                'compliance.calculator.amount': 'Montant (net):',
+                'compliance.calculator.type': 'Type de client:',
+                'compliance.result.title': 'Résultat du calcul:',
+                'compliance.result.net': 'Montant net:',
+                'compliance.result.gross': 'Montant brut:',
+                'compliance.result.notes': 'Remarques:',
+                'compliance.generate': 'Générer une facture numérique',
+                'compliance.alerts.title': 'Statut de conformité',
+                'compliance.alerts.kleinunternehmer': 'Vous êtes exempté de TVA selon §19 UStG (réglementation allemande pour petites entreprises).',
+                'compliance.alerts.reverse': 'Pour les ventes aux entreprises UE: Pas de TVA facturée, client auto-liquide. Numéro TVA UE requis.',
+                'compliance.alerts.limit': 'La réglementation pour petites entreprises s\'applique jusqu\'à €22,000 de chiffre d\'affaires annuel. Système surveille automatiquement.',
+                'pricing.title': 'Tarifs transparents',
+                'pricing.individual.name': 'Individual',
+                'pricing.individual.features': '20 API • Clés illimitées • Analytique de base • Agent de conformité',
+                'pricing.ultimate.name': 'Ultimate',
+                'pricing.ultimate.features': '50 API • 5 membres d\'équipe • Chat d\'équipe • Factures automatiques',
+                'pricing.enterprise.name': 'Enterprise',
+                'pricing.enterprise.features': '100 API • 10 membres d\'équipe • SLA • Export DATEV',
+                'pricing.cta': 'Commencer',
+                'footer.privacy': 'Confidentialité',
+                'footer.terms': 'Conditions',
+                'footer.imprint': 'Mentions légales',
+                'modal.title': 'S\'inscrire gratuitement',
+                'modal.subtitle': 'Essai de 14 jours - aucune carte de crédit requise',
+                'modal.name': 'Nom:',
+                'modal.email': 'Email:',
+                'modal.password': 'Mot de passe:',
+                'modal.company': 'Entreprise (optionnel):',
+                'modal.country': 'Pays:',
+                'modal.submit': 'Commencer'
+            }
+        };
+
+        let currentLang = 'de';
+
+        function changeLanguage(lang) {
+            currentLang = lang;
+
+            // Update button states
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.lang === lang) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // Update all i18n elements
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.dataset.i18n;
+                if (translations[lang] && translations[lang][key]) {
+                    element.textContent = translations[lang][key];
+                }
+            });
+
+            // Recalculate tax with new language
+            calculateTax();
+        }
+
+        function calculateTax() {
+            const country = document.getElementById('country').value;
+            const amount = parseFloat(document.getElementById('amount').value);
+            const customerType = document.getElementById('customerType').value;
+
+            let taxRate = 0;
+            let taxLabel = 'MwSt.';
+            let notes = '';
+            let isKleinunternehmer = true; // Sebastian Beyer is Kleinunternehmer
+
+            // Tax rates by country
+            const taxRates = {
+                'de': { rate: 19, label: 'MwSt. (19%)', currency: '€' },
+                'fr': { rate: 20, label: 'TVA (20%)', currency: '€' },
+                'pl': { rate: 23, label: 'VAT (23%)', currency: 'zł' },
+                'uk': { rate: 20, label: 'VAT (20%)', currency: '£' },
+                'us': { rate: 0, label: 'Sales Tax', currency: '$' },
+                'eu-b2b': { rate: 0, label: 'Reverse-Charge', currency: '€' }
+            };
+
+            const config = taxRates[country] || taxRates['de'];
+
+            // Kleinunternehmer logic
+            if (isKleinunternehmer && customerType === 'b2c' && country === 'de') {
+                taxRate = 0;
+                notes = currentLang === 'de' ?
+                    'Gemäß §19 UStG wird keine Umsatzsteuer berechnet.' :
+                    currentLang === 'en' ?
+                    'No VAT charged according to §19 UStG (German small business regulation).' :
+                    currentLang === 'pl' ?
+                    'Brak VAT zgodnie z §19 UStG (niemieckie przepisy dla małych firm).' :
+                    'Pas de TVA selon §19 UStG (réglementation allemande pour petites entreprises).';
+            } else if (country === 'eu-b2b' || (customerType === 'b2b' && country !== 'de')) {
+                taxRate = 0;
+                notes = currentLang === 'de' ?
+                    'Reverse-Charge: Kunde versteuert selbst. USt-IdNr. erforderlich.' :
+                    currentLang === 'en' ?
+                    'Reverse-Charge: Customer self-accounts VAT. VAT ID required.' :
+                    currentLang === 'pl' ?
+                    'Reverse-Charge: Klient sam rozlicza VAT. Wymagany numer VAT UE.' :
+                    'Reverse-Charge: Client auto-liquide TVA. Numéro TVA UE requis.';
+            } else if (country === 'us') {
+                taxRate = 0;
+                notes = currentLang === 'de' ?
+                    'USA: Keine Bundessteuer. Bundesstaaten-Steuer kann anfallen.' :
+                    currentLang === 'en' ?
+                    'USA: No federal tax. State tax may apply.' :
+                    currentLang === 'pl' ?
+                    'USA: Brak podatku federalnego. Podatek stanowy może obowiązywać.' :
+                    'USA: Pas de taxe fédérale. Taxe d\'État peut s\'appliquer.';
+            } else {
+                taxRate = config.rate;
+                notes = currentLang === 'de' ?
+                    `Standard-Steuersatz für ${country.toUpperCase()}` :
+                    currentLang === 'en' ?
+                    `Standard tax rate for ${country.toUpperCase()}` :
+                    currentLang === 'pl' ?
+                    `Standardowa stawka podatku dla ${country.toUpperCase()}` :
+                    `Taux de taxe standard pour ${country.toUpperCase()}`;
+            }
+
+            const taxAmount = amount * (taxRate / 100);
+            const grossAmount = amount + taxAmount;
+
+            document.getElementById('taxResult').style.display = 'block';
+            document.getElementById('netAmount').textContent = `${config.currency}${amount.toFixed(2)}`;
+            document.getElementById('taxLabel').textContent = config.label;
+            document.getElementById('taxAmount').textContent = `${config.currency}${taxAmount.toFixed(2)}`;
+            document.getElementById('grossAmount').textContent = `${config.currency}${grossAmount.toFixed(2)}`;
+            document.getElementById('taxNotes').textContent = notes;
+        }
+
+        function generateInvoice() {
+            const country = document.getElementById('country').value;
+            const amount = parseFloat(document.getElementById('amount').value);
+            const customerType = document.getElementById('customerType').value;
+
+            const invoiceText = currentLang === 'de' ?
+                `Digitale Rechnung wurde erstellt!\n\n` +
+                `Verkaufsland: ${country.toUpperCase()}\n` +
+                `Betrag: €${amount.toFixed(2)}\n` +
+                `Kundentyp: ${customerType === 'b2c' ? 'Privatkunde' : 'Firmenkunde'}\n\n` +
+                `Die Rechnung ist konform mit:\n` +
+                `✓ EU-Richtlinien für digitale Rechnungen\n` +
+                `✓ Kleinunternehmer-Regelung §19 UStG\n` +
+                `✓ Lokalen Steuergesetzen\n\n` +
+                `Rechnung wurde gespeichert in:\n` +
+                `D:\\claudeapps\\invoices\\` :
+                currentLang === 'en' ?
+                `Digital invoice created!\n\n` +
+                `Sales Country: ${country.toUpperCase()}\n` +
+                `Amount: €${amount.toFixed(2)}\n` +
+                `Customer Type: ${customerType === 'b2c' ? 'Private' : 'Business'}\n\n` +
+                `Invoice complies with:\n` +
+                `✓ EU digital invoice guidelines\n` +
+                `✓ Small business regulation §19 UStG\n` +
+                `✓ Local tax laws\n\n` +
+                `Invoice saved to:\n` +
+                `D:\\claudeapps\\invoices\\` :
+                currentLang === 'pl' ?
+                `Faktura cyfrowa utworzona!\n\n` +
+                `Kraj sprzedaży: ${country.toUpperCase()}\n` +
+                `Kwota: €${amount.toFixed(2)}\n` +
+                `Typ klienta: ${customerType === 'b2c' ? 'Prywatny' : 'Firmowy'}\n\n` +
+                `Faktura jest zgodna z:\n` +
+                `✓ Wytycznymi UE dla faktur cyfrowych\n` +
+                `✓ Przepisami dla małych firm §19 UStG\n` +
+                `✓ Lokalnymi przepisami podatkowymi\n\n` +
+                `Faktura zapisana w:\n` +
+                `D:\\claudeapps\\invoices\\` :
+                `Facture numérique créée!\n\n` +
+                `Pays de vente: ${country.toUpperCase()}\n` +
+                `Montant: €${amount.toFixed(2)}\n` +
+                `Type de client: ${customerType === 'b2c' ? 'Particulier' : 'Entreprise'}\n\n` +
+                `La facture est conforme à:\n` +
+                `✓ Directives UE pour factures numériques\n` +
+                `✓ Réglementation petites entreprises §19 UStG\n` +
+                `✓ Lois fiscales locales\n\n` +
+                `Facture enregistrée dans:\n` +
+                `D:\\claudeapps\\invoices\\`;
+
+            alert(invoiceText);
+        }
+
+        function openModal() {
+            document.getElementById('modal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+        }
+
+        function handleSubmit(e) {
+            e.preventDefault();
+            const message = currentLang === 'de' ?
+                'Demo: Registrierung erfolgreich!\n\nIn der echten App auf Vercel:\nhttps://backend-umber-pi-82.vercel.app\n\nCompliance-Agent überwacht automatisch Ihren Umsatz und stellt sicher, dass Sie alle Regelungen einhalten.' :
+                currentLang === 'en' ?
+                'Demo: Registration successful!\n\nIn the real app on Vercel:\nhttps://backend-umber-pi-82.vercel.app\n\nCompliance Agent automatically monitors your revenue and ensures you comply with all regulations.' :
+                currentLang === 'pl' ?
+                'Demo: Rejestracja pomyślna!\n\nW prawdziwej aplikacji na Vercel:\nhttps://backend-umber-pi-82.vercel.app\n\nAgent zgodności automatycznie monitoruje Twoje przychody i zapewnia zgodność ze wszystkimi przepisami.' :
+                'Demo: Inscription réussie!\n\nDans l\'application réelle sur Vercel:\nhttps://backend-umber-pi-82.vercel.app\n\nL\'agent de conformité surveille automatiquement vos revenus et assure la conformité avec toutes les réglementations.';
+
+            alert(message);
+            closeModal();
+        }
+
+        window.onclick = function(event) {
+            if (event.target.id === 'modal') {
+                closeModal();
+            }
+        }
+
+        // Initialize
+        calculateTax();
+    </script>
+</body>
+</html>

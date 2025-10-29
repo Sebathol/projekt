@@ -11,12 +11,14 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-producti
 const JWT_EXPIRES_IN = '30d';
 
 let db;
+let creditsModule;
 
 /**
  * Initialize authentication module
  */
-function init(app, database) {
+function init(app, database, creditsModuleInstance) {
   db = database;
+  creditsModule = creditsModuleInstance;
 
   // Register routes
   app.post('/api/auth/register', register);
@@ -78,12 +80,30 @@ async function register(req, res) {
     // Create free subscription
     await new Promise((resolve, reject) => {
       db.run(
-        `INSERT INTO subscriptions (user_id, plan, workflows_limit, workflows_used, active)
-         VALUES (?, 'free', 3, 0, 1)`,
+        `INSERT INTO subscriptions (user_id, plan, active)
+         VALUES (?, 'free', 1)`,
         [userId],
         (err) => {
           if (err) reject(err);
           else resolve();
+        }
+      );
+    });
+
+    // Grant free signup bonus (3 workflows = 12 tokens)
+    // Note: Credits table is auto-created via trigger
+    if (creditsModule) {
+      await creditsModule.grantFreeSignupBonus(userId);
+    }
+
+    // Get credits status
+    const credits = await new Promise((resolve, reject) => {
+      db.get(
+        `SELECT * FROM user_credits_view WHERE user_id = ?`,
+        [userId],
+        (err, row) => {
+          if (err) reject(err);
+          else resolve(row);
         }
       );
     });
@@ -96,11 +116,13 @@ async function register(req, res) {
       userId,
       email,
       token,
+      credits: {
+        availableWorkflows: credits?.available_workflows || 0,
+        availableTokens: credits?.available_tokens || 0,
+        totalAvailableTokens: (credits?.available_workflows || 0) * 4 + (credits?.available_tokens || 0)
+      },
       subscription: {
-        plan: 'free',
-        workflowsLimit: 3,
-        workflowsUsed: 0,
-        workflowsRemaining: 3
+        plan: 'free'
       }
     });
 
@@ -147,10 +169,10 @@ async function login(req, res) {
     // Update last login
     db.run('UPDATE users SET last_login = CURRENT_TIMESTAMP WHERE id = ?', [user.id]);
 
-    // Get active subscription
-    const subscription = await new Promise((resolve, reject) => {
+    // Get credits and subscription status
+    const userCredits = await new Promise((resolve, reject) => {
       db.get(
-        `SELECT * FROM active_subscriptions WHERE user_id = ? ORDER BY subscription_id DESC LIMIT 1`,
+        `SELECT * FROM user_credits_view WHERE user_id = ?`,
         [user.id],
         (err, row) => {
           if (err) reject(err);
@@ -167,14 +189,15 @@ async function login(req, res) {
       userId: user.id,
       email: user.email,
       token,
-      subscription: subscription ? {
-        id: subscription.subscription_id,
-        plan: subscription.plan,
-        workflowsLimit: subscription.workflows_limit,
-        workflowsUsed: subscription.workflows_used,
-        workflowsRemaining: subscription.workflows_remaining,
-        daysRemaining: subscription.days_remaining,
-        active: subscription.active
+      credits: userCredits ? {
+        availableWorkflows: userCredits.available_workflows,
+        availableTokens: userCredits.available_tokens,
+        totalAvailableTokens: (userCredits.available_workflows * 4) + userCredits.available_tokens
+      } : null,
+      subscription: userCredits ? {
+        plan: userCredits.plan || 'free',
+        active: userCredits.subscription_active,
+        daysRemaining: userCredits.days_remaining
       } : null
     });
 
@@ -207,10 +230,10 @@ async function getCurrentUser(req, res) {
       return res.status(404).json({ error: 'Benutzer nicht gefunden' });
     }
 
-    // Get active subscription
-    const subscription = await new Promise((resolve, reject) => {
+    // Get credits and subscription status
+    const userCredits = await new Promise((resolve, reject) => {
       db.get(
-        `SELECT * FROM active_subscriptions WHERE user_id = ? ORDER BY subscription_id DESC LIMIT 1`,
+        `SELECT * FROM user_credits_view WHERE user_id = ?`,
         [userId],
         (err, row) => {
           if (err) reject(err);
@@ -226,14 +249,15 @@ async function getCurrentUser(req, res) {
         createdAt: user.created_at,
         lastLogin: user.last_login
       },
-      subscription: subscription ? {
-        id: subscription.subscription_id,
-        plan: subscription.plan,
-        workflowsLimit: subscription.workflows_limit,
-        workflowsUsed: subscription.workflows_used,
-        workflowsRemaining: subscription.workflows_remaining,
-        daysRemaining: subscription.days_remaining,
-        active: subscription.active
+      credits: userCredits ? {
+        availableWorkflows: userCredits.available_workflows,
+        availableTokens: userCredits.available_tokens,
+        totalAvailableTokens: (userCredits.available_workflows * 4) + userCredits.available_tokens
+      } : null,
+      subscription: userCredits ? {
+        plan: userCredits.plan || 'free',
+        active: userCredits.subscription_active,
+        daysRemaining: userCredits.days_remaining
       } : null
     });
 

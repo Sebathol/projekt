@@ -10,6 +10,7 @@ const sqlite3 = require('sqlite3').verbose();
 const fs = require('fs');
 
 // Import modules
+const creditsModule = require('./credits');
 const authModule = require('./auth');
 const subscriptionsModule = require('./subscriptions');
 const workflowsModule = require('./workflows');
@@ -36,8 +37,8 @@ const db = new sqlite3.Database(dbPath, (err) => {
   console.log('✅ Connected to SQLite database');
 });
 
-// Initialize database schema
-const schemaPath = path.join(__dirname, '../database/schema.sql');
+// Initialize database schema (V2 with tokens/workflows separation)
+const schemaPath = path.join(__dirname, '../database/schema_v2.sql');
 const schema = fs.readFileSync(schemaPath, 'utf8');
 
 db.exec(schema, (err) => {
@@ -45,14 +46,15 @@ db.exec(schema, (err) => {
     console.error('❌ Database schema error:', err);
     process.exit(1);
   }
-  console.log('✅ Database schema initialized');
+  console.log('✅ Database schema V2 initialized (Tokens/Workflows system)');
 });
 
 // Make db available to all modules
 app.locals.db = db;
 
-// Initialize modules
-authModule.init(app, db);
+// Initialize modules (order matters: credits before auth)
+creditsModule.init(app, db);
+authModule.init(app, db, creditsModule);
 subscriptionsModule.init(app, db);
 workflowsModule.init(app, db);
 usageModule.init(app, db);

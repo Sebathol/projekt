@@ -19,6 +19,7 @@ const Auth = {
     localStorage.removeItem('auth_token');
     localStorage.removeItem('user_data');
     localStorage.removeItem('subscription_data');
+    localStorage.removeItem('credits_data');
   },
 
   // Get user data
@@ -41,6 +42,17 @@ const Auth = {
   // Save subscription data
   setSubscriptionData(subscription) {
     localStorage.setItem('subscription_data', JSON.stringify(subscription));
+  },
+
+  // Get credits data
+  getCreditsData() {
+    const data = localStorage.getItem('credits_data');
+    return data ? JSON.parse(data) : null;
+  },
+
+  // Save credits data
+  setCreditsData(credits) {
+    localStorage.setItem('credits_data', JSON.stringify(credits));
   },
 
   // Check if user is logged in
@@ -72,6 +84,7 @@ const Auth = {
         email: data.email
       });
       this.setSubscriptionData(data.subscription);
+      this.setCreditsData(data.credits);
 
       return data;
     } catch (error) {
@@ -104,6 +117,7 @@ const Auth = {
         email: data.email
       });
       this.setSubscriptionData(data.subscription);
+      this.setCreditsData(data.credits);
 
       return data;
     } catch (error) {
@@ -155,6 +169,7 @@ const Auth = {
       // Update cached data
       this.setUserData(data.user);
       this.setSubscriptionData(data.subscription);
+      this.setCreditsData(data.credits);
 
       return data;
     } catch (error) {
@@ -164,6 +179,35 @@ const Auth = {
         this.removeToken();
         window.location.href = '/auth.html';
       }
+      throw error;
+    }
+  },
+
+  // Refresh credits data
+  async refreshCredits() {
+    try {
+      const token = this.getToken();
+      if (!token) {
+        throw new Error('Not authenticated');
+      }
+
+      const response = await fetch('/api/credits/status', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Fehler beim Abrufen der Credits');
+      }
+
+      // Update cached credits
+      this.setCreditsData(data);
+      return data;
+    } catch (error) {
+      console.error('Refresh credits error:', error);
       throw error;
     }
   },
@@ -238,9 +282,13 @@ const Auth = {
   }
 };
 
-// Auto-refresh subscription data on page load (if logged in)
+// Auto-refresh subscription and credits data on page load (if logged in)
 if (Auth.isLoggedIn()) {
   Auth.refreshSubscription().catch(err => {
     console.warn('Failed to refresh subscription:', err);
+  });
+
+  Auth.refreshCredits().catch(err => {
+    console.warn('Failed to refresh credits:', err);
   });
 }

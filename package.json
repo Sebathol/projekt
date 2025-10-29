@@ -1,0 +1,34 @@
+{
+  "name": "von-der-idee-zum-prototyp",
+  "version": "2.0.0",
+  "description": "Von der Idee zum Prototyp - Backend Server mit Subscriptions & AdMob",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "nodemon backend/server.js",
+    "init-db": "node backend/init-db.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "prototype",
+    "pwa",
+    "claude",
+    "ai",
+    "idea-generator"
+  ],
+  "author": "Ai Storm Create - Sebastian Beyer",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "sqlite3": "^5.1.6",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

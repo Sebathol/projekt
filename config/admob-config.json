@@ -1,0 +1,7 @@
+{
+  "bannerAdUnitId": "ca-app-pub-XXXXXXXXXXXXXXXX/YYYYYYYYYY",
+  "interstitialAdUnitId": "ca-app-pub-XXXXXXXXXXXXXXXX/ZZZZZZZZZZ",
+  "rewardedVideoAdUnitId": "ca-app-pub-XXXXXXXXXXXXXXXX/WWWWWWWWWW",
+  "testMode": true,
+  "notes": "WICHTIG: Erstelle Google AdMob Account und trage die echten Unit IDs hier ein. testMode: true nutzt Test-Ads."
+}

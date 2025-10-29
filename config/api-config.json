@@ -1,0 +1,4 @@
+{
+  "claudeApiKey": "DEIN_API_KEY_HIER",
+  "notes": "WICHTIG: Trage hier deinen Claude API Key ein! Dieser Key wird vom Server genutzt, NICHT vom User."
+}

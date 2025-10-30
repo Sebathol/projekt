@@ -15,6 +15,7 @@ const authModule = require('./auth');
 const subscriptionsModule = require('./subscriptions_v2'); // V3: Tool-specific tracking
 const workflowsModule = require('./workflows');
 const usageModule = require('./usage');
+const promoCodesModule = require('./promo-codes'); // Promo codes for influencers
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -58,6 +59,7 @@ authModule.init(app, db, creditsModule);
 subscriptionsModule.init(app, db);
 workflowsModule.init(app, db);
 usageModule.init(app, db);
+promoCodesModule.init(app, db); // Promo codes
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

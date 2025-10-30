@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="API Master - Verwalte alle deine API-Keys sicher an einem Ort">
+    <meta name="theme-color" content="#6366f1">
+    <title>API Master - API Key Manager</title>
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest-api-master.json">
+
+    <!-- iOS Support -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="API Master">
+    <link rel="apple-touch-icon" href="api-master-icon-192.png">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="192x192" href="api-master-icon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="api-master-icon-512.png">
+
+    <link rel="stylesheet" href="api-master.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="logo">
+                    <span class="logo-icon">🔐</span>
+                    <h1>API Master</h1>
+                </div>
+                <button class="menu-btn" id="menu-btn" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="sidebar" id="sidebar">
+            <ul class="nav-list">
+                <li><a href="#" class="nav-link active" data-page="dashboard">
+                    <span class="nav-icon">📊</span>
+                    <span>Dashboard</span>
+                </a></li>
+                <li><a href="#" class="nav-link" data-page="apis">
+                    <span class="nav-icon">🔑</span>
+                    <span>API Keys</span>
+                </a></li>
+                <li><a href="#" class="nav-link" data-page="add">
+                    <span class="nav-icon">➕</span>
+                    <span>Key hinzufügen</span>
+                </a></li>
+                <li><a href="#" class="nav-link" data-page="ai-agent">
+                    <span class="nav-icon">🤖</span>
+                    <span>Genius Nexus Agent</span>
+                </a></li>
+                <li><a href="#" class="nav-link" data-page="settings">
+                    <span class="nav-icon">⚙️</span>
+                    <span>Einstellungen</span>
+                </a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Page -->
+            <div class="page active" id="page-dashboard">
+                <div class="page-header">
+                    <h2>Dashboard</h2>
+                    <p class="subtitle">Übersicht deiner API-Keys</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">🔑</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="total-keys">0</div>
+                            <div class="stat-label">Gesamt Keys</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="active-keys">0</div>
+                            <div class="stat-label">Aktiv</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📁</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="categories">0</div>
+                            <div class="stat-label">Kategorien</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>Zuletzt hinzugefügt</h3>
+                    <div id="recent-keys" class="api-grid">
+                        <div class="empty-state">
+                            <span class="empty-icon">🔍</span>
+                            <p>Noch keine API-Keys vorhanden</p>
+                            <button class="btn btn-primary" onclick="navigateTo('add')">Ersten Key hinzufügen</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- API Keys Page -->
+            <div class="page" id="page-apis">
+                <div class="page-header">
+                    <h2>Meine API Keys</h2>
+                    <button class="btn btn-primary" onclick="navigateTo('add')">+ Neuer Key</button>
+                </div>
+
+                <div class="search-filter">
+                    <input type="text" id="search-input" class="search-input" placeholder="Suche nach Name, Service...">
+                    <select id="category-filter" class="filter-select">
+                        <option value="">Alle Kategorien</option>
+                        <option value="payment">Payment</option>
+                        <option value="weather">Wetter</option>
+                        <option value="ai">AI/ML</option>
+                        <option value="maps">Karten</option>
+                        <option value="social">Social Media</option>
+                        <option value="other">Sonstige</option>
+                    </select>
+                </div>
+
+                <div id="api-list" class="api-grid">
+                    <!-- API Keys werden hier dynamisch eingefügt -->
+                </div>
+            </div>
+
+            <!-- Add API Key Page -->
+            <div class="page" id="page-add">
+                <div class="page-header">
+                    <h2>Neuen API Key hinzufügen</h2>
+                    <p class="subtitle">Speichere deinen API-Key sicher lokal</p>
+                </div>
+
+                <div class="form-container">
+                    <form id="add-api-form">
+                        <div class="alert alert-info">
+                            <strong>🔒 Sicherheit:</strong> Alle Keys werden nur lokal in deinem Browser gespeichert (localStorage).
+                        </div>
+
+                        <div class="form-group">
+                            <label for="api-service">Service / Anbieter *</label>
+                            <input type="text" id="api-service" placeholder="z.B. OpenAI, Stripe, Weather API" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="api-name">Name / Bezeichnung *</label>
+                            <input type="text" id="api-name" placeholder="z.B. Production, Development, Test" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="api-key">API Key *</label>
+                            <div class="input-with-icon">
+                                <input type="password" id="api-key" placeholder="Dein API-Key" required>
+                                <button type="button" class="toggle-visibility" onclick="toggleKeyVisibility()">👁️</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="api-category">Kategorie</label>
+                            <select id="api-category">
+                                <option value="ai">AI/ML</option>
+                                <option value="payment">Payment</option>
+                                <option value="weather">Wetter</option>
+                                <option value="maps">Karten</option>
+                                <option value="social">Social Media</option>
+                                <option value="other">Sonstige</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="api-url">API URL (optional)</label>
+                            <input type="url" id="api-url" placeholder="https://api.example.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="api-notes">Notizen (optional)</label>
+                            <textarea id="api-notes" rows="3" placeholder="Zusätzliche Informationen..."></textarea>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">💾 Speichern</button>
+                            <button type="button" class="btn btn-secondary" onclick="resetForm()">🔄 Zurücksetzen</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- AI Agent Page -->
+            <div class="page" id="page-ai-agent">
+                <div class="page-header">
+                    <h2>🤖 Genius Nexus Agent</h2>
+                    <p class="subtitle">KI-gestützter Assistent powered by Claude API</p>
+                </div>
+
+                <div class="alert alert-info" id="ai-setup-alert">
+                    <strong>ℹ️ Setup erforderlich:</strong> Bitte füge zuerst deinen Claude API-Key hinzu!
+                    <button class="btn btn-primary btn-small" onclick="navigateTo('add')" style="margin-left: 10px;">Key hinzufügen</button>
+                </div>
+
+                <div class="ai-agent-container">
+                    <div class="ai-config-section">
+                        <h3>API-Konfiguration</h3>
+                        <div class="form-group">
+                            <label for="claude-api-select">Claude API-Key auswählen:</label>
+                            <select id="claude-api-select" onchange="selectClaudeKey()">
+                                <option value="">-- Bitte wählen --</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="ai-model-select">Model:</label>
+                            <select id="ai-model-select">
+                                <option value="claude-3-5-sonnet-20241022">Claude 3.5 Sonnet (Empfohlen)</option>
+                                <option value="claude-3-opus-20240229">Claude 3 Opus</option>
+                                <option value="claude-3-sonnet-20240229">Claude 3 Sonnet</option>
+                                <option value="claude-3-haiku-20240307">Claude 3 Haiku (Schnell)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="ai-chat-container">
+                        <div class="chat-messages" id="chat-messages">
+                            <div class="welcome-message">
+                                <h3>👋 Willkommen beim Genius Nexus Agent!</h3>
+                                <p>Ich bin dein KI-Assistent, powered by Claude API von Anthropic.</p>
+                                <p><strong>Ich kann dir helfen bei:</strong></p>
+                                <ul>
+                                    <li>📝 Code-Generierung und Debugging</li>
+                                    <li>💡 API-Dokumentation erklären</li>
+                                    <li>🔍 Technische Fragen beantworten</li>
+                                    <li>🛠️ Entwicklungs-Probleme lösen</li>
+                                    <li>📊 Daten analysieren</li>
+                                </ul>
+                                <p>Stelle mir eine Frage, um zu starten!</p>
+                            </div>
+                        </div>
+
+                        <div class="chat-input-container">
+                            <textarea
+                                id="ai-prompt-input"
+                                placeholder="Stelle eine Frage an den Genius Nexus Agent..."
+                                rows="3"
+                                onkeydown="handleAIInputKeydown(event)"
+                            ></textarea>
+                            <div class="chat-actions">
+                                <button class="btn btn-secondary" onclick="clearAIChat()">🗑️ Chat löschen</button>
+                                <button class="btn btn-primary" onclick="sendAIMessage()" id="send-ai-btn">
+                                    <span id="send-btn-text">🚀 Senden</span>
+                                    <span id="send-btn-loading" style="display: none;">⏳ Lädt...</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="ai-stats">
+                            <div class="stat-item-small">
+                                <span>📊 Anfragen:</span>
+                                <span id="ai-request-count">0</span>
+                            </div>
+                            <div class="stat-item-small">
+                                <span>💬 Nachrichten:</span>
+                                <span id="ai-message-count">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Page -->
+            <div class="page" id="page-settings">
+                <div class="page-header">
+                    <h2>Einstellungen</h2>
+                </div>
+
+                <div class="settings-section">
+                    <h3>Datenverwaltung</h3>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <strong>Export</strong>
+                            <p>Exportiere alle deine API-Keys als JSON-Datei</p>
+                        </div>
+                        <button class="btn btn-secondary" onclick="exportData()">📥 Exportieren</button>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <strong>Import</strong>
+                            <p>Importiere API-Keys aus einer JSON-Datei</p>
+                        </div>
+                        <button class="btn btn-secondary" onclick="importData()">📤 Importieren</button>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <strong>Alle Daten löschen</strong>
+                            <p>Entfernt alle gespeicherten API-Keys unwiderruflich</p>
+                        </div>
+                        <button class="btn btn-danger" onclick="clearAllData()">🗑️ Alles löschen</button>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>Über API Master</h3>
+                    <div class="about-info">
+                        <p><strong>Version:</strong> 1.0.0</p>
+                        <p><strong>Entwickler:</strong> Ai Storm Create</p>
+                        <p><strong>Speicherort:</strong> Lokal (Browser LocalStorage)</p>
+                        <p class="privacy-note">
+                            🔒 Deine API-Keys werden ausschließlich lokal in deinem Browser gespeichert und nie an externe Server gesendet.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Edit Modal -->
+    <div id="edit-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>API Key bearbeiten</h3>
+                <button class="modal-close" onclick="closeEditModal()">&times;</button>
+            </div>
+            <form id="edit-api-form">
+                <input type="hidden" id="edit-api-id">
+
+                <div class="form-group">
+                    <label for="edit-api-service">Service / Anbieter</label>
+                    <input type="text" id="edit-api-service" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-api-name">Name / Bezeichnung</label>
+                    <input type="text" id="edit-api-name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-api-key">API Key</label>
+                    <input type="password" id="edit-api-key" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-api-category">Kategorie</label>
+                    <select id="edit-api-category">
+                        <option value="ai">AI/ML</option>
+                        <option value="payment">Payment</option>
+                        <option value="weather">Wetter</option>
+                        <option value="maps">Karten</option>
+                        <option value="social">Social Media</option>
+                        <option value="other">Sonstige</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-api-url">API URL</label>
+                    <input type="url" id="edit-api-url">
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-api-notes">Notizen</label>
+                    <textarea id="edit-api-notes" rows="3"></textarea>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-primary">💾 Speichern</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Abbrechen</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <input type="file" id="import-file-input" accept=".json" style="display: none;">
+
+    <script src="api-master.js"></script>
+</body>
+</html>

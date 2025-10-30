@@ -1,0 +1,56 @@
+{
+  "packageId": "com.aistormcreate.apimaster",
+  "host": "yourdomain.com",
+  "name": "API Master",
+  "launcherName": "API Master",
+  "display": "standalone",
+  "themeColor": "#6366f1",
+  "navigationColor": "#000000",
+  "backgroundColor": "#ffffff",
+  "enableNotifications": true,
+  "startUrl": "/api-master.html",
+  "iconUrl": "https://yourdomain.com/api-master-icon-512.png",
+  "maskableIconUrl": "https://yourdomain.com/api-master-icon-512.png",
+  "monochromeIconUrl": "https://yourdomain.com/api-master-icon-512.png",
+  "splashScreenFadeOutDuration": 300,
+  "signingKey": {
+    "path": "android.keystore",
+    "alias": "api-master-key"
+  },
+  "appVersionName": "1.0.0",
+  "appVersionCode": 1,
+  "shortcuts": [
+    {
+      "name": "Neuer API Key",
+      "short_name": "Neu",
+      "url": "/api-master.html#add",
+      "icon": "api-master-icon-192.png"
+    }
+  ],
+  "enableSiteSettingsShortcut": true,
+  "isChromeOSOnly": false,
+  "orientation": "default",
+  "navigationDividerColor": "#000000",
+  "navigationDividerColorDark": "#000000",
+  "shareTarget": {
+    "action": "/api-master.html",
+    "method": "GET",
+    "params": {
+      "title": "title",
+      "text": "text"
+    }
+  },
+  "features": {
+    "locationDelegation": {
+      "enabled": false
+    },
+    "playBilling": {
+      "enabled": false
+    }
+  },
+  "alphaDependencies": {
+    "enabled": false
+  },
+  "minSdkVersion": 23,
+  "targetSdkVersion": 33
+}

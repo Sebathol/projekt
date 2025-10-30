@@ -1,6 +1,6 @@
 /**
  * Usage Module
- * Handles usage statistics, cost tracking, and ad rewards
+ * Handles usage statistics and cost tracking
  */
 
 const { authenticateToken } = require('./auth');
@@ -16,7 +16,8 @@ function init(app, database) {
   // Register routes
   app.get('/api/usage/stats', authenticateToken, getUsageStats);
   app.get('/api/usage/costs', authenticateToken, getCostTracking);
-  app.post('/api/usage/ad-reward', authenticateToken, claimAdReward);
+  // REMOVED: Ad-reward endpoint (advertising removed on user request 2025-10-30)
+  // app.post('/api/usage/ad-reward', authenticateToken, claimAdReward);
 }
 
 /**
@@ -189,8 +190,11 @@ async function getCostTracking(req, res) {
 }
 
 /**
- * Claim ad reward (bonus workflows)
+ * REMOVED: Claim ad reward (bonus workflows)
+ * Advertising removed on user request 2025-10-30
+ * See ADVERTISING_INTEGRATION_BACKUP.md for reactivation
  */
+/*
 async function claimAdReward(req, res) {
   const { adType, videosWatched = 1 } = req.body;
   const userId = req.user.userId;
@@ -291,6 +295,7 @@ async function claimAdReward(req, res) {
     res.status(500).json({ error: 'Fehler beim Einlösen der Belohnung' });
   }
 }
+*/
 
 module.exports = {
   init

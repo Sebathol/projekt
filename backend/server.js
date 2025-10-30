@@ -99,8 +99,7 @@ app.get('/api/docs', (req, res) => {
       },
       usage: {
         'GET /api/usage/stats': 'Get usage statistics (requires auth)',
-        'GET /api/usage/costs': 'Get cost tracking (requires auth)',
-        'POST /api/usage/ad-reward': 'Claim ad reward (requires auth)'
+        'GET /api/usage/costs': 'Get cost tracking (requires auth)'
       }
     }
   });

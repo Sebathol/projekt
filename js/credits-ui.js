@@ -1,130 +1,226 @@
 /**
- * Credits UI Module
- * Displays credits status and handles purchases
+ * Credits UI Module - V3
+ * Displays tool-specific usage tracking and subscription status
  */
 
 const CreditsUI = {
-  // Display credits status
-  displayStatus(containerId = 'credits-status') {
-    const credits = Auth.getCreditsData();
+  // Display subscription and tool usage status
+  async displayStatus(containerId = 'credits-status') {
     const container = document.getElementById(containerId);
+    if (!container) return;
 
-    if (!container || !credits) return;
+    try {
+      // Fetch current subscription status from V3 API
+      const status = await Auth.apiRequest('/api/subscriptions/status');
+      const usageStatus = await Auth.apiRequest('/api/subscriptions/usage');
 
-    const html = `
-      <div class="credits-status-card">
-        <div class="credits-header">
-          <h3 class="credits-title">💳 Deine Credits</h3>
-          <button onclick="CreditsUI.showPurchaseModal()" class="btn-purchase-small">
-            <lucide-icon icon-name="plus-circle" class="w-4 h-4"></lucide-icon>
-            Nachkaufen
+      // Check if user can purchase extra
+      const canPurchase = status.canPurchaseExtra;
+      const plan = status.subscription.plan;
+      const planName = status.subscription.planName;
+
+      const html = `
+        <div class="credits-status-card-v3">
+          <div class="credits-header-v3">
+            <div>
+              <h3 class="credits-title-v3">📊 Dein ${planName} Plan</h3>
+              <p class="credits-subtitle-v3">
+                ${status.subscription.active ?
+                  (status.subscription.daysRemaining === 9999 ? 'Unbegrenzt gültig' : `Noch ${status.subscription.daysRemaining} Tage gültig`)
+                  : 'Inaktiv'}
+              </p>
+            </div>
+            ${canPurchase ? `
+              <button onclick="CreditsUI.showPurchaseModal()" class="btn-purchase-small-v3">
+                <lucide-icon icon-name="plus-circle" class="w-4 h-4"></lucide-icon>
+                Nachkaufen
+              </button>
+            ` : ''}
+          </div>
+
+          <!-- Tool-specific usage tracking -->
+          <div class="tool-usage-grid">
+            <div class="tool-usage-item ${status.toolUsage.ideas.remaining === 0 ? 'tool-depleted' : ''}">
+              <div class="tool-icon">💡</div>
+              <div class="tool-info">
+                <div class="tool-name">Ideengenerierung</div>
+                <div class="tool-usage-bar">
+                  <div class="tool-usage-fill" style="width: ${(status.toolUsage.ideas.used / status.toolUsage.ideas.limit * 100)}%"></div>
+                </div>
+                <div class="tool-stats">
+                  <span class="tool-remaining">${status.toolUsage.ideas.remaining} verfügbar</span>
+                  <span class="tool-total">${status.toolUsage.ideas.used} / ${status.toolUsage.ideas.limit}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="tool-usage-item ${status.toolUsage.brainstorming.remaining === 0 ? 'tool-depleted' : ''}">
+              <div class="tool-icon">🧠</div>
+              <div class="tool-info">
+                <div class="tool-name">Brainstorming</div>
+                <div class="tool-usage-bar">
+                  <div class="tool-usage-fill" style="width: ${(status.toolUsage.brainstorming.used / status.toolUsage.brainstorming.limit * 100)}%"></div>
+                </div>
+                <div class="tool-stats">
+                  <span class="tool-remaining">${status.toolUsage.brainstorming.remaining} verfügbar</span>
+                  <span class="tool-total">${status.toolUsage.brainstorming.used} / ${status.toolUsage.brainstorming.limit}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="tool-usage-item ${status.toolUsage.prd.remaining === 0 ? 'tool-depleted' : ''}">
+              <div class="tool-icon">📄</div>
+              <div class="tool-info">
+                <div class="tool-name">PRD/PAD Erstellung</div>
+                <div class="tool-usage-bar">
+                  <div class="tool-usage-fill" style="width: ${(status.toolUsage.prd.used / status.toolUsage.prd.limit * 100)}%"></div>
+                </div>
+                <div class="tool-stats">
+                  <span class="tool-remaining">${status.toolUsage.prd.remaining} verfügbar</span>
+                  <span class="tool-total">${status.toolUsage.prd.used} / ${status.toolUsage.prd.limit}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="tool-usage-item ${status.toolUsage.prototype.remaining === 0 ? 'tool-depleted' : ''}">
+              <div class="tool-icon">💻</div>
+              <div class="tool-info">
+                <div class="tool-name">Prototyp-Generierung</div>
+                <div class="tool-usage-bar">
+                  <div class="tool-usage-fill" style="width: ${(status.toolUsage.prototype.used / status.toolUsage.prototype.limit * 100)}%"></div>
+                </div>
+                <div class="tool-stats">
+                  <span class="tool-remaining">${status.toolUsage.prototype.remaining} verfügbar</span>
+                  <span class="tool-total">${status.toolUsage.prototype.used} / ${status.toolUsage.prototype.limit}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Workflow completion summary -->
+          <div class="workflow-summary">
+            <div class="workflow-summary-item">
+              <div class="workflow-summary-icon">✅</div>
+              <div class="workflow-summary-info">
+                <div class="workflow-summary-label">Abgeschlossene Workflows</div>
+                <div class="workflow-summary-value">${status.workflows.completed}</div>
+              </div>
+            </div>
+            <div class="workflow-summary-item">
+              <div class="workflow-summary-icon">🎯</div>
+              <div class="workflow-summary-info">
+                <div class="workflow-summary-label">Noch möglich</div>
+                <div class="workflow-summary-value">${usageStatus.potentialCompleteWorkflows}</div>
+                <div class="workflow-summary-note">von ${status.workflows.guaranteedRemaining} garantiert</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Smart recommendation -->
+          ${usageStatus.recommendation ? `
+            <div class="usage-recommendation ${!usageStatus.canCompleteWorkflow ? 'usage-warning' : 'usage-info'}">
+              <lucide-icon icon-name="${!usageStatus.canCompleteWorkflow ? 'alert-circle' : 'info'}" class="w-5 h-5"></lucide-icon>
+              <span>${usageStatus.recommendation}</span>
+            </div>
+          ` : ''}
+
+          <!-- Upgrade prompt for free users -->
+          ${!canPurchase ? `
+            <div class="upgrade-prompt">
+              <lucide-icon icon-name="star" class="w-5 h-5"></lucide-icon>
+              <div>
+                <strong>Upgrade für mehr Workflows!</strong>
+                <p>Nachkauf nur mit aktivem Tages-, Wochen-, Monats- oder Jahresabo möglich.</p>
+              </div>
+              <button onclick="CreditsUI.showSubscriptionPlans()" class="btn-upgrade">
+                Jetzt upgraden
+              </button>
+            </div>
+          ` : ''}
+
+          <button onclick="CreditsUI.showExplanation()" class="btn-info-link-v3">
+            <lucide-icon icon-name="info" class="w-4 h-4"></lucide-icon>
+            Wie funktioniert das neue System?
           </button>
         </div>
+      `;
 
-        <div class="credits-grid">
-          <div class="credit-item">
-            <div class="credit-label">Workflows</div>
-            <div class="credit-value">${credits.availableWorkflows || 0}</div>
-            <div class="credit-subtitle">${credits.availableWorkflows || 0} × 4 Tokens</div>
-          </div>
+      container.innerHTML = html;
+      lucide.createIcons();
 
-          <div class="credit-item">
-            <div class="credit-label">Einzelne Tokens</div>
-            <div class="credit-value">${credits.availableTokens || 0}</div>
-            <div class="credit-subtitle">Für einzelne Tools</div>
-          </div>
-
-          <div class="credit-item credit-item-total">
-            <div class="credit-label">Gesamt verfügbar</div>
-            <div class="credit-value-large">${credits.totalAvailableTokens || 0}</div>
-            <div class="credit-subtitle">Tokens</div>
-          </div>
+    } catch (error) {
+      console.error('Display status error:', error);
+      container.innerHTML = `
+        <div class="credits-error">
+          <lucide-icon icon-name="alert-circle" class="w-6 h-6"></lucide-icon>
+          <p>Fehler beim Laden des Status: ${error.message}</p>
         </div>
-
-        ${!credits.canStartFullWorkflow ? `
-          <div class="credits-warning">
-            <lucide-icon icon-name="alert-circle" class="w-5 h-5"></lucide-icon>
-            <span>Nicht genügend Tokens für einen vollständigen Workflow (4 Tokens benötigt)</span>
-          </div>
-        ` : ''}
-
-        <button onclick="CreditsUI.showExplanation()" class="btn-info-link">
-          <lucide-icon icon-name="info" class="w-4 h-4"></lucide-icon>
-          Wie funktionieren Workflows & Tokens?
-        </button>
-      </div>
-    `;
-
-    container.innerHTML = html;
-    lucide.createIcons();
+      `;
+      lucide.createIcons();
+    }
   },
 
-  // Show purchase modal
+  // Show purchase modal (only for paid subscriptions)
   showPurchaseModal() {
     const modal = document.createElement('div');
-    modal.id = 'purchase-modal';
-    modal.className = 'modal-overlay';
+    modal.id = 'purchase-modal-v3';
+    modal.className = 'modal-overlay-v3';
 
     modal.innerHTML = `
-      <div class="modal-content">
-        <div class="modal-header">
-          <h2 class="modal-title">
+      <div class="modal-content-v3">
+        <div class="modal-header-v3">
+          <h2 class="modal-title-v3">
             <lucide-icon icon-name="shopping-cart" class="w-6 h-6"></lucide-icon>
-            Workflows & Tokens kaufen
+            Workflows & Tokens nachkaufen
           </h2>
-          <button onclick="CreditsUI.closePurchaseModal()" class="modal-close">
+          <button onclick="CreditsUI.closePurchaseModal()" class="modal-close-v3">
             <lucide-icon icon-name="x" class="w-6 h-6"></lucide-icon>
           </button>
         </div>
 
-        <div class="modal-body">
-          <p class="modal-description">
-            Wähle zwischen Workflow-Paketen (für vollständige Durchläufe) oder einzelnen Tokens (für flexible Nutzung).
+        <div class="modal-body-v3">
+          <p class="modal-description-v3">
+            Kaufe zusätzliche Workflows oder Tokens nach, um deine Kreativität nicht zu unterbrechen.
           </p>
 
-          <div class="purchase-options">
-            <!-- Workflows Package -->
-            <div class="purchase-option">
-              <div class="purchase-badge">Empfohlen</div>
-              <div class="purchase-icon">🎨</div>
-              <h3 class="purchase-title">5 Workflows</h3>
-              <div class="purchase-price">€5,00</div>
-              <ul class="purchase-features">
-                <li>✓ 20 Tokens (5 × 4)</li>
-                <li>✓ Ideal für komplette Projekte</li>
+          <div class="purchase-options-v3">
+            <!-- 5 Workflows -->
+            <div class="purchase-option-v3">
+              <div class="purchase-badge-v3">Empfohlen</div>
+              <div class="purchase-icon-v3">🎨</div>
+              <h3 class="purchase-title-v3">5 Workflows</h3>
+              <div class="purchase-price-v3">€4,99</div>
+              <ul class="purchase-features-v3">
+                <li>✓ 5x komplette Durchläufe</li>
                 <li>✓ Idee → Brainstorming → PRD → Prototyp</li>
+                <li>✓ Erhöht alle Tool-Limits um 5</li>
               </ul>
-              <button onclick="CreditsUI.purchaseWorkflows()" class="btn-purchase">
+              <button onclick="CreditsUI.purchaseWorkflows()" class="btn-purchase-v3">
                 Workflows kaufen
               </button>
             </div>
 
-            <!-- Tokens Package -->
-            <div class="purchase-option">
-              <div class="purchase-icon">🎫</div>
-              <h3 class="purchase-title">10 Tokens</h3>
-              <div class="purchase-price">€5,00</div>
-              <ul class="purchase-features">
-                <li>✓ Flexibel einsetzbar</li>
-                <li>✓ Für einzelne Tools</li>
-                <li>✓ Kombinierbar mit Workflows</li>
+            <!-- 10 Tokens -->
+            <div class="purchase-option-v3">
+              <div class="purchase-icon-v3">🎫</div>
+              <h3 class="purchase-title-v3">10 Tokens</h3>
+              <div class="purchase-price-v3">€4,99</div>
+              <ul class="purchase-features-v3">
+                <li>✓ Flexibel für einzelne Tools</li>
+                <li>✓ 1 Token = 1 Tool-Nutzung</li>
+                <li>✓ Selbst verteilen nach Bedarf</li>
               </ul>
-              <button onclick="CreditsUI.purchaseTokens()" class="btn-purchase">
+              <button onclick="CreditsUI.purchaseTokens()" class="btn-purchase-v3">
                 Tokens kaufen
               </button>
             </div>
           </div>
 
-          <div class="purchase-info">
+          <div class="purchase-info-v3">
             <lucide-icon icon-name="info" class="w-4 h-4"></lucide-icon>
             <p>
-              <strong>1 Workflow = 4 Tokens</strong> (Ideengenerierung, Brainstorming, PRD, Prototyp)<br>
-              <strong>1 Token = 1 Tool</strong> einzeln nutzbar
+              <strong>Nur mit aktivem Abo:</strong> Nachkauf ist nur für Nutzer mit Tages-, Wochen-, Monats- oder Jahresabo verfügbar.
             </p>
-          </div>
-
-          <div class="purchase-note">
-            💡 <strong>Tipp:</strong> Kaufe Workflows für komplette Projekte, Tokens für einzelne Tools oder zum Auffüllen.
           </div>
         </div>
       </div>
@@ -143,7 +239,7 @@ const CreditsUI = {
 
   // Close purchase modal
   closePurchaseModal() {
-    const modal = document.getElementById('purchase-modal');
+    const modal = document.getElementById('purchase-modal-v3');
     if (modal) {
       modal.remove();
     }
@@ -153,26 +249,23 @@ const CreditsUI = {
   async purchaseWorkflows() {
     try {
       const confirmPurchase = confirm(
-        '5 Workflows (20 Tokens) für €5,00 kaufen?\n\n' +
+        '5 Workflows für €4,99 kaufen?\n\n' +
+        'Dies erhöht alle Tool-Limits um 5.\n\n' +
         'Du wirst zu einer sicheren Zahlungsseite weitergeleitet.'
       );
 
       if (!confirmPurchase) return;
 
       // In production: redirect to payment gateway (Stripe, PayPal, etc.)
-      // For now: simulate purchase
       const paymentId = `test_workflow_${Date.now()}`;
 
-      const data = await Auth.apiRequest('/api/credits/purchase-workflows', {
+      const data = await Auth.apiRequest('/api/subscriptions/purchase-extra', {
         method: 'POST',
         body: JSON.stringify({
-          paymentId,
-          paymentStatus: 'completed'
+          type: 'workflows',
+          paymentId
         })
       });
-
-      // Refresh credits
-      await Auth.refreshCredits();
 
       // Close modal
       CreditsUI.closePurchaseModal();
@@ -180,17 +273,27 @@ const CreditsUI = {
       // Show success
       alert(
         `✅ ${data.message}\n\n` +
-        `Verfügbare Workflows: ${data.workflowsRemaining}\n` +
-        `Verfügbare Tokens: ${data.tokensRemaining}\n` +
-        `Gesamt: ${data.totalAvailableTokens} Tokens`
+        `Gekauft: ${data.purchased} Workflows\n` +
+        `Preis: €${data.price}`
       );
 
-      // Update display
-      CreditsUI.displayStatus();
+      // Refresh display
+      await CreditsUI.displayStatus();
 
     } catch (error) {
       console.error('Purchase workflows error:', error);
-      alert('❌ Fehler beim Kauf: ' + error.message);
+
+      if (error.message.includes('Nachkauf nur mit aktivem Abo')) {
+        alert(
+          '❌ Nachkauf nicht verfügbar\n\n' +
+          'Bitte upgrade zuerst auf ein Tages-, Wochen-, Monats- oder Jahresabo.\n\n' +
+          'Die Testversion unterstützt keinen Nachkauf.'
+        );
+        CreditsUI.closePurchaseModal();
+        CreditsUI.showSubscriptionPlans();
+      } else {
+        alert('❌ Fehler beim Kauf: ' + error.message);
+      }
     }
   },
 
@@ -198,26 +301,23 @@ const CreditsUI = {
   async purchaseTokens() {
     try {
       const confirmPurchase = confirm(
-        '10 Tokens für €5,00 kaufen?\n\n' +
+        '10 Tokens für €4,99 kaufen?\n\n' +
+        'Tokens können flexibel für einzelne Tools eingesetzt werden.\n\n' +
         'Du wirst zu einer sicheren Zahlungsseite weitergeleitet.'
       );
 
       if (!confirmPurchase) return;
 
       // In production: redirect to payment gateway (Stripe, PayPal, etc.)
-      // For now: simulate purchase
       const paymentId = `test_tokens_${Date.now()}`;
 
-      const data = await Auth.apiRequest('/api/credits/purchase-tokens', {
+      const data = await Auth.apiRequest('/api/subscriptions/purchase-extra', {
         method: 'POST',
         body: JSON.stringify({
-          paymentId,
-          paymentStatus: 'completed'
+          type: 'tokens',
+          paymentId
         })
       });
-
-      // Refresh credits
-      await Auth.refreshCredits();
 
       // Close modal
       CreditsUI.closePurchaseModal();
@@ -225,18 +325,34 @@ const CreditsUI = {
       // Show success
       alert(
         `✅ ${data.message}\n\n` +
-        `Verfügbare Workflows: ${data.workflowsRemaining}\n` +
-        `Verfügbare Tokens: ${data.tokensRemaining}\n` +
-        `Gesamt: ${data.totalAvailableTokens} Tokens`
+        `Gekauft: ${data.purchased} Tokens\n` +
+        `Preis: €${data.price}`
       );
 
-      // Update display
-      CreditsUI.displayStatus();
+      // Refresh display
+      await CreditsUI.displayStatus();
 
     } catch (error) {
       console.error('Purchase tokens error:', error);
-      alert('❌ Fehler beim Kauf: ' + error.message);
+
+      if (error.message.includes('Nachkauf nur mit aktivem Abo')) {
+        alert(
+          '❌ Nachkauf nicht verfügbar\n\n' +
+          'Bitte upgrade zuerst auf ein Tages-, Wochen-, Monats- oder Jahresabo.\n\n' +
+          'Die Testversion unterstützt keinen Nachkauf.'
+        );
+        CreditsUI.closePurchaseModal();
+        CreditsUI.showSubscriptionPlans();
+      } else {
+        alert('❌ Fehler beim Kauf: ' + error.message);
+      }
     }
+  },
+
+  // Show subscription plans
+  showSubscriptionPlans() {
+    // TODO: Implement subscription plans modal
+    alert('Abo-Verwaltung wird noch implementiert. Bitte kontaktiere support@aistormcreate.com oder rufe an: 06853/8579828');
   },
 
   // Show explanation
@@ -244,65 +360,91 @@ const CreditsUI = {
     window.location.href = '/tokens-explanation.html';
   },
 
-  // Check if user has enough credits for action
-  async checkCredits(requiredTokens = 4, action = 'Workflow') {
-    const credits = Auth.getCreditsData();
+  // Check if user can use a specific tool
+  async checkToolAvailability(toolName) {
+    try {
+      const status = await Auth.apiRequest('/api/subscriptions/status');
+      const toolUsage = status.toolUsage[toolName];
 
-    if (!credits) {
-      alert('Fehler: Credits-Daten nicht verfügbar');
-      return false;
-    }
-
-    const totalTokens = (credits.availableWorkflows * 4) + credits.availableTokens;
-
-    if (totalTokens < requiredTokens) {
-      const buyNow = confirm(
-        `Nicht genügend Tokens für ${action}!\n\n` +
-        `Benötigt: ${requiredTokens} Tokens\n` +
-        `Verfügbar: ${totalTokens} Tokens\n\n` +
-        `Möchtest du jetzt Tokens kaufen?`
-      );
-
-      if (buyNow) {
-        CreditsUI.showPurchaseModal();
+      if (!toolUsage) {
+        alert('Fehler: Ungültiges Tool');
+        return false;
       }
 
+      if (toolUsage.remaining <= 0) {
+        const buyNow = confirm(
+          `${this.getToolDisplayName(toolName)} aufgebraucht!\n\n` +
+          `Verfügbar: ${toolUsage.remaining} / ${toolUsage.limit}\n\n` +
+          `Möchtest du jetzt nachkaufen?`
+        );
+
+        if (buyNow) {
+          if (status.canPurchaseExtra) {
+            CreditsUI.showPurchaseModal();
+          } else {
+            CreditsUI.showSubscriptionPlans();
+          }
+        }
+
+        return false;
+      }
+
+      return true;
+
+    } catch (error) {
+      console.error('Check tool availability error:', error);
+      alert('Fehler beim Prüfen der Verfügbarkeit: ' + error.message);
       return false;
     }
+  },
 
-    return true;
+  // Get tool display name
+  getToolDisplayName(toolName) {
+    const names = {
+      ideas: 'Ideengenerierung',
+      brainstorming: 'Brainstorming',
+      prd: 'PRD/PAD Erstellung',
+      prototype: 'Prototyp-Generierung'
+    };
+    return names[toolName] || toolName;
   }
 };
 
-// Styles for credits UI
-const creditsUIStyles = `
-  .credits-status-card {
+// Styles for V3 Credits UI
+const creditsUIStylesV3 = `
+  .credits-status-card-v3 {
     background: white;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     border: 2px solid #f59e0b;
   }
 
-  .credits-header {
+  .credits-header-v3 {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
+    align-items: flex-start;
+    margin-bottom: 24px;
   }
 
-  .credits-title {
-    font-size: 18px;
+  .credits-title-v3 {
+    font-size: 20px;
     font-weight: bold;
     color: #1f2937;
+    margin: 0 0 4px 0;
+  }
+
+  .credits-subtitle-v3 {
+    font-size: 13px;
+    color: #6b7280;
     margin: 0;
   }
 
-  .btn-purchase-small {
+  .btn-purchase-small-v3 {
     display: flex;
     align-items: center;
     gap: 6px;
-    padding: 8px 16px;
+    padding: 10px 18px;
     background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
     color: white;
     border: none;
@@ -310,71 +452,191 @@ const creditsUIStyles = `
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s;
+    font-size: 14px;
   }
 
-  .btn-purchase-small:hover {
+  .btn-purchase-small-v3:hover {
     opacity: 0.9;
     transform: translateY(-2px);
   }
 
-  .credits-grid {
+  .tool-usage-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 15px;
-    margin-bottom: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
   }
 
-  .credit-item {
+  .tool-usage-item {
     background: #fef3c7;
-    padding: 15px;
-    border-radius: 8px;
-    text-align: center;
+    padding: 16px;
+    border-radius: 12px;
+    display: flex;
+    gap: 12px;
+    transition: all 0.3s;
   }
 
-  .credit-item-total {
-    background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%);
+  .tool-usage-item:hover {
+    box-shadow: 0 4px 8px rgba(245, 158, 11, 0.2);
   }
 
-  .credit-label {
-    font-size: 12px;
-    color: #78350f;
-    text-transform: uppercase;
+  .tool-usage-item.tool-depleted {
+    background: #fee2e2;
+    opacity: 0.7;
+  }
+
+  .tool-icon {
+    font-size: 32px;
+    line-height: 1;
+  }
+
+  .tool-info {
+    flex: 1;
+  }
+
+  .tool-name {
+    font-size: 13px;
     font-weight: 600;
+    color: #78350f;
     margin-bottom: 8px;
   }
 
-  .credit-value {
+  .tool-usage-bar {
+    height: 8px;
+    background: #fde68a;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+
+  .tool-usage-fill {
+    height: 100%;
+    background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
+    transition: width 0.3s;
+  }
+
+  .tool-depleted .tool-usage-fill {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  }
+
+  .tool-stats {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+  }
+
+  .tool-remaining {
+    font-weight: 600;
+    color: #f59e0b;
+  }
+
+  .tool-depleted .tool-remaining {
+    color: #ef4444;
+  }
+
+  .tool-total {
+    color: #92400e;
+  }
+
+  .workflow-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+    padding: 20px;
+    background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%);
+    border-radius: 12px;
+  }
+
+  .workflow-summary-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .workflow-summary-icon {
     font-size: 32px;
+  }
+
+  .workflow-summary-label {
+    font-size: 12px;
+    color: #78350f;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .workflow-summary-value {
+    font-size: 28px;
     font-weight: bold;
     color: #f59e0b;
   }
 
-  .credit-value-large {
-    font-size: 42px;
-    font-weight: bold;
-    color: #ea580c;
-  }
-
-  .credit-subtitle {
+  .workflow-summary-note {
     font-size: 11px;
     color: #92400e;
-    margin-top: 4px;
   }
 
-  .credits-warning {
-    background: #fef2f2;
-    border-left: 4px solid #ef4444;
-    padding: 12px;
-    border-radius: 4px;
+  .usage-recommendation {
+    padding: 14px;
+    border-radius: 8px;
     display: flex;
     align-items: center;
-    gap: 10px;
-    color: #991b1b;
+    gap: 12px;
     font-size: 14px;
-    margin-bottom: 15px;
+    margin-bottom: 16px;
   }
 
-  .btn-info-link {
+  .usage-info {
+    background: #eff6ff;
+    border-left: 4px solid #3b82f6;
+    color: #1e40af;
+  }
+
+  .usage-warning {
+    background: #fef2f2;
+    border-left: 4px solid #ef4444;
+    color: #991b1b;
+  }
+
+  .upgrade-prompt {
+    background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%);
+    border: 2px solid #f59e0b;
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .upgrade-prompt strong {
+    display: block;
+    margin-bottom: 4px;
+    color: #78350f;
+  }
+
+  .upgrade-prompt p {
+    margin: 0;
+    font-size: 13px;
+    color: #92400e;
+  }
+
+  .btn-upgrade {
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .btn-upgrade:hover {
+    opacity: 0.9;
+  }
+
+  .btn-info-link-v3 {
     background: none;
     border: none;
     color: #f59e0b;
@@ -387,11 +649,22 @@ const creditsUIStyles = `
     font-weight: 500;
   }
 
-  .btn-info-link:hover {
+  .btn-info-link-v3:hover {
     text-decoration: underline;
   }
 
-  .modal-overlay {
+  .credits-error {
+    background: #fef2f2;
+    border: 2px solid #ef4444;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #991b1b;
+  }
+
+  .modal-overlay-v3 {
     position: fixed;
     top: 0;
     left: 0;
@@ -410,7 +683,7 @@ const creditsUIStyles = `
     to { opacity: 1; }
   }
 
-  .modal-content {
+  .modal-content-v3 {
     background: white;
     border-radius: 16px;
     max-width: 800px;
@@ -431,7 +704,7 @@ const creditsUIStyles = `
     }
   }
 
-  .modal-header {
+  .modal-header-v3 {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -439,7 +712,7 @@ const creditsUIStyles = `
     border-bottom: 1px solid #e5e7eb;
   }
 
-  .modal-title {
+  .modal-title-v3 {
     display: flex;
     align-items: center;
     gap: 12px;
@@ -449,7 +722,7 @@ const creditsUIStyles = `
     margin: 0;
   }
 
-  .modal-close {
+  .modal-close-v3 {
     background: none;
     border: none;
     cursor: pointer;
@@ -457,27 +730,27 @@ const creditsUIStyles = `
     transition: color 0.2s;
   }
 
-  .modal-close:hover {
+  .modal-close-v3:hover {
     color: #1f2937;
   }
 
-  .modal-body {
+  .modal-body-v3 {
     padding: 24px;
   }
 
-  .modal-description {
+  .modal-description-v3 {
     color: #6b7280;
     margin-bottom: 24px;
   }
 
-  .purchase-options {
+  .purchase-options-v3 {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 20px;
     margin-bottom: 24px;
   }
 
-  .purchase-option {
+  .purchase-option-v3 {
     border: 2px solid #e5e7eb;
     border-radius: 12px;
     padding: 24px;
@@ -485,12 +758,12 @@ const creditsUIStyles = `
     transition: all 0.3s;
   }
 
-  .purchase-option:hover {
+  .purchase-option-v3:hover {
     border-color: #f59e0b;
     box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
   }
 
-  .purchase-badge {
+  .purchase-badge-v3 {
     position: absolute;
     top: -12px;
     right: 20px;
@@ -502,37 +775,38 @@ const creditsUIStyles = `
     font-weight: 600;
   }
 
-  .purchase-icon {
+  .purchase-icon-v3 {
     font-size: 48px;
     margin-bottom: 16px;
   }
 
-  .purchase-title {
+  .purchase-title-v3 {
     font-size: 20px;
     font-weight: bold;
     color: #1f2937;
     margin-bottom: 8px;
   }
 
-  .purchase-price {
+  .purchase-price-v3 {
     font-size: 32px;
     font-weight: bold;
     color: #f59e0b;
     margin-bottom: 16px;
   }
 
-  .purchase-features {
+  .purchase-features-v3 {
     list-style: none;
     padding: 0;
     margin: 0 0 20px 0;
   }
 
-  .purchase-features li {
+  .purchase-features-v3 li {
     padding: 8px 0;
     color: #4b5563;
+    font-size: 14px;
   }
 
-  .btn-purchase {
+  .btn-purchase-v3 {
     width: 100%;
     padding: 12px;
     background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
@@ -544,33 +818,23 @@ const creditsUIStyles = `
     transition: all 0.3s;
   }
 
-  .btn-purchase:hover {
+  .btn-purchase-v3:hover {
     opacity: 0.9;
     transform: translateY(-2px);
   }
 
-  .purchase-info {
+  .purchase-info-v3 {
     background: #eff6ff;
     border-left: 4px solid #3b82f6;
     padding: 16px;
     border-radius: 4px;
     display: flex;
     gap: 12px;
-    margin-bottom: 16px;
   }
 
-  .purchase-info p {
+  .purchase-info-v3 p {
     margin: 0;
     color: #1e40af;
-    font-size: 14px;
-  }
-
-  .purchase-note {
-    background: #fef3c7;
-    border: 1px solid #fbbf24;
-    padding: 12px;
-    border-radius: 8px;
-    color: #78350f;
     font-size: 14px;
   }
 `;
@@ -578,6 +842,6 @@ const creditsUIStyles = `
 // Add styles to page
 if (typeof window !== 'undefined') {
   const style = document.createElement('style');
-  style.textContent = creditsUIStyles;
+  style.textContent = creditsUIStylesV3;
   document.head.appendChild(style);
 }

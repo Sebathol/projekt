@@ -77,11 +77,11 @@ async function register(req, res) {
 
     const userId = result.userId;
 
-    // Create free subscription
+    // Create free subscription (V3: Tool limits are defined in tool_limits table)
     await new Promise((resolve, reject) => {
       db.run(
-        `INSERT INTO subscriptions (user_id, plan, active)
-         VALUES (?, 'free', 1)`,
+        `INSERT INTO subscriptions (user_id, plan, workflows_limit, tokens_limit, active)
+         VALUES (?, 'free', 3, 12, 1)`,
         [userId],
         (err) => {
           if (err) reject(err);
@@ -90,16 +90,10 @@ async function register(req, res) {
       );
     });
 
-    // Grant free signup bonus (3 workflows = 12 tokens)
-    // Note: Credits table is auto-created via trigger
-    if (creditsModule) {
-      await creditsModule.grantFreeSignupBonus(userId);
-    }
-
-    // Get credits status
-    const credits = await new Promise((resolve, reject) => {
+    // Get V3 status (tool-specific tracking)
+    const status = await new Promise((resolve, reject) => {
       db.get(
-        `SELECT * FROM user_credits_view WHERE user_id = ?`,
+        `SELECT * FROM user_status_view WHERE user_id = ?`,
         [userId],
         (err, row) => {
           if (err) reject(err);
@@ -116,13 +110,35 @@ async function register(req, res) {
       userId,
       email,
       token,
-      credits: {
-        availableWorkflows: credits?.available_workflows || 0,
-        availableTokens: credits?.available_tokens || 0,
-        totalAvailableTokens: (credits?.available_workflows || 0) * 4 + (credits?.available_tokens || 0)
+      toolUsage: {
+        ideas: {
+          used: status?.ideas_used || 0,
+          limit: status?.ideas_limit || 0,
+          remaining: status?.ideas_remaining || 0
+        },
+        brainstorming: {
+          used: status?.brainstorming_used || 0,
+          limit: status?.brainstorming_limit || 0,
+          remaining: status?.brainstorming_remaining || 0
+        },
+        prd: {
+          used: status?.prd_used || 0,
+          limit: status?.prd_limit || 0,
+          remaining: status?.prd_remaining || 0
+        },
+        prototype: {
+          used: status?.prototype_used || 0,
+          limit: status?.prototype_limit || 0,
+          remaining: status?.prototype_remaining || 0
+        }
+      },
+      workflows: {
+        completed: status?.completed_workflows || 0,
+        guaranteedRemaining: status?.workflows_remaining_guaranteed || 3
       },
       subscription: {
-        plan: 'free'
+        plan: 'free',
+        active: true
       }
     });
 
@@ -169,10 +185,10 @@ async function login(req, res) {
     // Update last login
     db.run('UPDATE users SET last_login = CURRENT_TIMESTAMP WHERE id = ?', [user.id]);
 
-    // Get credits and subscription status
-    const userCredits = await new Promise((resolve, reject) => {
+    // Get V3 status (tool-specific tracking)
+    const userStatus = await new Promise((resolve, reject) => {
       db.get(
-        `SELECT * FROM user_credits_view WHERE user_id = ?`,
+        `SELECT * FROM user_status_view WHERE user_id = ?`,
         [user.id],
         (err, row) => {
           if (err) reject(err);
@@ -189,15 +205,36 @@ async function login(req, res) {
       userId: user.id,
       email: user.email,
       token,
-      credits: userCredits ? {
-        availableWorkflows: userCredits.available_workflows,
-        availableTokens: userCredits.available_tokens,
-        totalAvailableTokens: (userCredits.available_workflows * 4) + userCredits.available_tokens
+      toolUsage: userStatus ? {
+        ideas: {
+          used: userStatus.ideas_used,
+          limit: userStatus.ideas_limit,
+          remaining: userStatus.ideas_remaining
+        },
+        brainstorming: {
+          used: userStatus.brainstorming_used,
+          limit: userStatus.brainstorming_limit,
+          remaining: userStatus.brainstorming_remaining
+        },
+        prd: {
+          used: userStatus.prd_used,
+          limit: userStatus.prd_limit,
+          remaining: userStatus.prd_remaining
+        },
+        prototype: {
+          used: userStatus.prototype_used,
+          limit: userStatus.prototype_limit,
+          remaining: userStatus.prototype_remaining
+        }
       } : null,
-      subscription: userCredits ? {
-        plan: userCredits.plan || 'free',
-        active: userCredits.subscription_active,
-        daysRemaining: userCredits.days_remaining
+      workflows: userStatus ? {
+        completed: userStatus.completed_workflows,
+        guaranteedRemaining: userStatus.workflows_remaining_guaranteed
+      } : null,
+      subscription: userStatus ? {
+        plan: userStatus.plan || 'free',
+        active: userStatus.subscription_active,
+        daysRemaining: userStatus.days_remaining
       } : null
     });
 
@@ -230,10 +267,10 @@ async function getCurrentUser(req, res) {
       return res.status(404).json({ error: 'Benutzer nicht gefunden' });
     }
 
-    // Get credits and subscription status
-    const userCredits = await new Promise((resolve, reject) => {
+    // Get V3 status (tool-specific tracking)
+    const userStatus = await new Promise((resolve, reject) => {
       db.get(
-        `SELECT * FROM user_credits_view WHERE user_id = ?`,
+        `SELECT * FROM user_status_view WHERE user_id = ?`,
         [userId],
         (err, row) => {
           if (err) reject(err);
@@ -247,17 +284,39 @@ async function getCurrentUser(req, res) {
         id: user.id,
         email: user.email,
         createdAt: user.created_at,
-        lastLogin: user.last_login
+        lastLogin: user.last_login,
+        phone: userStatus?.phone || '06853/8579828'
       },
-      credits: userCredits ? {
-        availableWorkflows: userCredits.available_workflows,
-        availableTokens: userCredits.available_tokens,
-        totalAvailableTokens: (userCredits.available_workflows * 4) + userCredits.available_tokens
+      toolUsage: userStatus ? {
+        ideas: {
+          used: userStatus.ideas_used,
+          limit: userStatus.ideas_limit,
+          remaining: userStatus.ideas_remaining
+        },
+        brainstorming: {
+          used: userStatus.brainstorming_used,
+          limit: userStatus.brainstorming_limit,
+          remaining: userStatus.brainstorming_remaining
+        },
+        prd: {
+          used: userStatus.prd_used,
+          limit: userStatus.prd_limit,
+          remaining: userStatus.prd_remaining
+        },
+        prototype: {
+          used: userStatus.prototype_used,
+          limit: userStatus.prototype_limit,
+          remaining: userStatus.prototype_remaining
+        }
       } : null,
-      subscription: userCredits ? {
-        plan: userCredits.plan || 'free',
-        active: userCredits.subscription_active,
-        daysRemaining: userCredits.days_remaining
+      workflows: userStatus ? {
+        completed: userStatus.completed_workflows,
+        guaranteedRemaining: userStatus.workflows_remaining_guaranteed
+      } : null,
+      subscription: userStatus ? {
+        plan: userStatus.plan || 'free',
+        active: userStatus.subscription_active,
+        daysRemaining: userStatus.days_remaining
       } : null
     });
 

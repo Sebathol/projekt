@@ -12,7 +12,7 @@ const fs = require('fs');
 // Import modules
 const creditsModule = require('./credits');
 const authModule = require('./auth');
-const subscriptionsModule = require('./subscriptions');
+const subscriptionsModule = require('./subscriptions_v2'); // V3: Tool-specific tracking
 const workflowsModule = require('./workflows');
 const usageModule = require('./usage');
 
@@ -37,8 +37,8 @@ const db = new sqlite3.Database(dbPath, (err) => {
   console.log('✅ Connected to SQLite database');
 });
 
-// Initialize database schema (V2 with tokens/workflows separation)
-const schemaPath = path.join(__dirname, '../database/schema_v2.sql');
+// Initialize database schema (V3 with tool-specific tracking)
+const schemaPath = path.join(__dirname, '../database/schema_v3.sql');
 const schema = fs.readFileSync(schemaPath, 'utf8');
 
 db.exec(schema, (err) => {
@@ -46,7 +46,7 @@ db.exec(schema, (err) => {
     console.error('❌ Database schema error:', err);
     process.exit(1);
   }
-  console.log('✅ Database schema V2 initialized (Tokens/Workflows system)');
+  console.log('✅ Database schema V3 initialized (Tool-specific tracking system)');
 });
 
 // Make db available to all modules
@@ -64,7 +64,7 @@ app.get('/api/health', (req, res) => {
   res.json({
     status: 'ok',
     timestamp: new Date().toISOString(),
-    version: '2.0.0'
+    version: '3.0.0'
   });
 });
 
@@ -80,8 +80,10 @@ app.get('/api/docs', (req, res) => {
       },
       subscriptions: {
         'GET /api/subscriptions/status': 'Get subscription status (requires auth)',
+        'GET /api/subscriptions/usage': 'Get tool-specific usage status with smart recommendations (requires auth)',
         'POST /api/subscriptions/create': 'Create new subscription (requires auth)',
         'POST /api/subscriptions/cancel': 'Cancel subscription (requires auth)',
+        'POST /api/subscriptions/purchase-extra': 'Purchase extra workflows/tokens (requires paid subscription)',
         'GET /api/subscriptions/plans': 'Get available plans'
       },
       workflows: {

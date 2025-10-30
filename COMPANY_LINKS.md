@@ -2,7 +2,7 @@
 
 **Firmenname:** Ai Storm Create
 
-**Letzte Aktualisierung:** 2025-10-20
+**Letzte Aktualisierung:** 2025-10-30
 
 ---
 
@@ -22,9 +22,9 @@
 
 ## App Portfolio
 
-### 1. Simple Weather App (Aktuell)
+### 1. API Master (Aktuell)
 
-**Name:** Simple Weather App
+**Name:** API Master
 
 **Version:** 1.0.0
 
@@ -32,9 +32,17 @@
 
 **Status:** In Entwicklung
 
-**Preis:** €1,99 (Einmalzahlung)
+**Preis:** Kostenlos (mit optionalen In-App-Käufen geplant)
 
-**Beschreibung:** Einfache, werbefreie Wetter-App ohne Abo. Fokus auf Funktionalität und Benutzerfreundlichkeit.
+**Beschreibung:** Professioneller API-Key Manager mit Claude AI Integration. Verwalte alle API-Keys sicher an einem Ort und nutze Claude AI direkt in der App.
+
+**Features:**
+- API-Key Management mit Kategorisierung
+- Claude AI Assistant Integration
+- PWA (Progressive Web App)
+- Google Play Store ready
+- Offline-fähig
+- Moderne Sidebar-Navigation
 
 **Store-Links:**
 - Google Play Store: [WIRD ERGÄNZT nach Veröffentlichung]
@@ -160,24 +168,24 @@ https://[IHRE-DOMAIN]/apps
 - `logo-icon.png`
 
 ### Farben
-**Primärfarbe:** [WIRD ERGÄNZT]
+**Primärfarbe:** #6366f1 (Indigo)
 
-**Sekundärfarbe:** [WIRD ERGÄNZT]
+**Sekundärfarbe:** #8b5cf6 (Purple)
 
 **Farbschema:**
 ```css
-/* Beispiel - bitte anpassen */
---primary-color: #667eea;
---secondary-color: #764ba2;
---accent-color: #FFD700;
---background-color: #FFFFFF;
---text-color: #333333;
+--primary-color: #6366f1;
+--secondary-color: #8b5cf6;
+--accent-color: #10b981;
+--background-color: #f9fafb;
+--text-color: #1f2937;
+--card-bg: #ffffff;
 ```
 
 ### Schriftarten
-**Primär:** [WIRD ERGÄNZT]
+**Primär:** System Font Stack (Segoe UI, Roboto, Helvetica)
 
-**Sekundär:** [WIRD ERGÄNZT]
+**Sekundär:** Monospace (für API-Keys)
 
 ---
 
@@ -256,7 +264,7 @@ const COMPANY_CONFIG = {
 ### Stripe
 **Account:** [WIRD ERGÄNZT]
 
-**Product ID (Simple Weather App):** [WIRD ERGÄNZT]
+**Product ID (API Master):** [WIRD ERGÄNZT]
 
 ### PayPal
 **Business Account:** [WIRD ERGÄNZT]
@@ -271,10 +279,14 @@ const COMPANY_CONFIG = {
 
 ## Changelog
 
+### 2025-10-30
+- Update auf API Master (vorher: Weather App)
+- Struktur für API Master angelegt
+- Claude AI Integration dokumentiert
+- Entfernung aller Weather App Referenzen
+
 ### 2025-10-20
 - Initiale Erstellung der Link-Dokumentation
-- Struktur für Simple Weather App angelegt
-- Platzhalter für zukünftige Apps erstellt
 
 ---
 
@@ -287,7 +299,6 @@ const COMPANY_CONFIG = {
 - [ ] Firmenadresse für Impressum
 - [ ] Datenschutz-E-Mail
 - [ ] Logo-Dateien hochladen
-- [ ] Farbschema definieren
 - [ ] Soziale Medien-Links (optional)
 - [ ] Analytics-Setup (optional)
 - [ ] Payment-Provider-Accounts einrichten

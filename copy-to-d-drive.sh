@@ -166,7 +166,7 @@ echo "  ✓ start-api-master.cmd"
 # Erstelle README für D:\ Ordner
 cat > "$TARGET_DIR/README_START.txt" << 'EOF'
 ===================================
-API Master - Genius Nexus Agent
+API Master
 ===================================
 
 📦 SCHNELLSTART:
@@ -184,7 +184,7 @@ WSL/Linux:
 🔐 FEATURES:
 
 • API-Key Management
-• 🤖 Genius Nexus Agent (Claude API Integration)
+• 🤖 Claude AI Assistant (Claude API Integration)
 • PWA-ready (installierbar als App)
 • Google Play Store ready
 • Komplett offline-fähig
@@ -209,9 +209,9 @@ WSL/Linux:
 1. API Master öffnen
 2. "Key hinzufügen" klicken
 3. Service: "Claude" oder "Anthropic"
-4. Name: "Genius Nexus"
+4. Name: "Claude AI"
 5. API-Key einfügen
-6. Tab "Genius Nexus Agent" öffnen
+6. Tab "Claude AI Assistant" öffnen
 7. API-Key auswählen
 8. Chat starten!
 
@@ -261,7 +261,7 @@ echo "5️⃣  Claude API einrichten:"
 echo "    • API-Key bei Anthropic besorgen"
 echo "    • In API Master unter 'Key hinzufügen' eintragen"
 echo "    • Service: Claude / Anthropic"
-echo "    • Tab 'Genius Nexus Agent' öffnen"
+echo "    • Tab 'Claude AI Assistant' öffnen"
 echo ""
 echo "==========================================="
 echo ""

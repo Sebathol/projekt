@@ -1,168 +1,167 @@
-# 🌤️ Simple Weather App
+# 🔐 API Master
 
-Eine einfache Wetter-Anwendung, die aktuelle Wetterdaten für beliebige Städte anzeigt. Jetzt als Progressive Web App (PWA) - installierbar auf Smartphone und Desktop!
+Ein professioneller API-Key Manager mit Claude AI Integration. Verwalte alle deine API-Keys sicher an einem Ort und nutze die Kraft von Claude AI!
+
+## ✨ Features
+
+- 🔑 **API-Key Management** - Sichere Verwaltung aller API-Keys
+- 📁 **Kategorisierung** - Organisiere Keys nach AI, Payment, Maps, Social, etc.
+- 🤖 **Claude AI Assistant** - Direkte Claude API Integration
+- 💾 **LocalStorage** - Alle Daten bleiben lokal auf deinem Gerät
+- 🎨 **Modernes Design** - Professionelle Sidebar-Navigation
+- 📱 **PWA-ready** - Installierbar als App auf Smartphone & Desktop
+- 🏪 **Play Store ready** - Vorbereitet für Google Play Store
 
 ## 🚀 SCHNELLSTART
 
-### Windows CMD (wie Grow Master):
-
-```cmd
-# Repository klonen
-git clone -b claude/fix-weather-app-011CUK3ejTvamsHndDe3YDJZ https://github.com/Sebathol/projekt.git simple-weather-app
-
-# In den Ordner wechseln
-cd simple-weather-app
-
-# App testen
-TEST_APP.bat
-```
-
-**Oder noch einfacher:** Führen Sie `INSTALLATION.bat` aus - das Script macht alles automatisch!
-
-📖 **Detaillierte Anleitung:** Siehe [SCHNELLSTART.md](SCHNELLSTART.md)
-
-## Features
-
-- Aktuelle Temperatur
-- Gefühlte Temperatur
-- Luftfeuchtigkeit
-- Windgeschwindigkeit
-- Wetterbeschreibung
-- Responsive Design
-- **PWA-Funktionalität** - Installierbar wie eine native App!
-- **Offline-Unterstützung** - Funktioniert auch ohne Internet (mit Cache)
-- **Native App-Feeling** - Läuft im Vollbild ohne Browser-UI
-
-## Installation auf dem Smartphone
-
-### Android (Chrome/Edge):
-
-1. Öffne die App in Chrome/Edge: Lade die Dateien auf einen Webserver hoch (z.B. GitHub Pages, Netlify, oder deinen eigenen Server)
-2. Gehe zur URL der App
-3. Tippe auf das Menü (⋮) oben rechts
-4. Wähle **"App installieren"** oder **"Zum Startbildschirm hinzufügen"**
-5. Die App erscheint auf deinem Homescreen wie jede andere App!
-
-### iOS (Safari):
-
-1. Öffne die App in Safari
-2. Tippe auf das Teilen-Symbol (□↑)
-3. Wähle **"Zum Home-Bildschirm"**
-4. Tippe auf "Hinzufügen"
-5. Die App erscheint auf deinem Homescreen!
-
-## Verwendung (Entwicklung/Test)
-
-### Methode 1: PWA lokal testen
-
-**WICHTIG:** PWAs benötigen HTTPS oder localhost. Für lokale Tests:
+### Methode 1: Lokal starten (Entwicklung)
 
 ```bash
-# Mit Python 3
+# Repository klonen
+git clone https://github.com/Sebathol/projekt.git api-master
+cd api-master
+
+# Server starten
 python3 -m http.server 8000
 
-# Oder mit Node.js
-npx http-server -p 8000
+# Im Browser öffnen
+open http://localhost:8000/api-master.html
 ```
 
-Dann öffne `http://localhost:8000` in deinem Browser.
+### Methode 2: Windows CMD
 
-### Methode 2: Direkt im Browser öffnen
-
-Für einfaches Testen (ohne PWA-Features):
-1. Öffne die Datei `index.html` in deinem Browser (Doppelklick oder Rechtsklick → Öffnen mit → Browser)
-2. Gib eine Stadt ein und klicke auf "Suchen"
-3. Die App verwendet standardmäßig eine kostenlose API (wttr.in), die keine Registrierung erfordert
-
-### Methode 3: Online deployen
-
-Für die volle PWA-Funktionalität mit Installation auf dem Smartphone:
-
-**GitHub Pages (Kostenlos & Einfach):**
-```bash
-# 1. Erstelle ein GitHub Repository
-# 2. Push dein Projekt
-git add .
-git commit -m "Wetter App PWA"
-git push origin main
-
-# 3. Gehe zu Settings → Pages
-# 4. Wähle Branch: main
-# 5. Deine App ist verfügbar unter: https://DEIN-USERNAME.github.io/REPO-NAME
+```cmd
+cd /d D:\projekt
+python -m http.server 8000
 ```
 
-**Netlify (Kostenlos & Einfach):**
-1. Gehe zu [netlify.com](https://netlify.com)
-2. Ziehe den Projekt-Ordner per Drag & Drop
-3. Fertig! Du bekommst eine URL wie `https://dein-projekt.netlify.app`
+Dann öffne: `http://localhost:8000/api-master.html`
 
-**Vercel:**
-```bash
-npx vercel
-```
-
-## 🔧 API-Konfiguration (NEU!)
-
-### Methode 1: Setup-Tool verwenden (Empfohlen - Einfach!)
-
-**Wir haben ein spezielles Setup-Tool für dich erstellt!**
-
-1. **Öffne `setup-tool.html` im Browser**
-2. **Login mit Passwort:** `JoHanna268219$`
-3. **Folge den Anweisungen im Tool**
-
-Das Setup-Tool bietet:
-- ✅ Passwort-geschützte Oberfläche
-- ✅ API-Key Management (mehrere Keys speichern)
-- ✅ Automatische Code-Generierung
-- ✅ Unterstützung für alle großen Wetter-APIs
-- ✅ Schritt-für-Schritt Anleitungen
-- ✅ Sichere Implementierung
-
-**Verfügbare APIs:**
-- **WeatherAPI.com** (Empfohlen) - 1 Million calls/Monat kostenlos
-- **OpenWeatherMap** - 1000 calls/Tag
-- **Visual Crossing** - 1000 records/Tag
-- **Open-Meteo** - Kein API-Key nötig!
-- **Custom API** - Eigene API verwenden
-
-**Detaillierte Infos:** Siehe `API_DOCUMENTATION.md`
-
-### Methode 2: Manuell (Fortgeschritten)
-
-Falls du den Code direkt bearbeiten möchtest:
-
-1. Registriere dich bei [WeatherAPI.com](https://www.weatherapi.com/signup.aspx)
-2. Hole dir deinen kostenlosen API-Key
-3. Öffne `script.js`
-4. Ersetze `YOUR_API_KEY_HERE` mit deinem API-Key
-5. Setze `USE_DEMO_API = false`
-
-### Methode 3: Automatisches Update-Script (Node.js)
-
-Für automatische Updates via Terminal:
+### Methode 3: WSL
 
 ```bash
-node update-api.js
-# Passwort: JoHanna268219$
-# Folge den Anweisungen
+cd /home/user/projekt
+python3 -m http.server 8000
 ```
 
-## Technologien
+## 🔐 Claude API Setup
 
-- HTML5
-- CSS3
-- Vanilla JavaScript
-- wttr.in API (Demo-Modus) oder OpenWeatherMap API
+1. **API-Key besorgen:**
+   - Gehe zu [console.anthropic.com](https://console.anthropic.com/)
+   - Erstelle einen neuen API-Key
 
-## Browser-Kompatibilität
+2. **In API Master einrichten:**
+   - Öffne API Master
+   - Klicke auf "Key hinzufügen"
+   - Service: "Claude" oder "Anthropic"
+   - Name: z.B. "Claude AI"
+   - API-Key einfügen
+   - Speichern
 
-Funktioniert in allen modernen Browsern:
-- Chrome
-- Firefox
-- Safari
-- Edge
+3. **Claude AI Assistant nutzen:**
+   - Navigiere zum Tab "Claude AI Assistant"
+   - Wähle deinen API-Key aus
+   - Wähle ein Modell (empfohlen: Claude 3.5 Sonnet)
+   - Starte den Chat!
 
-## Lizenz
+## 📱 Als App installieren
+
+### Android (Chrome/Edge):
+1. Öffne API Master im Browser
+2. Menü (⋮) → "App installieren"
+3. Fertig! App ist auf dem Homescreen
+
+### iOS (Safari):
+1. Öffne API Master in Safari
+2. Teilen-Symbol → "Zum Home-Bildschirm"
+3. Fertig!
+
+### Desktop (Chrome/Edge):
+1. Öffne API Master
+2. Adressleiste → Install-Icon klicken
+3. Fertig!
+
+## 🏗️ Projekt-Struktur
+
+```
+api-master/
+├── api-master.html          # Haupt-HTML
+├── api-master.css           # Styling
+├── api-master.js            # App-Logik & Claude API
+├── api-master-sw.js         # Service Worker (PWA)
+├── manifest-api-master.json # PWA Manifest
+├── generate-api-master-icons.html # Icon Generator
+├── twa-manifest.json        # Google Play Config
+├── assetlinks.json          # Digital Asset Links
+├── GOOGLE_PLAY_STORE_SETUP.md # Play Store Anleitung
+└── build-for-playstore.sh   # Build Script
+```
+
+## 🔧 Verfügbare Claude Modelle
+
+- **Claude 3.5 Sonnet** (Empfohlen) - Beste Balance
+- **Claude 3 Opus** - Höchste Intelligenz
+- **Claude 3 Sonnet** - Schnell & effizient
+- **Claude 3 Haiku** - Ultraschnell & günstig
+
+## 📚 Weitere Features
+
+### API-Key Management
+- Sicheres Speichern von API-Keys
+- Kategorisierung nach Services
+- Quick-Copy Funktion
+- Status-Tracking (Aktiv/Inaktiv)
+- Export/Import Funktion
+
+### Claude AI Assistant
+- Chat-Interface mit Verlauf
+- Markdown-Unterstützung
+- Typing-Indikatoren
+- Modell-Auswahl
+- Chat-Export
+- API-Key Verwaltung
+
+### PWA Features
+- Offline-Unterstützung
+- Install-Prompt
+- App-Icon & Splash Screen
+- Vollbild-Modus
+
+## 🏪 Google Play Store
+
+Siehe [GOOGLE_PLAY_STORE_SETUP.md](GOOGLE_PLAY_STORE_SETUP.md) für detaillierte Anleitung.
+
+**Kurzversion:**
+1. Icons generieren: `generate-api-master-icons.html`
+2. Build erstellen: `./build-for-playstore.sh`
+3. Android Studio öffnen und signieren
+4. In Play Console hochladen
+
+## 🔒 Sicherheit
+
+- Alle API-Keys werden nur lokal gespeichert (localStorage)
+- Keine Server-Übertragung
+- HTTPS empfohlen für Produktion
+- Service Worker für sichere Offline-Funktionalität
+
+## 🛠️ Technologien
+
+- HTML5 / CSS3 / JavaScript (Vanilla)
+- Claude API (Anthropic)
+- Service Workers (PWA)
+- LocalStorage (Persistenz)
+- Trusted Web Activity (Android)
+
+## 📄 Lizenz
 
 MIT
+
+## 👨‍💻 Entwickelt von
+
+Ai Storm Create
+
+## 🆘 Support
+
+Bei Fragen oder Problemen:
+- Issues: [GitHub Issues](https://github.com/Sebathol/projekt/issues)
+- Dokumentation: Siehe API_MASTER_README.md

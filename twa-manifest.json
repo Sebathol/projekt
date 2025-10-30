@@ -1,0 +1,41 @@
+{
+  "packageId": "com.aistormcreate.prototype",
+  "host": "aistormcreate.com",
+  "name": "Von der Idee zum Prototyp",
+  "launcherName": "Idea to Prototype",
+  "display": "standalone",
+  "themeColor": "#f59e0b",
+  "navigationColor": "#ffffff",
+  "backgroundColor": "#ffffff",
+  "enableNotifications": true,
+  "startUrl": "/",
+  "iconUrl": "/icons/icon-512x512.png",
+  "maskableIconUrl": "/icons/icon-maskable-512x512.png",
+  "splashScreenFadeOutDuration": 300,
+  "signingKey": {
+    "path": "./android.keystore",
+    "alias": "android"
+  },
+  "appVersionName": "3.0.0",
+  "appVersionCode": 30000,
+  "shortcuts": [
+    {
+      "name": "Neue Idee",
+      "short_name": "Idee",
+      "url": "/index.html?action=new-idea",
+      "icon": "/icons/shortcut-idea.png"
+    },
+    {
+      "name": "Promo-Code",
+      "short_name": "Code",
+      "url": "/index.html?action=promo-code",
+      "icon": "/icons/shortcut-promo.png"
+    }
+  ],
+  "enableSiteSettingsShortcut": true,
+  "orientation": "portrait",
+  "isChromeOSOnly": false,
+  "minSdkVersion": 23,
+  "targetSdkVersion": 34,
+  "compileSdkVersion": 34
+}

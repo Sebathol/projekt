@@ -1,0 +1,10 @@
+{
+  "id": "beispiel-1",
+  "title": "Titel deiner Werbung",
+  "description": "Kurze Beschreibung (max. 100 Zeichen) - was macht dein Programm/Produkt besonders?",
+  "url": "https://deine-website.de",
+  "image": "/werbe-links/bilder/beispiel-logo.png",
+  "priority": 10,
+  "active": false,
+  "target": "_blank"
+}

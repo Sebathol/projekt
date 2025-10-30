@@ -1,0 +1,11 @@
+{
+  "maxLinks": 10,
+  "displayLocations": ["sidebar", "footer", "dashboard"],
+  "refreshInterval": 3600000,
+  "enableRotation": false,
+  "rotationInterval": 5000,
+  "showOnlyForFreePlans": false,
+  "hideForPremium": false,
+  "defaultImage": "/icons/default-ad.png",
+  "allowExternalImages": true
+}

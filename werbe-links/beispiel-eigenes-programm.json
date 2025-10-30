@@ -1,0 +1,9 @@
+{
+  "id": "eigenes-programm-1",
+  "title": "Dein anderes Programm",
+  "description": "Verlinke hier zu deinen anderen Apps und Projekten!",
+  "url": "https://deine-andere-app.de",
+  "priority": 1,
+  "active": true,
+  "target": "_blank"
+}

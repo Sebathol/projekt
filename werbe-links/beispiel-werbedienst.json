@@ -1,0 +1,9 @@
+{
+  "id": "werbedienst-1",
+  "title": "Werbedienst-Platzhalter",
+  "description": "Hier kannst du externe Werbedienste einbinden (z.B. Google Ads, Banner-Netzwerke)",
+  "url": "https://werbedienst.de/track?id=12345",
+  "priority": 8,
+  "active": true,
+  "target": "_blank"
+}

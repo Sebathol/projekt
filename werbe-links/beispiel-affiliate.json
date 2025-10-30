@@ -1,0 +1,9 @@
+{
+  "id": "affiliate-partner-1",
+  "title": "Partner-Produkt",
+  "description": "Empfehle Affiliate-Produkte und verdiene Provisionen!",
+  "url": "https://affiliate-link.de?ref=deine-id",
+  "priority": 5,
+  "active": true,
+  "target": "_blank"
+}

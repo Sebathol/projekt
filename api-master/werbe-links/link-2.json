@@ -1,0 +1,33 @@
+{
+  "id": 2,
+  "active": true,
+  "title": "Platz für Ihre App #2",
+  "description": "Bewerben Sie hier eine Ihrer Apps. Einfach diese Datei bearbeiten!",
+  "image": "https://placehold.co/300x150/10b981/ffffff?text=Ihre+App+%232",
+  "link": "https://example.com",
+  "buttonText": "Mehr erfahren",
+  "position": "sidebar",
+  "priority": 2,
+  "languages": {
+    "de": {
+      "title": "Platz für Ihre App #2",
+      "description": "Bewerben Sie hier eine Ihrer Apps. Einfach diese Datei bearbeiten!",
+      "buttonText": "Mehr erfahren"
+    },
+    "en": {
+      "title": "Space for Your App #2",
+      "description": "Advertise one of your apps here. Simply edit this file!",
+      "buttonText": "Learn more"
+    },
+    "pl": {
+      "title": "Miejsce dla Twojej aplikacji #2",
+      "description": "Reklamuj tutaj jedną ze swoich aplikacji. Po prostu edytuj ten plik!",
+      "buttonText": "Dowiedz się więcej"
+    },
+    "fr": {
+      "title": "Espace pour votre app #2",
+      "description": "Faites la promotion de l'une de vos applications ici. Modifiez simplement ce fichier!",
+      "buttonText": "En savoir plus"
+    }
+  }
+}

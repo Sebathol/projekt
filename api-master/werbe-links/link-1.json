@@ -1,0 +1,33 @@
+{
+  "id": 1,
+  "active": true,
+  "title": "Simple Weather App",
+  "description": "Professionelle Wetter-Vorhersage für Ihre Region. Genau, schnell, zuverlässig.",
+  "image": "https://placehold.co/300x150/0ea5e9/ffffff?text=Weather+App",
+  "link": "https://weather-app.example.com",
+  "buttonText": "Kostenlos testen",
+  "position": "sidebar",
+  "priority": 1,
+  "languages": {
+    "de": {
+      "title": "Simple Weather App",
+      "description": "Professionelle Wetter-Vorhersage für Ihre Region. Genau, schnell, zuverlässig.",
+      "buttonText": "Kostenlos testen"
+    },
+    "en": {
+      "title": "Simple Weather App",
+      "description": "Professional weather forecast for your region. Accurate, fast, reliable.",
+      "buttonText": "Try for free"
+    },
+    "pl": {
+      "title": "Simple Weather App",
+      "description": "Profesjonalna prognoza pogody dla Twojego regionu. Dokładna, szybka, niezawodna.",
+      "buttonText": "Wypróbuj za darmo"
+    },
+    "fr": {
+      "title": "Simple Weather App",
+      "description": "Prévisions météo professionnelles pour votre région. Précis, rapide, fiable.",
+      "buttonText": "Essayer gratuitement"
+    }
+  }
+}

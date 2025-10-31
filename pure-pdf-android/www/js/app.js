@@ -23,6 +23,10 @@ const viewerContainer = document.getElementById('viewerContainer');
 const pdfViewer = document.getElementById('pdfViewer');
 const loading = document.getElementById('loading');
 const toolbar = document.getElementById('toolbar');
+const langBtn = document.getElementById('langBtn');
+const langModal = document.getElementById('langModal');
+const langList = document.getElementById('langList');
+const closeLangModal = document.getElementById('closeLangModal');
 
 // Wait for Cordova
 document.addEventListener('deviceready', onDeviceReady, false);
@@ -30,6 +34,12 @@ document.addEventListener('deviceready', onDeviceReady, false);
 function onDeviceReady() {
     console.log('Device is ready');
     isReady = true;
+
+    // Initialize language system
+    if (typeof LanguageManager !== 'undefined') {
+        LanguageManager.init();
+        populateLanguageList();
+    }
 
     // Event Listeners
     openBtn.addEventListener('click', openPDF);
@@ -39,6 +49,15 @@ function onDeviceReady() {
     zoomInBtn.addEventListener('click', () => changeZoom(0.2));
     zoomOutBtn.addEventListener('click', () => changeZoom(-0.2));
     fitWidthBtn.addEventListener('click', fitToWidth);
+    langBtn.addEventListener('click', openLanguageModal);
+    closeLangModal.addEventListener('click', closeLanguageModal);
+
+    // Close modal on background click
+    langModal.addEventListener('click', (e) => {
+        if (e.target === langModal) {
+            closeLanguageModal();
+        }
+    });
 
     // Status bar
     if (window.StatusBar) {
@@ -50,7 +69,8 @@ function onDeviceReady() {
 // Open PDF File
 function openPDF() {
     if (!isReady) {
-        alert('App wird noch geladen...');
+        const msg = typeof LanguageManager !== 'undefined' ? LanguageManager.t('loading') : 'App wird noch geladen...';
+        alert(msg);
         return;
     }
 
@@ -60,7 +80,8 @@ function openPDF() {
         loadPDFFromFile(file);
     }).catch(function(error) {
         console.error('Error selecting file:', error);
-        alert('Fehler beim Öffnen der Datei');
+        const msg = typeof LanguageManager !== 'undefined' ? LanguageManager.t('errorOpening') : 'Fehler beim Öffnen der Datei';
+        alert(msg);
     });
 }
 
@@ -79,7 +100,8 @@ function loadPDFFromFile(file) {
     reader.onerror = function(e) {
         console.error('FileReader error:', e);
         showLoading(false);
-        alert('Fehler beim Lesen der Datei');
+        const msg = typeof LanguageManager !== 'undefined' ? LanguageManager.t('errorOpening') : 'Fehler beim Lesen der Datei';
+        alert(msg);
     };
 
     // Read the file
@@ -96,7 +118,8 @@ function loadPDFFromFile(file) {
         readFileFromURI(file.uri);
     } else {
         showLoading(false);
-        alert('Ungültiges Dateiformat');
+        const msg = typeof LanguageManager !== 'undefined' ? LanguageManager.t('errorOpening') : 'Ungültiges Dateiformat';
+        alert(msg);
     }
 }
 
@@ -113,7 +136,8 @@ function readFileFromURI(uri) {
             reader.onerror = function(e) {
                 console.error('FileReader error:', e);
                 showLoading(false);
-                alert('Fehler beim Lesen der Datei');
+                const msg = typeof LanguageManager !== 'undefined' ? LanguageManager.t('errorOpening') : 'Fehler beim Lesen der Datei';
+                alert(msg);
             };
 
             reader.readAsArrayBuffer(file);
@@ -121,7 +145,8 @@ function readFileFromURI(uri) {
     }, function(error) {
         console.error('Error resolving file:', error);
         showLoading(false);
-        alert('Datei konnte nicht gefunden werden');
+        const msg = typeof LanguageManager !== 'undefined' ? LanguageManager.t('errorOpening') : 'Datei konnte nicht gefunden werden';
+        alert(msg);
     });
 }
 
@@ -145,7 +170,8 @@ async function loadPDFFromBuffer(arrayBuffer) {
     } catch (error) {
         console.error('Error loading PDF:', error);
         showLoading(false);
-        alert('Fehler beim Laden der PDF: ' + error.message);
+        const msg = typeof LanguageManager !== 'undefined' ? LanguageManager.t('errorLoading') : 'Fehler beim Laden der PDF';
+        alert(msg + ': ' + error.message);
     }
 }
 
@@ -221,6 +247,68 @@ function updateUI() {
 
 function showLoading(show) {
     loading.style.display = show ? 'block' : 'none';
+}
+
+// Language Management
+function populateLanguageList() {
+    if (typeof LanguageManager === 'undefined') return;
+
+    const languages = [
+        { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
+        { code: 'en', name: 'English', flag: '🇬🇧' },
+        { code: 'fr', name: 'Français', flag: '🇫🇷' },
+        { code: 'es', name: 'Español', flag: '🇪🇸' },
+        { code: 'it', name: 'Italiano', flag: '🇮🇹' },
+        { code: 'tr', name: 'Türkçe', flag: '🇹🇷' },
+        { code: 'pl', name: 'Polski', flag: '🇵🇱' }
+    ];
+
+    langList.innerHTML = '';
+
+    languages.forEach(lang => {
+        const item = document.createElement('div');
+        item.className = 'lang-item';
+        if (lang.code === LanguageManager.currentLanguage) {
+            item.classList.add('active');
+        }
+
+        item.innerHTML = `
+            <span class="flag">${lang.flag}</span>
+            <div class="lang-info">
+                <span class="lang-name">${lang.name}</span>
+                <span class="lang-code">${lang.code.toUpperCase()}</span>
+            </div>
+        `;
+
+        item.addEventListener('click', () => changeLanguage(lang.code));
+        langList.appendChild(item);
+    });
+}
+
+function openLanguageModal() {
+    langModal.style.display = 'flex';
+    populateLanguageList(); // Refresh to show active language
+}
+
+function closeLanguageModal() {
+    langModal.style.display = 'none';
+}
+
+function changeLanguage(langCode) {
+    if (typeof LanguageManager === 'undefined') return;
+
+    LanguageManager.setLanguage(langCode);
+    populateLanguageList(); // Update active state
+
+    // Update UI with new translations
+    if (pdfDoc) {
+        updateUI();
+    }
+
+    // Close modal after short delay
+    setTimeout(() => {
+        closeLanguageModal();
+    }, 200);
 }
 
 // Handle back button

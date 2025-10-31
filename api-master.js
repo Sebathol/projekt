@@ -907,3 +907,334 @@ handleAddApiKey = function() {
     updateAIKeyDropdown();
     checkAISetup();
 };
+
+
+// ===== INTELLIGENT HELP SYSTEM =====
+
+// Smart Tooltip System
+const SmartTooltipSystem = {
+    tooltip: null,
+    currentElement: null,
+    hoverTimeout: null,
+    hoverDelay: 800, // 800ms delay before showing tooltip
+
+    init() {
+        this.tooltip = document.getElementById('smart-tooltip');
+        this.setupListeners();
+    },
+
+    setupListeners() {
+        // Add hover listeners to all elements with data-help
+        document.addEventListener('mouseover', (e) => {
+            const element = e.target.closest('[data-help]');
+            if (element) {
+                this.handleHoverStart(element);
+            }
+        });
+
+        document.addEventListener('mouseout', (e) => {
+            const element = e.target.closest('[data-help]');
+            if (element) {
+                this.handleHoverEnd(element);
+            }
+        });
+    },
+
+    handleHoverStart(element) {
+        // Clear any existing timeout
+        if (this.hoverTimeout) {
+            clearTimeout(this.hoverTimeout);
+        }
+
+        // Set new timeout
+        this.hoverTimeout = setTimeout(() => {
+            this.showTooltip(element);
+            this.updateInfoPanel(element);
+        }, this.hoverDelay);
+    },
+
+    handleHoverEnd(element) {
+        if (this.hoverTimeout) {
+            clearTimeout(this.hoverTimeout);
+        }
+        this.hideTooltip();
+    },
+
+    showTooltip(element) {
+        const help = element.getAttribute('data-help');
+        const detail = element.getAttribute('data-help-detail');
+        const tip = element.getAttribute('data-help-tip');
+
+        if (!help) return;
+
+        // Update tooltip content
+        const tooltipIcon = this.tooltip.querySelector('.tooltip-icon');
+        const tooltipTitle = this.tooltip.querySelector('.tooltip-title');
+        const tooltipContent = this.tooltip.querySelector('.tooltip-content');
+        const tooltipTip = this.tooltip.querySelector('.tooltip-tip');
+
+        // Get icon from element or use default
+        const iconSpan = element.querySelector('.nav-icon, .help-icon, .logo-icon');
+        tooltipIcon.textContent = iconSpan ? iconSpan.textContent : 'ℹ️';
+        tooltipTitle.textContent = help;
+        tooltipContent.textContent = detail || help;
+
+        if (tip) {
+            tooltipTip.textContent = tip;
+            tooltipTip.style.display = 'block';
+        } else {
+            tooltipTip.style.display = 'none';
+        }
+
+        // Position tooltip
+        this.positionTooltip(element);
+
+        // Show tooltip
+        this.tooltip.classList.add('show');
+        this.currentElement = element;
+    },
+
+    positionTooltip(element) {
+        const rect = element.getBoundingClientRect();
+        const tooltipRect = this.tooltip.getBoundingClientRect();
+
+        // Calculate position (above element by default)
+        let top = rect.top - tooltipRect.height - 16;
+        let left = rect.left + (rect.width / 2) - (tooltipRect.width / 2);
+
+        // Adjust if tooltip goes off screen
+        if (top < 10) {
+            top = rect.bottom + 16;
+            this.tooltip.querySelector('.tooltip-arrow').style.display = 'none';
+        } else {
+            this.tooltip.querySelector('.tooltip-arrow').style.display = 'block';
+        }
+
+        if (left < 10) left = 10;
+        if (left + tooltipRect.width > window.innerWidth - 10) {
+            left = window.innerWidth - tooltipRect.width - 10;
+        }
+
+        this.tooltip.style.top = top + 'px';
+        this.tooltip.style.left = left + 'px';
+    },
+
+    hideTooltip() {
+        this.tooltip.classList.remove('show');
+        this.currentElement = null;
+    },
+
+    updateInfoPanel(element) {
+        const infoPanel = document.getElementById('info-panel');
+        const content = document.getElementById('info-panel-content');
+        
+        const help = element.getAttribute('data-help');
+        const detail = element.getAttribute('data-help-detail');
+        const tip = element.getAttribute('data-help-tip');
+
+        if (help && detail) {
+            let html = '<div class="info-section"><h4>' + help + '</h4><p>' + detail + '</p>';
+            if (tip) {
+                html += '<p style="margin-top: 12px; color: #10b981; font-weight: 500;">' + tip + '</p>';
+            }
+            html += '</div>';
+            content.innerHTML = html;
+            
+            // Show info panel if not already shown
+            if (!infoPanel.classList.contains('show')) {
+                setTimeout(() => infoPanel.classList.add('show'), 300);
+            }
+        }
+    }
+};
+
+// Info Panel Management
+const InfoPanelManager = {
+    panel: null,
+    isVisible: false,
+
+    init() {
+        this.panel = document.getElementById('info-panel');
+        this.setupListeners();
+        this.loadTip();
+        
+        // Show panel on first visit
+        if (!localStorage.getItem('help-panel-seen')) {
+            setTimeout(() => this.show(), 1000);
+            localStorage.setItem('help-panel-seen', 'true');
+        }
+    },
+
+    setupListeners() {
+        const closeBtn = document.getElementById('info-panel-close');
+        closeBtn.addEventListener('click', () => this.hide());
+    },
+
+    show() {
+        this.panel.classList.add('show');
+        this.isVisible = true;
+    },
+
+    hide() {
+        this.panel.classList.remove('show');
+        this.isVisible = false;
+    },
+
+    toggle() {
+        if (this.isVisible) {
+            this.hide();
+        } else {
+            this.show();
+        }
+    },
+
+    loadTip() {
+        const tips = [
+            "Halte die Maus über Elemente für detaillierte Erklärungen!",
+            "Nutze Shortcuts wie '?' für Hilfe oder 'N' für neuen Key!",
+            "Exportiere deine Keys regelmäßig als Backup in den Einstellungen.",
+            "Claude 3.5 Sonnet bietet die beste Balance zwischen Geschwindigkeit und Intelligenz.",
+            "Organisiere deine Keys mit aussagekräftigen Namen und Kategorien.",
+            "Klicke einfach auf eine Key-Card um sie in die Zwischenablage zu kopieren!",
+            "Das Dashboard zeigt dir alle wichtigen Statistiken auf einen Blick.",
+            "Alle deine API-Keys werden nur lokal gespeichert - niemals auf einem Server!",
+            "Nutze die Suchfunktion um Keys schnell zu finden.",
+            "Du kannst die App als PWA auf deinem Smartphone installieren!"
+        ];
+
+        const randomTip = tips[Math.floor(Math.random() * tips.length)];
+        document.getElementById('current-tip').textContent = randomTip;
+    }
+};
+
+// Help Modal Management
+const HelpModalManager = {
+    modal: null,
+
+    init() {
+        this.modal = document.getElementById('help-modal');
+        this.setupListeners();
+    },
+
+    setupListeners() {
+        // Help button click
+        const helpBtn = document.getElementById('help-btn');
+        if (helpBtn) {
+            helpBtn.addEventListener('click', () => this.open());
+        }
+
+        // Tab switching
+        const tabs = document.querySelectorAll('.help-tab');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabName = tab.getAttribute('data-tab');
+                this.switchTab(tabName);
+            });
+        });
+
+        // Close on click outside
+        this.modal.addEventListener('click', (e) => {
+            if (e.target === this.modal) {
+                this.close();
+            }
+        });
+    },
+
+    open() {
+        this.modal.classList.add('active');
+    },
+
+    close() {
+        this.modal.classList.remove('active');
+    },
+
+    switchTab(tabName) {
+        // Update active tab
+        document.querySelectorAll('.help-tab').forEach(tab => {
+            tab.classList.remove('active');
+            if (tab.getAttribute('data-tab') === tabName) {
+                tab.classList.add('active');
+            }
+        });
+
+        // Update active content
+        document.querySelectorAll('.help-tab-content').forEach(content => {
+            content.classList.remove('active');
+        });
+        document.getElementById('help-' + tabName).classList.add('active');
+    }
+};
+
+// Keyboard Shortcuts
+const KeyboardShortcuts = {
+    init() {
+        document.addEventListener('keydown', (e) => {
+            // Ignore if typing in input
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+                return;
+            }
+
+            switch(e.key) {
+                case '?':
+                    e.preventDefault();
+                    HelpModalManager.open();
+                    break;
+                
+                case 'Escape':
+                    HelpModalManager.close();
+                    closeEditModal();
+                    break;
+                
+                case 'i':
+                case 'I':
+                    e.preventDefault();
+                    InfoPanelManager.toggle();
+                    break;
+                
+                case 'n':
+                case 'N':
+                    e.preventDefault();
+                    navigateTo('add');
+                    break;
+            }
+
+            // Ctrl+K for search
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                const searchInput = document.getElementById('search-input');
+                if (searchInput) {
+                    searchInput.focus();
+                    navigateTo('apis');
+                }
+            }
+        });
+    }
+};
+
+// Close Help Modal Function (called from HTML)
+function closeHelpModal() {
+    HelpModalManager.close();
+}
+
+// Initialize Help System
+document.addEventListener('DOMContentLoaded', () => {
+    // Wait a bit for main app to load
+    setTimeout(() => {
+        SmartTooltipSystem.init();
+        InfoPanelManager.init();
+        HelpModalManager.init();
+        KeyboardShortcuts.init();
+        
+        console.log('✅ Intelligentes Hilfe-System geladen!');
+    }, 500);
+});
+
+// Export for external use
+window.HelpSystem = {
+    showTooltip: (element) => SmartTooltipSystem.showTooltip(element),
+    hideTooltip: () => SmartTooltipSystem.hideTooltip(),
+    showInfoPanel: () => InfoPanelManager.show(),
+    hideInfoPanel: () => InfoPanelManager.hide(),
+    openHelp: () => HelpModalManager.open(),
+    closeHelp: () => HelpModalManager.close()
+};

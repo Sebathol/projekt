@@ -905,3 +905,468 @@ body {
         flex-direction: column;
     }
 }
+
+/* ===== HELP SYSTEM STYLES ===== */
+
+/* Help Button in Header */
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.help-btn {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+}
+
+.help-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+}
+
+.help-icon {
+    font-size: 1.5rem;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.1));
+}
+
+/* Smart Tooltip */
+.smart-tooltip {
+    position: fixed;
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    color: white;
+    padding: 0;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    z-index: 10000;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    max-width: 320px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.smart-tooltip.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.tooltip-header {
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px 12px 0 0;
+}
+
+.tooltip-icon {
+    font-size: 1.2rem;
+}
+
+.tooltip-title {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.tooltip-content {
+    padding: 12px 16px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.tooltip-tip {
+    padding: 10px 16px;
+    background: rgba(16, 185, 129, 0.1);
+    border-top: 1px solid rgba(16, 185, 129, 0.2);
+    font-size: 0.85rem;
+    color: #10b981;
+    border-radius: 0 0 12px 12px;
+}
+
+.tooltip-arrow {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid #1e293b;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Info Panel (Floating) */
+.info-panel {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 350px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+    border: 1px solid rgba(99, 102, 241, 0.2);
+}
+
+.info-panel.show {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: all;
+}
+
+.info-panel-header {
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    color: white;
+    border-radius: 16px 16px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.info-panel-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.info-panel-close {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease;
+}
+
+.info-panel-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.info-panel-content {
+    padding: 20px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.info-section h4 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #1f2937;
+    font-size: 1rem;
+}
+
+.info-section p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.info-panel-tips {
+    padding: 16px 20px;
+    background: #f9fafb;
+    border-top: 1px solid #e5e7eb;
+    border-radius: 0 0 16px 16px;
+}
+
+.tip-of-the-day {
+    font-size: 0.85rem;
+    color: #374151;
+    line-height: 1.5;
+}
+
+.tip-of-the-day strong {
+    display: block;
+    margin-bottom: 4px;
+    color: #10b981;
+}
+
+/* Help Modal */
+.help-modal-content {
+    max-width: 900px;
+    max-height: 90vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.help-modal-body {
+    overflow-y: auto;
+    padding: 20px;
+    flex: 1;
+}
+
+.help-tabs {
+    display: flex;
+    gap: 8px;
+    border-bottom: 2px solid #e5e7eb;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.help-tab {
+    padding: 12px 20px;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    font-weight: 500;
+    color: #6b7280;
+    transition: all 0.2s ease;
+    font-size: 0.95rem;
+}
+
+.help-tab:hover {
+    color: #6366f1;
+    background: #f3f4f6;
+}
+
+.help-tab.active {
+    color: #6366f1;
+    border-bottom-color: #6366f1;
+}
+
+.help-tab-content {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.help-tab-content.active {
+    display: block;
+}
+
+.help-list {
+    list-style: none;
+    padding: 0;
+    counter-reset: help-counter;
+}
+
+.help-list li {
+    counter-increment: help-counter;
+    margin-bottom: 20px;
+    padding-left: 40px;
+    position: relative;
+}
+
+.help-list li::before {
+    content: counter(help-counter);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 28px;
+    height: 28px;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.help-list strong {
+    display: block;
+    margin-bottom: 6px;
+    color: #1f2937;
+    font-size: 1rem;
+}
+
+.help-list p {
+    margin: 0;
+    color: #6b7280;
+    line-height: 1.6;
+}
+
+/* Feature Grid */
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.feature-card {
+    padding: 20px;
+    background: #f9fafb;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+    background: white;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.feature-icon {
+    font-size: 2rem;
+    margin-bottom: 12px;
+}
+
+.feature-card h4 {
+    margin: 0 0 8px 0;
+    color: #1f2937;
+    font-size: 1rem;
+}
+
+.feature-card p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* Tips List */
+.tips-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.tip-item {
+    display: flex;
+    gap: 16px;
+    padding: 16px;
+    background: #f9fafb;
+    border-radius: 12px;
+    border-left: 4px solid #10b981;
+}
+
+.tip-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.tip-item strong {
+    display: block;
+    margin-bottom: 4px;
+    color: #1f2937;
+}
+
+.tip-item p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* Shortcuts List */
+.shortcuts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.shortcut-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 16px;
+    background: #f9fafb;
+    border-radius: 8px;
+}
+
+.shortcut-item kbd {
+    background: white;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-family: monospace;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #1f2937;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.shortcut-item span {
+    color: #6b7280;
+    font-size: 0.95rem;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Help System */
+@media (max-width: 768px) {
+    .info-panel {
+        width: calc(100% - 40px);
+        right: 20px;
+        bottom: 20px;
+    }
+
+    .help-modal-content {
+        max-width: 95%;
+        margin: 20px auto;
+    }
+
+    .help-tabs {
+        overflow-x: auto;
+        scrollbar-width: thin;
+    }
+
+    .feature-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .smart-tooltip {
+        max-width: 280px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-actions {
+        gap: 0.5rem;
+    }
+
+    .help-btn {
+        width: 36px;
+        height: 36px;
+    }
+
+    .help-icon {
+        font-size: 1.3rem;
+    }
+
+    .info-panel {
+        width: calc(100% - 20px);
+        right: 10px;
+        bottom: 10px;
+    }
+}

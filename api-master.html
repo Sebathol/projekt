@@ -31,34 +31,56 @@
                     <span class="logo-icon">🔐</span>
                     <h1>API Master</h1>
                 </div>
-                <button class="menu-btn" id="menu-btn" aria-label="Menu">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
+                <div class="header-actions">
+                    <button class="help-btn" id="help-btn" aria-label="Hilfe"
+                            data-help="Hilfe & Tipps"
+                            data-help-detail="Klicke hier um die interaktive Hilfe zu öffnen und mehr über API Master zu erfahren.">
+                        <span class="help-icon">❓</span>
+                    </button>
+                    <button class="menu-btn" id="menu-btn" aria-label="Menu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
             </div>
         </header>
 
         <!-- Navigation -->
         <nav class="sidebar" id="sidebar">
             <ul class="nav-list">
-                <li><a href="#" class="nav-link active" data-page="dashboard">
+                <li><a href="#" class="nav-link active" data-page="dashboard"
+                       data-help="Dashboard"
+                       data-help-detail="Übersicht über alle deine API-Keys. Hier siehst du Statistiken und die zuletzt hinzugefügten Keys."
+                       data-help-tip="💡 Tipp: Klicke auf einen Key um ihn schnell zu kopieren!">
                     <span class="nav-icon">📊</span>
                     <span>Dashboard</span>
                 </a></li>
-                <li><a href="#" class="nav-link" data-page="apis">
+                <li><a href="#" class="nav-link" data-page="apis"
+                       data-help="Meine API Keys"
+                       data-help-detail="Verwalte alle deine API-Keys an einem Ort. Durchsuche, filtere und organisiere deine Keys nach Kategorien."
+                       data-help-tip="💡 Tipp: Nutze die Suchfunktion um Keys schnell zu finden!">
                     <span class="nav-icon">🔑</span>
                     <span>API Keys</span>
                 </a></li>
-                <li><a href="#" class="nav-link" data-page="add">
+                <li><a href="#" class="nav-link" data-page="add"
+                       data-help="Neuen Key hinzufügen"
+                       data-help-detail="Füge einen neuen API-Key hinzu. Gib Service-Name, API-Key und optional weitere Details ein."
+                       data-help-tip="💡 Tipp: Alle Keys werden sicher in deinem Browser gespeichert und niemals an Server übertragen!">
                     <span class="nav-icon">➕</span>
                     <span>Key hinzufügen</span>
                 </a></li>
-                <li><a href="#" class="nav-link" data-page="ai-agent">
+                <li><a href="#" class="nav-link" data-page="ai-agent"
+                       data-help="Claude AI Assistant"
+                       data-help-detail="Chatte mit Claude AI direkt in der App. Nutze deine gespeicherten Claude API-Keys für intelligente Konversationen."
+                       data-help-tip="💡 Tipp: Wähle zwischen verschiedenen Modellen - Claude 3.5 Sonnet wird empfohlen für die beste Balance!">
                     <span class="nav-icon">🤖</span>
                     <span>Claude AI Assistant</span>
                 </a></li>
-                <li><a href="#" class="nav-link" data-page="settings">
+                <li><a href="#" class="nav-link" data-page="settings"
+                       data-help="Einstellungen"
+                       data-help-detail="Verwalte deine App-Einstellungen. Exportiere oder importiere deine Keys, oder lösche alle Daten."
+                       data-help-tip="💡 Tipp: Exportiere deine Keys regelmäßig als Backup!">
                     <span class="nav-icon">⚙️</span>
                     <span>Einstellungen</span>
                 </a></li>
@@ -148,25 +170,39 @@
                             <strong>🔒 Sicherheit:</strong> Alle Keys werden nur lokal in deinem Browser gespeichert (localStorage).
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group"
+                             data-help="Service / Anbieter"
+                             data-help-detail="Der Name des Services oder Anbieters, z.B. 'OpenAI', 'Stripe', 'Claude' etc."
+                             data-help-tip="💡 Tipp: Verwende den offiziellen Namen des Services für bessere Organisation!">
                             <label for="api-service">Service / Anbieter *</label>
                             <input type="text" id="api-service" placeholder="z.B. OpenAI, Stripe, Weather API" required>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group"
+                             data-help="Name / Bezeichnung"
+                             data-help-detail="Eine aussagekräftige Bezeichnung für diesen Key, z.B. 'Production', 'Development' oder 'Test'."
+                             data-help-tip="💡 Tipp: Nutze beschreibende Namen um Production und Test Keys zu unterscheiden!">
                             <label for="api-name">Name / Bezeichnung *</label>
                             <input type="text" id="api-name" placeholder="z.B. Production, Development, Test" required>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group"
+                             data-help="API Key"
+                             data-help-detail="Dein API-Key wird sicher und verschlüsselt nur in deinem Browser gespeichert. Er wird niemals an externe Server gesendet."
+                             data-help-tip="💡 Tipp: Klicke auf das Auge-Symbol um den Key anzuzeigen/zu verstecken!">
                             <label for="api-key">API Key *</label>
                             <div class="input-with-icon">
                                 <input type="password" id="api-key" placeholder="Dein API-Key" required>
-                                <button type="button" class="toggle-visibility" onclick="toggleKeyVisibility()">👁️</button>
+                                <button type="button" class="toggle-visibility" onclick="toggleKeyVisibility()"
+                                        data-help="Key anzeigen/verstecken"
+                                        data-help-detail="Zeige den API-Key im Klartext an oder verstecke ihn für mehr Sicherheit.">👁️</button>
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group"
+                             data-help="Kategorie"
+                             data-help-detail="Organisiere deine Keys nach Kategorien wie AI, Payment, Maps, etc. für bessere Übersicht."
+                             data-help-tip="💡 Tipp: Die Kategorie hilft dir später beim Filtern und Finden!">
                             <label for="api-category">Kategorie</label>
                             <select id="api-category">
                                 <option value="ai">AI/ML</option>
@@ -211,13 +247,19 @@
                 <div class="ai-agent-container">
                     <div class="ai-config-section">
                         <h3>API-Konfiguration</h3>
-                        <div class="form-group">
+                        <div class="form-group"
+                             data-help="Claude API-Key auswählen"
+                             data-help-detail="Wähle einen deiner gespeicherten Claude/Anthropic API-Keys aus. Wenn du noch keinen hast, füge einen unter 'Key hinzufügen' hinzu."
+                             data-help-tip="💡 Tipp: Du kannst mehrere API-Keys speichern und zwischen ihnen wechseln!">
                             <label for="claude-api-select">Claude API-Key auswählen:</label>
                             <select id="claude-api-select" onchange="selectClaudeKey()">
                                 <option value="">-- Bitte wählen --</option>
                             </select>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group"
+                             data-help="KI-Modell wählen"
+                             data-help-detail="Verschiedene Claude Modelle mit unterschiedlichen Stärken: Sonnet 3.5 = beste Balance, Opus = höchste Intelligenz, Haiku = schnellste Antworten."
+                             data-help-tip="💡 Tipp: Claude 3.5 Sonnet wird für die meisten Anwendungsfälle empfohlen!">
                             <label for="ai-model-select">Model:</label>
                             <select id="ai-model-select">
                                 <option value="claude-3-5-sonnet-20241022">Claude 3.5 Sonnet (Empfohlen)</option>
@@ -377,6 +419,187 @@
     </div>
 
     <input type="file" id="import-file-input" accept=".json" style="display: none;">
+
+    <!-- Smart Tooltip -->
+    <div class="smart-tooltip" id="smart-tooltip">
+        <div class="tooltip-header">
+            <span class="tooltip-icon"></span>
+            <span class="tooltip-title"></span>
+        </div>
+        <div class="tooltip-content"></div>
+        <div class="tooltip-tip"></div>
+        <div class="tooltip-arrow"></div>
+    </div>
+
+    <!-- Info Panel (Floating) -->
+    <div class="info-panel" id="info-panel">
+        <div class="info-panel-header">
+            <h3>ℹ️ Hilfe & Informationen</h3>
+            <button class="info-panel-close" id="info-panel-close">×</button>
+        </div>
+        <div class="info-panel-content" id="info-panel-content">
+            <div class="info-section">
+                <h4>👋 Willkommen bei API Master!</h4>
+                <p>Bewege die Maus über Elemente um mehr zu erfahren.</p>
+            </div>
+        </div>
+        <div class="info-panel-tips" id="info-panel-tips">
+            <div class="tip-of-the-day">
+                <strong>💡 Tipp des Tages:</strong>
+                <span id="current-tip">Lade wird...</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Modal -->
+    <div class="modal" id="help-modal">
+        <div class="modal-content help-modal-content">
+            <div class="modal-header">
+                <h2>📚 API Master Hilfe</h2>
+                <button class="modal-close" onclick="closeHelpModal()">×</button>
+            </div>
+            <div class="help-modal-body">
+                <div class="help-tabs">
+                    <button class="help-tab active" data-tab="getting-started">🚀 Erste Schritte</button>
+                    <button class="help-tab" data-tab="features">✨ Features</button>
+                    <button class="help-tab" data-tab="tips">💡 Tipps & Tricks</button>
+                    <button class="help-tab" data-tab="shortcuts">⌨️ Shortcuts</button>
+                </div>
+
+                <div class="help-tab-content active" id="help-getting-started">
+                    <h3>🚀 Erste Schritte mit API Master</h3>
+                    <ol class="help-list">
+                        <li>
+                            <strong>API-Key hinzufügen:</strong>
+                            <p>Klicke auf "Key hinzufügen" in der Sidebar und füge deinen ersten API-Key ein.</p>
+                        </li>
+                        <li>
+                            <strong>Keys organisieren:</strong>
+                            <p>Nutze Kategorien (AI, Payment, Maps, etc.) um deine Keys zu organisieren.</p>
+                        </li>
+                        <li>
+                            <strong>Claude AI nutzen:</strong>
+                            <p>Füge einen Claude API-Key hinzu und nutze den AI Assistant direkt in der App!</p>
+                        </li>
+                        <li>
+                            <strong>Sicherheit:</strong>
+                            <p>Alle Keys werden nur lokal in deinem Browser gespeichert - niemals auf einem Server!</p>
+                        </li>
+                    </ol>
+                </div>
+
+                <div class="help-tab-content" id="help-features">
+                    <h3>✨ Alle Features im Überblick</h3>
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">🔑</div>
+                            <h4>API-Key Verwaltung</h4>
+                            <p>Speichere und verwalte alle deine API-Keys sicher an einem Ort.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">📁</div>
+                            <h4>Kategorisierung</h4>
+                            <p>Organisiere Keys nach AI, Payment, Maps, Social Media und mehr.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🤖</div>
+                            <h4>Claude AI Integration</h4>
+                            <p>Chatte direkt mit Claude AI - 4 Modelle verfügbar!</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🔍</div>
+                            <h4>Suche & Filter</h4>
+                            <p>Finde Keys schnell mit der intelligenten Suchfunktion.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">💾</div>
+                            <h4>Export & Import</h4>
+                            <p>Sichere deine Keys als Backup oder übertrage sie auf andere Geräte.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">📱</div>
+                            <h4>PWA Support</h4>
+                            <p>Installiere die App auf deinem Smartphone oder Desktop!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="help-tab-content" id="help-tips">
+                    <h3>💡 Tipps & Tricks</h3>
+                    <div class="tips-list">
+                        <div class="tip-item">
+                            <span class="tip-icon">🎯</span>
+                            <div>
+                                <strong>Schnell-Kopieren:</strong>
+                                <p>Klicke einfach auf einen Key-Card um ihn direkt in die Zwischenablage zu kopieren!</p>
+                            </div>
+                        </div>
+                        <div class="tip-item">
+                            <span class="tip-icon">🏷️</span>
+                            <div>
+                                <strong>Namen vergeben:</strong>
+                                <p>Gib deinen Keys aussagekräftige Namen wie "OpenAI Production" oder "Stripe Test".</p>
+                            </div>
+                        </div>
+                        <div class="tip-item">
+                            <span class="tip-icon">🔐</span>
+                            <div>
+                                <strong>Sicherheit:</strong>
+                                <p>Nutze den "Auge"-Button um Keys nur bei Bedarf anzuzeigen.</p>
+                            </div>
+                        </div>
+                        <div class="tip-item">
+                            <span class="tip-icon">📊</span>
+                            <div>
+                                <strong>Dashboard nutzen:</strong>
+                                <p>Das Dashboard zeigt dir alle wichtigen Stats auf einen Blick.</p>
+                            </div>
+                        </div>
+                        <div class="tip-item">
+                            <span class="tip-icon">🤖</span>
+                            <div>
+                                <strong>Claude Modelle:</strong>
+                                <p>Claude 3.5 Sonnet = beste Balance | Opus = höchste Intelligenz | Haiku = schnellste Antworten</p>
+                            </div>
+                        </div>
+                        <div class="tip-item">
+                            <span class="tip-icon">💾</span>
+                            <div>
+                                <strong>Regelmäßige Backups:</strong>
+                                <p>Exportiere deine Keys monatlich als Backup in den Einstellungen.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="help-tab-content" id="help-shortcuts">
+                    <h3>⌨️ Keyboard Shortcuts</h3>
+                    <div class="shortcuts-list">
+                        <div class="shortcut-item">
+                            <kbd>?</kbd>
+                            <span>Diese Hilfe öffnen</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <kbd>Esc</kbd>
+                            <span>Dialog schließen</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <kbd>Ctrl</kbd> + <kbd>K</kbd>
+                            <span>Suche fokussieren</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <kbd>N</kbd>
+                            <span>Neuen Key hinzufügen</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <kbd>I</kbd>
+                            <span>Info-Panel ein/ausblenden</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="api-master.js"></script>
 </body>

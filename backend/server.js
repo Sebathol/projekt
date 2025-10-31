@@ -16,7 +16,7 @@ const subscriptionsModule = require('./subscriptions_v2'); // V3: Tool-specific 
 const workflowsModule = require('./workflows');
 const usageModule = require('./usage');
 const promoCodesModule = require('./promo-codes'); // Promo codes for influencers
-const werbeLinksModule = require('./werbe-links'); // Werbe-Links system
+// REMOVED: const werbeLinksModule = require('./werbe-links'); // Werbe-Links (deactivated on user request)
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -61,7 +61,7 @@ subscriptionsModule.init(app, db);
 workflowsModule.init(app, db);
 usageModule.init(app, db);
 promoCodesModule.init(app, db); // Promo codes
-werbeLinksModule.init(app); // Werbe-Links (no db needed)
+// REMOVED: werbeLinksModule.init(app); // Werbe-Links (deactivated on user request)
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
@@ -102,12 +102,8 @@ app.get('/api/docs', (req, res) => {
       usage: {
         'GET /api/usage/stats': 'Get usage statistics (requires auth)',
         'GET /api/usage/costs': 'Get cost tracking (requires auth)'
-      },
-      werbeLinks: {
-        'GET /api/werbe-links': 'Get all werbe-links',
-        'GET /api/werbe-links/:location': 'Get werbe-links by location (sidebar, footer, dashboard)',
-        'POST /api/werbe-links/reload': 'Reload werbe-links from directory'
       }
+      // REMOVED: werbeLinks endpoints (deactivated on user request)
     }
   });
 });

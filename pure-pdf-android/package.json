@@ -1,0 +1,48 @@
+{
+  "name": "pure-pdf-android",
+  "version": "1.0.0",
+  "displayName": "Pure PDF Viewer",
+  "description": "PDF Viewer for Android",
+  "main": "index.js",
+  "scripts": {
+    "android": "cordova run android",
+    "build": "cordova build android",
+    "build:release": "cordova build android --release",
+    "clean": "cordova clean",
+    "prepare": "cordova prepare android",
+    "emulate": "cordova emulate android"
+  },
+  "keywords": [
+    "pdf",
+    "viewer",
+    "android",
+    "cordova"
+  ],
+  "author": "Pure PDF Team",
+  "license": "MIT",
+  "dependencies": {
+    "cordova-android": "^12.0.1",
+    "cordova-plugin-chooser": "^1.3.2",
+    "cordova-plugin-file": "^8.0.0",
+    "cordova-plugin-file-opener2": "^4.0.0",
+    "cordova-plugin-splashscreen": "^6.0.2",
+    "cordova-plugin-statusbar": "^4.0.0",
+    "cordova-plugin-whitelist": "^1.3.5"
+  },
+  "devDependencies": {
+    "cordova": "^12.0.0"
+  },
+  "cordova": {
+    "platforms": [
+      "android"
+    ],
+    "plugins": {
+      "cordova-plugin-file": {},
+      "cordova-plugin-file-opener2": {},
+      "cordova-plugin-chooser": {},
+      "cordova-plugin-splashscreen": {},
+      "cordova-plugin-statusbar": {},
+      "cordova-plugin-whitelist": {}
+    }
+  }
+}

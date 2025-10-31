@@ -238,7 +238,13 @@ function fitToWidth() {
 
 // UI Updates
 function updateUI() {
-    pageInfo.textContent = `${currentPage} / ${totalPages}`;
+    // Use translations for page info if available
+    if (typeof LanguageManager !== 'undefined') {
+        pageInfo.textContent = `${LanguageManager.t('page')} ${currentPage} ${LanguageManager.t('of')} ${totalPages}`;
+    } else {
+        pageInfo.textContent = `${currentPage} / ${totalPages}`;
+    }
+
     zoomLevel.textContent = `${Math.round(currentZoom * 100)}%`;
 
     prevPageBtn.disabled = currentPage <= 1;

@@ -498,7 +498,7 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// ===== GENIUS NEXUS AGENT - CLAUDE API INTEGRATION =====
+// ===== CLAUDE AI ASSISTANT - CLAUDE API INTEGRATION =====
 
 let chatHistory = [];
 let selectedClaudeKey = null;

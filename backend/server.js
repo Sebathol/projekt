@@ -126,8 +126,8 @@ app.use((req, res) => {
   });
 });
 
-// Start server
-app.listen(PORT, () => {
+// Start server (listen on all interfaces for WSL compatibility)
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`
 ╔════════════════════════════════════════════════╗
 ║  🎨 Von der Idee zum Prototyp - Backend       ║

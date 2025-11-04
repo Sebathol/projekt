@@ -1,12 +1,11 @@
 /**
- * Subscriptions Module V2
- * Handles subscription plans with tool-specific usage tracking
+ * Subscriptions Module V3
+ * Handles subscription plans with unlimited Pro access
  *
- * NEUE ANFORDERUNGEN:
- * - Wochenabo hinzugefügt
- * - Tool-spezifisches Tracking (Ideas, Brainstorming, PRD, Prototype)
- * - Smart Validation: Garantie dass min. X komplette Workflows möglich
- * - Nachkauf nur mit aktivem Paid-Abo
+ * AKTUELLES MODELL:
+ * - FREE: 3 Workflows zum Testen (kostenlos)
+ * - PRO Monthly: Unbegrenzt für €14,99/Monat
+ * - PRO Yearly: Unbegrenzt für €149,99/Jahr (2 Monate gratis!)
  */
 
 const { authenticateToken } = require('./auth');
@@ -16,79 +15,53 @@ let db;
 // Subscription Plans Configuration
 const PLANS = {
   free: {
-    name: 'Testversion',
+    name: 'Free',
     price: 0,
     workflows: 3,
     tokens: 12,
     duration: null, // Lifetime
     toolLimits: {
-      ideas: 2,        // Max 2x Ideengenerierung
-      brainstorming: 2, // Max 2x Brainstorming
-      prd: 2,          // Max 2x PRD
-      prototype: 1     // Max 1x Prototyp
+      ideas: 3,        // Max 3x Ideengenerierung
+      brainstorming: 3, // Max 3x Brainstorming
+      prd: 3,          // Max 3x PRD
+      prototype: 3     // Max 3x Prototyp
     },
     minCompleteWorkflows: 3, // Garantiert 3 komplette Workflows möglich
-    canPurchaseExtra: false  // Kein Nachkauf in Free Version
+    canPurchaseExtra: false,  // Kein Nachkauf in Free Version
+    unlimited: false
   },
-  daily: {
-    name: 'Tagesabo',
-    price: 5,
-    workflows: 3,
-    tokens: 12,
-    duration: 1, // days
-    toolLimits: {
-      ideas: 3,
-      brainstorming: 3,
-      prd: 3,
-      prototype: 3
-    },
-    minCompleteWorkflows: 3,
-    canPurchaseExtra: true
-  },
-  weekly: {
-    name: 'Wochenabo',
-    price: 15,
-    workflows: 8,
-    tokens: 32,
-    duration: 7, // days
-    toolLimits: {
-      ideas: 8,
-      brainstorming: 8,
-      prd: 8,
-      prototype: 8
-    },
-    minCompleteWorkflows: 8,
-    canPurchaseExtra: true
-  },
-  monthly: {
-    name: 'Monatsabo',
-    price: 29,
-    workflows: 24,
-    tokens: 96,
+  pro_monthly: {
+    name: 'PRO Monatlich',
+    price: 14.99,
+    workflows: 999999, // Praktisch unbegrenzt
+    tokens: 999999,
     duration: 30, // days
     toolLimits: {
-      ideas: 24,
-      brainstorming: 24,
-      prd: 24,
-      prototype: 24
+      ideas: 999999,
+      brainstorming: 999999,
+      prd: 999999,
+      prototype: 999999
     },
-    minCompleteWorkflows: 24,
-    canPurchaseExtra: true
+    minCompleteWorkflows: 999999,
+    canPurchaseExtra: false, // Nicht nötig bei unlimited
+    unlimited: true
   },
-  yearly: {
-    name: 'Jahresabo',
-    price: 249,
-    workflows: 24, // Pro Monat
-    tokens: 96,    // Pro Monat
+  pro_yearly: {
+    name: 'PRO Jährlich',
+    price: 149.99,
+    workflows: 999999, // Praktisch unbegrenzt
+    tokens: 999999,
     duration: 365, // days
     toolLimits: {
-      ideas: 24,
-      brainstorming: 24,
-      prd: 24,
-      prototype: 24
+      ideas: 999999,
+      brainstorming: 999999,
+      prd: 999999,
+      prototype: 999999
     },
-    minCompleteWorkflows: 24,
-    canPurchaseExtra: true
+    minCompleteWorkflows: 999999,
+    canPurchaseExtra: false, // Nicht nötig bei unlimited
+    unlimited: true,
+    savings: '2 Monate gratis! (€179,88 → €149,99)'
   }
 };
 

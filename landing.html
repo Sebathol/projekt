@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Von der Idee zum Prototyp in Minuten. KI-gestützte Prototyp-Entwicklung für nur €29,99. Kein Abo!">
+    <meta name="description" content="Von der Idee zum Prototyp in Minuten. KI-gestützte Prototyp-Entwicklung ab €14,99/Monat. Unbegrenzte Workflows!">
     <meta name="theme-color" content="#f59e0b">
-    <title>Von der Idee zum Prototyp - KI-gestützt. Schnell. Günstig.</title>
+    <title>Von der Idee zum Prototyp - KI-gestützt. Schnell. Professionell.</title>
 
     <!-- PWA Manifest -->
     <link rel="manifest" href="manifest.json">
@@ -45,472 +45,441 @@
     </script>
 </head>
 <body class="bg-gradient-to-br from-stone-50 to-amber-50">
+
+    <!-- Navigation -->
+    <nav class="bg-white/80 backdrop-blur-md border-b border-stone-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-gradient-to-r from-amber-600 to-orange-600 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-bold text-xl">💡</span>
+                    </div>
+                    <span class="font-bold text-xl text-stone-900">Idea to Prototype</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <a href="#pricing" class="text-stone-600 hover:text-amber-600 font-medium transition hidden sm:block">Preise</a>
+                    <a href="#features" class="text-stone-600 hover:text-amber-600 font-medium transition hidden sm:block">Features</a>
+                    <a href="auth.html" class="bg-gradient-to-r from-amber-600 to-orange-600 text-white px-6 py-2 rounded-lg font-semibold hover:from-amber-700 hover:to-orange-700 transition">
+                        Jetzt starten
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
     <!-- Hero Section -->
-    <section class="min-h-screen flex items-center">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-            <div class="grid lg:grid-cols-2 gap-12 items-center">
+    <section class="min-h-screen flex items-center pt-20 pb-32">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
                 <div>
                     <span class="inline-block bg-gradient-to-r from-amber-600 to-orange-600 text-white px-4 py-2 rounded-full text-sm font-semibold mb-6">
-                        Kein Abo • Einmalig €29,99 • Für immer dein
+                        ✨ Unbegrenzte Workflows • Ab €14,99/Monat
                     </span>
-                    <h1 class="text-5xl lg:text-6xl font-bold text-stone-900 mb-6 leading-tight">
+                    <h1 class="text-5xl lg:text-7xl font-bold text-stone-900 mb-6 leading-tight">
                         Von der Idee<br>
                         <span class="bg-gradient-to-r from-amber-600 to-orange-600 text-transparent bg-clip-text">zum Prototyp</span><br>
                         in Minuten
                     </h1>
-                    <p class="text-xl text-stone-600 mb-8">
+                    <p class="text-xl text-stone-600 mb-8 leading-relaxed">
                         Spare <strong>Tausende Euro</strong> und <strong>Wochen an Entwicklungszeit</strong>.
-                        Generiere mit KI professionelle PRDs und funktionsfähige Prototypen – für einmalig €29,99.
+                        Generiere mit KI professionelle PRDs und funktionsfähige Prototypen – unbegrenzt!
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4 mb-8">
-                        <button onclick="scrollToPricing()" class="bg-gradient-to-r from-amber-600 to-orange-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:from-amber-700 hover:to-orange-700 transition shadow-lg">
-                            Jetzt für €29,99 kaufen
-                        </button>
-                        <button onclick="scrollToDemo()" class="bg-white border-2 border-amber-600 text-amber-700 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-amber-50 transition">
-                            Live Demo ansehen
-                        </button>
+                        <a href="auth.html" class="bg-gradient-to-r from-amber-600 to-orange-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:from-amber-700 hover:to-orange-700 transition shadow-lg text-center">
+                            Kostenlos testen (3 Workflows)
+                        </a>
+                        <a href="#pricing" class="bg-white border-2 border-amber-600 text-amber-700 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-amber-50 transition text-center">
+                            Preise ansehen
+                        </a>
                     </div>
-                    <p class="text-stone-500 flex items-center gap-2">
-                        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        30 Tage Geld-zurück-Garantie
-                    </p>
+                    <div class="flex flex-col gap-3 text-stone-600">
+                        <p class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            Keine Kreditkarte für Free-Version nötig
+                        </p>
+                        <p class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            Jederzeit kündbar
+                        </p>
+                    </div>
                 </div>
                 <div class="relative">
                     <div class="bg-white rounded-2xl shadow-2xl p-8 border-2 border-amber-200">
                         <div class="space-y-4">
-                            <div class="flex items-center gap-3 p-4 bg-amber-50 rounded-lg border border-amber-200">
-                                <div class="w-10 h-10 bg-gradient-to-r from-amber-600 to-orange-600 rounded-lg flex items-center justify-center text-white font-bold">1</div>
+                            <div class="flex items-center gap-3 p-4 bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg border border-amber-200">
+                                <div class="w-12 h-12 bg-gradient-to-r from-amber-600 to-orange-600 rounded-lg flex items-center justify-center text-white font-bold text-xl">1</div>
                                 <div>
-                                    <h3 class="font-bold text-stone-800">Idee eingeben</h3>
-                                    <p class="text-sm text-stone-600">Brainstorming oder Ideen-Funke</p>
+                                    <h3 class="font-bold text-stone-800 text-lg">💡 Idee eingeben</h3>
+                                    <p class="text-sm text-stone-600">Brainstorming oder Ideen-Generator</p>
                                 </div>
                             </div>
-                            <div class="flex items-center gap-3 p-4 bg-amber-50 rounded-lg border border-amber-200">
-                                <div class="w-10 h-10 bg-gradient-to-r from-amber-600 to-orange-600 rounded-lg flex items-center justify-center text-white font-bold">2</div>
+                            <div class="flex items-center gap-3 p-4 bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg border border-amber-200">
+                                <div class="w-12 h-12 bg-gradient-to-r from-amber-600 to-orange-600 rounded-lg flex items-center justify-center text-white font-bold text-xl">2</div>
                                 <div>
-                                    <h3 class="font-bold text-stone-800">PRD generieren</h3>
+                                    <h3 class="font-bold text-stone-800 text-lg">📋 PRD generieren</h3>
                                     <p class="text-sm text-stone-600">Professionelles Requirements Doc</p>
                                 </div>
                             </div>
-                            <div class="flex items-center gap-3 p-4 bg-amber-50 rounded-lg border border-amber-200">
-                                <div class="w-10 h-10 bg-gradient-to-r from-amber-600 to-orange-600 rounded-lg flex items-center justify-center text-white font-bold">3</div>
+                            <div class="flex items-center gap-3 p-4 bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg border border-amber-200">
+                                <div class="w-12 h-12 bg-gradient-to-r from-amber-600 to-orange-600 rounded-lg flex items-center justify-center text-white font-bold text-xl">3</div>
                                 <div>
-                                    <h3 class="font-bold text-stone-800">Prototyp erhalten</h3>
-                                    <p class="text-sm text-stone-600">Funktionsfähiger HTML-Prototyp</p>
+                                    <h3 class="font-bold text-stone-800 text-lg">🎨 Prototyp erhalten</h3>
+                                    <p class="text-sm text-stone-600">HTML/CSS/JS Code sofort nutzbar</p>
                                 </div>
                             </div>
                         </div>
-                        <div class="mt-6 text-center">
-                            <p class="text-2xl font-bold text-stone-800">⚡ Fertig in <span class="text-amber-600">Minuten</span></p>
+                        <div class="mt-6 pt-6 border-t border-stone-200">
+                            <p class="text-center text-stone-500 text-sm">
+                                ⏱️ Durchschnittliche Zeit: <strong class="text-amber-600">8 Minuten</strong>
+                            </p>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Problem-Solution Section -->
-    <section class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-4xl font-bold text-center text-stone-900 mb-4">
-                Schluss mit teuren Prototyping-Agenturen
-            </h2>
-            <p class="text-xl text-center text-stone-600 mb-12">
-                Warum Tausende Euro ausgeben, wenn du es selbst machen kannst?
-            </p>
-
-            <div class="grid md:grid-cols-2 gap-8">
-                <!-- Bad Way -->
-                <div class="bg-red-50 border-2 border-red-200 rounded-xl p-8">
-                    <h3 class="text-2xl font-bold text-red-800 mb-6 flex items-center gap-3">
-                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                        Alte Methode
-                    </h3>
-                    <ul class="space-y-4">
-                        <li class="flex items-start gap-3">
-                            <span class="text-red-600 text-xl">❌</span>
-                            <span class="text-stone-700"><strong>€5.000-€15.000</strong> für einen einfachen Prototyp</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <span class="text-red-600 text-xl">❌</span>
-                            <span class="text-stone-700"><strong>4-8 Wochen</strong> Wartezeit</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <span class="text-red-600 text-xl">❌</span>
-                            <span class="text-stone-700">Endlose Meetings und Abstimmungen</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <span class="text-red-600 text-xl">❌</span>
-                            <span class="text-stone-700">Änderungen kosten extra</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <span class="text-red-600 text-xl">❌</span>
-                            <span class="text-stone-700">Komplizierte Verträge und Abrechnung</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <span class="text-red-600 text-xl">❌</span>
-                            <span class="text-stone-700">Nur 1-2 Iterationen möglich</span>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Good Way -->
-                <div class="bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-amber-300 rounded-xl p-8 shadow-lg">
-                    <h3 class="text-2xl font-bold text-amber-800 mb-6 flex items-center gap-3">
-                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                        Mit unserem Tool
-                    </h3>
-                    <ul class="space-y-4">
-                        <li class="flex items-start gap-3">
-                            <span class="text-amber-600 text-xl">✅</span>
-                            <span class="text-stone-700"><strong>Nur €29,99</strong> einmalig</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <span class="text-amber-600 text-xl">✅</span>
-                            <span class="text-stone-700"><strong>Sofort</strong> loslegen – keine Wartezeit</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <span class="text-amber-600 text-xl">✅</span>
-                            <span class="text-stone-700">Arbeite allein oder mit deinem Team</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <span class="text-amber-600 text-xl">✅</span>
-                            <span class="text-stone-700">Unlimitierte Änderungen</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <span class="text-amber-600 text-xl">✅</span>
-                            <span class="text-stone-700">Einmalzahlung, für immer nutzen</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <span class="text-amber-600 text-xl">✅</span>
-                            <span class="text-stone-700">Unbegrenzte Iterationen mit KI-Chat</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="mt-12 text-center bg-amber-100 border border-amber-300 rounded-xl p-6">
-                <p class="text-2xl font-bold text-amber-900">
-                    💰 Spare durchschnittlich <span class="text-3xl text-orange-600">€12.470</span> pro Projekt!
-                </p>
             </div>
         </div>
     </section>
 
     <!-- Features Section -->
-    <section id="features" class="py-20">
+    <section id="features" class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-4xl font-bold text-center text-stone-900 mb-4">
-                Alles, was du brauchst
-            </h2>
-            <p class="text-xl text-center text-stone-600 mb-12">
-                Professionelle Werkzeuge für erfolgreiche Produkt-Entwicklung
-            </p>
-
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="bg-white rounded-xl p-8 shadow-lg border-2 border-amber-200 hover:border-amber-400 transition">
-                    <div class="text-4xl mb-4">🧠</div>
-                    <h3 class="text-xl font-bold text-stone-800 mb-3">KI-Ideengenerator</h3>
-                    <p class="text-stone-600 mb-4">
-                        Zwei Modi: <strong>Brainstorming</strong> für gezielte Ideen oder <strong>Ideen-Funke</strong> für kreative Überraschungen.
-                    </p>
-                    <ul class="text-sm text-stone-600 space-y-2">
-                        <li>• 5 Ideen pro Durchgang</li>
-                        <li>• Bewertung nach Priorität, Aufwand & Markt</li>
-                        <li>• Unlimitierte Generierungen</li>
-                    </ul>
-                </div>
-
-                <div class="bg-white rounded-xl p-8 shadow-lg border-2 border-amber-200 hover:border-amber-400 transition">
-                    <div class="text-4xl mb-4">💬</div>
-                    <h3 class="text-xl font-bold text-stone-800 mb-3">Interaktiver KI-Chat</h3>
-                    <p class="text-stone-600 mb-4">
-                        Verfeinere deine Ideen durch Konversation mit der KI. Bis zu 15 Iterationen pro Session.
-                    </p>
-                    <ul class="text-sm text-stone-600 space-y-2">
-                        <li>• Natürliche Konversation</li>
-                        <li>• Automatische Ideen-Updates</li>
-                        <li>• Kontext-bewusste Antworten</li>
-                    </ul>
-                </div>
-
-                <div class="bg-white rounded-xl p-8 shadow-lg border-2 border-amber-200 hover:border-amber-400 transition">
-                    <div class="text-4xl mb-4">📝</div>
-                    <h3 class="text-xl font-bold text-stone-800 mb-3">Automatisches PRD</h3>
-                    <p class="text-stone-600 mb-4">
-                        Professionelles Product Requirements Document in Sekunden – editierbar und downloadbar.
-                    </p>
-                    <ul class="text-sm text-stone-600 space-y-2">
-                        <li>• 10 Standard-Sektionen</li>
-                        <li>• Export als TXT oder Markdown</li>
-                        <li>• Vollständig editierbar</li>
-                    </ul>
-                </div>
-
-                <div class="bg-white rounded-xl p-8 shadow-lg border-2 border-amber-200 hover:border-amber-400 transition">
-                    <div class="text-4xl mb-4">💻</div>
-                    <h3 class="text-xl font-bold text-stone-800 mb-3">Prototyp-Generator</h3>
-                    <p class="text-stone-600 mb-4">
-                        Funktionsfähiger HTML-Prototyp mit modernem Design, komplett responsive und sofort nutzbar.
-                    </p>
-                    <ul class="text-sm text-stone-600 space-y-2">
-                        <li>• Tailwind CSS Design</li>
-                        <li>• Mobile-responsive</li>
-                        <li>• Download als HTML</li>
-                    </ul>
-                </div>
-
-                <div class="bg-white rounded-xl p-8 shadow-lg border-2 border-amber-200 hover:border-amber-400 transition">
-                    <div class="text-4xl mb-4">🌍</div>
-                    <h3 class="text-xl font-bold text-stone-800 mb-3">Multi-Language</h3>
-                    <p class="text-stone-600 mb-4">
-                        Vollständige Unterstützung für Deutsch und Englisch – wechsle mit einem Klick.
-                    </p>
-                    <ul class="text-sm text-stone-600 space-y-2">
-                        <li>• Deutsch & Englisch</li>
-                        <li>• UI komplett übersetzt</li>
-                        <li>• KI antwortet in deiner Sprache</li>
-                    </ul>
-                </div>
-
-                <div class="bg-white rounded-xl p-8 shadow-lg border-2 border-amber-200 hover:border-amber-400 transition">
-                    <div class="text-4xl mb-4">⚡</div>
-                    <h3 class="text-xl font-bold text-stone-800 mb-3">Blitzschnell</h3>
-                    <p class="text-stone-600 mb-4">
-                        Von der ersten Idee zum fertigen Prototyp in unter 10 Minuten. Keine Wartezeiten.
-                    </p>
-                    <ul class="text-sm text-stone-600 space-y-2">
-                        <li>• Sofortige Ergebnisse</li>
-                        <li>• Claude AI powered</li>
-                        <li>• Kein Training nötig</li>
-                    </ul>
-                </div>
+            <div class="text-center mb-16">
+                <h2 class="text-4xl lg:text-5xl font-bold text-stone-900 mb-4">
+                    Alles was du brauchst, <span class="bg-gradient-to-r from-amber-600 to-orange-600 text-transparent bg-clip-text">in einem Tool</span>
+                </h2>
+                <p class="text-xl text-stone-600 max-w-3xl mx-auto">
+                    Von der ersten Idee bis zum fertigen Prototyp – KI-gestützt und professionell
+                </p>
             </div>
-        </div>
-    </section>
 
-    <!-- Use Cases Section -->
-    <section class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-4xl font-bold text-center text-stone-900 mb-12">
-                Perfekt für...
-            </h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="p-8 bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl border-2 border-amber-200 hover:shadow-xl transition">
+                    <div class="w-14 h-14 bg-gradient-to-r from-amber-600 to-orange-600 rounded-xl flex items-center justify-center text-white text-2xl mb-4">
+                        💡
+                    </div>
+                    <h3 class="text-2xl font-bold text-stone-900 mb-3">Ideengenerierung</h3>
+                    <p class="text-stone-600">
+                        Starte mit einem Stichwort oder Brainstorming-Session. Unsere KI entwickelt kreative, umsetzbare Produktideen.
+                    </p>
+                </div>
 
-            <div class="grid md:grid-cols-4 gap-6">
-                <div class="text-center p-6">
-                    <div class="text-5xl mb-4">👨‍💼</div>
-                    <h3 class="font-bold text-stone-800 mb-2">Entrepreneurs</h3>
-                    <p class="text-sm text-stone-600">Teste schnell deine Startup-Ideen</p>
+                <!-- Feature 2 -->
+                <div class="p-8 bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl border-2 border-amber-200 hover:shadow-xl transition">
+                    <div class="w-14 h-14 bg-gradient-to-r from-amber-600 to-orange-600 rounded-xl flex items-center justify-center text-white text-2xl mb-4">
+                        🧠
+                    </div>
+                    <h3 class="text-2xl font-bold text-stone-900 mb-3">KI-Brainstorming</h3>
+                    <p class="text-stone-600">
+                        Entwickle Ideen weiter mit strukturiertem Brainstorming. Features, Zielgruppen, Monetarisierung – alles durchdacht.
+                    </p>
                 </div>
-                <div class="text-center p-6">
-                    <div class="text-5xl mb-4">📊</div>
-                    <h3 class="font-bold text-stone-800 mb-2">Product Manager</h3>
-                    <p class="text-sm text-stone-600">Erstelle PRDs in Minuten</p>
+
+                <!-- Feature 3 -->
+                <div class="p-8 bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl border-2 border-amber-200 hover:shadow-xl transition">
+                    <div class="w-14 h-14 bg-gradient-to-r from-amber-600 to-orange-600 rounded-xl flex items-center justify-center text-white text-2xl mb-4">
+                        📋
+                    </div>
+                    <h3 class="text-2xl font-bold text-stone-900 mb-3">PRD-Generator</h3>
+                    <p class="text-stone-600">
+                        Erstelle professionelle Product Requirements Documents wie große Tech-Firmen. Perfekt für Entwickler und Investoren.
+                    </p>
                 </div>
-                <div class="text-center p-6">
-                    <div class="text-5xl mb-4">🎨</div>
-                    <h3 class="font-bold text-stone-800 mb-2">Designer</h3>
-                    <p class="text-sm text-stone-600">Prototypen ohne Code</p>
+
+                <!-- Feature 4 -->
+                <div class="p-8 bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl border-2 border-amber-200 hover:shadow-xl transition">
+                    <div class="w-14 h-14 bg-gradient-to-r from-amber-600 to-orange-600 rounded-xl flex items-center justify-center text-white text-2xl mb-4">
+                        🎨
+                    </div>
+                    <h3 class="text-2xl font-bold text-stone-900 mb-3">Prototyp-Generator</h3>
+                    <p class="text-stone-600">
+                        Erhalte funktionierenden HTML/CSS/JS Code. Sofort einsetzbar für Demos, Pitches oder als Entwicklungs-Basis.
+                    </p>
                 </div>
-                <div class="text-center p-6">
-                    <div class="text-5xl mb-4">🚀</div>
-                    <h3 class="font-bold text-stone-800 mb-2">Startups</h3>
-                    <p class="text-sm text-stone-600">MVP in Rekordzeit</p>
+
+                <!-- Feature 5 -->
+                <div class="p-8 bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl border-2 border-amber-200 hover:shadow-xl transition">
+                    <div class="w-14 h-14 bg-gradient-to-r from-amber-600 to-orange-600 rounded-xl flex items-center justify-center text-white text-2xl mb-4">
+                        ⚡
+                    </div>
+                    <h3 class="text-2xl font-bold text-stone-900 mb-3">Blitzschnell</h3>
+                    <p class="text-stone-600">
+                        Von der Idee zum funktionsfähigen Prototyp in durchschnittlich 8 Minuten. Keine Wochen Entwicklungszeit mehr.
+                    </p>
+                </div>
+
+                <!-- Feature 6 -->
+                <div class="p-8 bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl border-2 border-amber-200 hover:shadow-xl transition">
+                    <div class="w-14 h-14 bg-gradient-to-r from-amber-600 to-orange-600 rounded-xl flex items-center justify-center text-white text-2xl mb-4">
+                        💰
+                    </div>
+                    <h3 class="text-2xl font-bold text-stone-900 mb-3">Kostengünstig</h3>
+                    <p class="text-stone-600">
+                        Spare Tausende Euro im Vergleich zu Freelancern oder Agenturen. Unbegrenzte Workflows ab €14,99/Monat.
+                    </p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Pricing Section -->
-    <section id="pricing" class="py-20">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-4xl font-bold text-center text-stone-900 mb-4">
-                Einfaches, ehrliches Pricing
-            </h2>
-            <p class="text-xl text-center text-stone-600 mb-12">
-                Keine Abos. Keine versteckten Kosten. Nur eine faire Einmalzahlung.
-            </p>
-
-            <div class="bg-gradient-to-br from-white to-amber-50 rounded-2xl shadow-2xl border-2 border-amber-300 p-8 lg:p-12">
-                <div class="text-center mb-8">
-                    <h3 class="text-3xl font-bold text-stone-800 mb-4">Lifetime Access</h3>
-                    <div class="flex items-center justify-center gap-2 mb-2">
-                        <span class="text-6xl font-bold text-amber-600">€29,99</span>
-                    </div>
-                    <p class="text-xl text-stone-600">Einmalig • Für immer dein • Kein Abo</p>
-                </div>
-
-                <div class="space-y-3 mb-8">
-                    <div class="flex items-center gap-3">
-                        <svg class="w-6 h-6 text-green-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                        <span class="text-stone-700">Unlimitierte Ideengenerierung</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <svg class="w-6 h-6 text-green-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                        <span class="text-stone-700">Unlimitierte PRD-Erstellung</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <svg class="w-6 h-6 text-green-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                        <span class="text-stone-700">Unlimitierte Prototyp-Generierung</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <svg class="w-6 h-6 text-green-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                        <span class="text-stone-700">KI-Chat mit 15 Iterationen pro Session</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <svg class="w-6 h-6 text-green-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                        <span class="text-stone-700">Alle zukünftigen Updates inklusive</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <svg class="w-6 h-6 text-green-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                        <span class="text-stone-700">30 Tage Geld-zurück-Garantie</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <svg class="w-6 h-6 text-green-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                        <span class="text-stone-700">Email-Support</span>
-                    </div>
-                </div>
-
-                <button onclick="showPurchaseModal()" class="w-full bg-gradient-to-r from-amber-600 to-orange-600 text-white py-4 rounded-lg font-bold text-xl hover:from-amber-700 hover:to-orange-700 transition shadow-lg mb-4">
-                    Jetzt kaufen für €29,99
-                </button>
-
-                <p class="text-center text-sm text-stone-600">
-                    🔒 Sichere Zahlung via Stripe, PayPal oder Google Pay
-                </p>
-            </div>
-
-            <div class="mt-12 bg-amber-100 border border-amber-300 rounded-xl p-6 text-center">
-                <p class="text-lg text-stone-800">
-                    <strong>Rechenbeispiel:</strong> Nur ein einziger Prototyp bei einer Agentur kostet dich <span class="line-through">€12.500</span>.
-                    Mit unserem Tool kannst du <strong>unbegrenzt</strong> Prototypen erstellen für nur <strong>€29,99</strong>.
-                </p>
-                <p class="text-2xl font-bold text-amber-600 mt-2">
-                    Das ist 99,76% günstiger! 🎉
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Demo Section -->
-    <section id="demo" class="py-20 bg-white">
+    <section id="pricing" class="py-20 bg-gradient-to-br from-stone-50 to-amber-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-4xl font-bold text-center text-stone-900 mb-4">
-                Sieh es in Aktion
-            </h2>
-            <p class="text-xl text-center text-stone-600 mb-12">
-                So einfach kommst du von deiner Idee zum Prototyp
-            </p>
+            <div class="text-center mb-16">
+                <h2 class="text-4xl lg:text-5xl font-bold text-stone-900 mb-4">
+                    Einfache, <span class="bg-gradient-to-r from-amber-600 to-orange-600 text-transparent bg-clip-text">faire Preise</span>
+                </h2>
+                <p class="text-xl text-stone-600 max-w-3xl mx-auto">
+                    Teste kostenlos, dann unbegrenzt nutzen. Keine versteckten Kosten.
+                </p>
+            </div>
 
-            <div class="bg-stone-900 rounded-xl shadow-2xl overflow-hidden">
-                <div class="bg-stone-800 px-6 py-3 flex items-center gap-2">
-                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                    <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
-                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
-                    <span class="ml-4 text-stone-400 text-sm">idea-to-prototype.app</span>
-                </div>
-                <div class="aspect-video bg-gradient-to-br from-stone-700 to-stone-900 flex items-center justify-center">
-                    <div class="text-center text-white p-12">
-                        <div class="text-6xl mb-4">🎬</div>
-                        <h3 class="text-2xl font-bold mb-4">Demo Video</h3>
-                        <p class="text-stone-300 mb-6">Siehe wie einfach es ist, in wenigen Minuten<br>von der Idee zum fertigen Prototyp zu kommen</p>
-                        <button class="bg-gradient-to-r from-amber-600 to-orange-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-amber-700 hover:to-orange-700 transition">
-                            ▶ Demo starten
-                        </button>
+            <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+
+                <!-- FREE Plan -->
+                <div class="bg-white rounded-2xl shadow-lg p-8 border-2 border-stone-200 hover:shadow-2xl transition">
+                    <div class="mb-6">
+                        <h3 class="text-2xl font-bold text-stone-900 mb-2">Free</h3>
+                        <p class="text-stone-600">Zum Testen</p>
                     </div>
+                    <div class="mb-6">
+                        <span class="text-5xl font-bold text-stone-900">€0</span>
+                        <span class="text-stone-600">/für immer</span>
+                    </div>
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-start gap-3">
+                            <svg class="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-stone-700"><strong>3 komplette Workflows</strong></span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg class="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-stone-700">Alle Features testen</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg class="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-stone-700">Keine Kreditkarte nötig</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg class="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-stone-700">Für immer kostenlos</span>
+                        </li>
+                    </ul>
+                    <a href="auth.html" class="block w-full bg-stone-200 text-stone-900 px-6 py-3 rounded-lg font-semibold text-center hover:bg-stone-300 transition">
+                        Jetzt testen
+                    </a>
                 </div>
+
+                <!-- PRO MONTHLY Plan - HIGHLIGHTED -->
+                <div class="bg-gradient-to-br from-amber-600 to-orange-600 rounded-2xl shadow-2xl p-8 border-2 border-amber-400 transform scale-105 relative">
+                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-white text-amber-600 px-4 py-1 rounded-full text-sm font-bold">
+                        🔥 Beliebtester Plan
+                    </div>
+                    <div class="mb-6">
+                        <h3 class="text-2xl font-bold text-white mb-2">PRO Monatlich</h3>
+                        <p class="text-amber-100">Für regelmäßige Nutzung</p>
+                    </div>
+                    <div class="mb-6">
+                        <span class="text-5xl font-bold text-white">€14,99</span>
+                        <span class="text-amber-100">/Monat</span>
+                    </div>
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-start gap-3">
+                            <svg class="w-6 h-6 text-white flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-white"><strong>Unbegrenzte Workflows</strong></span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg class="w-6 h-6 text-white flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-white">Alle Features inklusive</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg class="w-6 h-6 text-white flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-white">Prioritäts-Support</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg class="w-6 h-6 text-white flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-white">Jederzeit kündbar</span>
+                        </li>
+                    </ul>
+                    <a href="auth.html" class="block w-full bg-white text-amber-600 px-6 py-3 rounded-lg font-semibold text-center hover:bg-amber-50 transition shadow-lg">
+                        Jetzt starten
+                    </a>
+                </div>
+
+                <!-- PRO YEARLY Plan -->
+                <div class="bg-white rounded-2xl shadow-lg p-8 border-2 border-amber-300 hover:shadow-2xl transition relative">
+                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-green-500 text-white px-4 py-1 rounded-full text-sm font-bold">
+                        💰 2 Monate GRATIS
+                    </div>
+                    <div class="mb-6">
+                        <h3 class="text-2xl font-bold text-stone-900 mb-2">PRO Jährlich</h3>
+                        <p class="text-stone-600">Beste Ersparnis</p>
+                    </div>
+                    <div class="mb-6">
+                        <span class="text-5xl font-bold text-stone-900">€149,99</span>
+                        <span class="text-stone-600">/Jahr</span>
+                        <p class="text-sm text-green-600 font-semibold mt-2">Spare €29,89 (16%)</p>
+                    </div>
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-start gap-3">
+                            <svg class="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-stone-700"><strong>Unbegrenzte Workflows</strong></span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg class="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-stone-700">Alle Features inklusive</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg class="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-stone-700">Prioritäts-Support</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg class="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-stone-700">Bevorzugter Zugang zu neuen Features</span>
+                        </li>
+                    </ul>
+                    <a href="auth.html" class="block w-full bg-gradient-to-r from-amber-600 to-orange-600 text-white px-6 py-3 rounded-lg font-semibold text-center hover:from-amber-700 hover:to-orange-700 transition">
+                        Jetzt sparen
+                    </a>
+                </div>
+
+            </div>
+
+            <div class="mt-12 text-center">
+                <p class="text-stone-600">
+                    Alle Preise inkl. MwSt. • Monatlich kündbar • Keine Setup-Gebühren
+                </p>
             </div>
         </div>
     </section>
 
     <!-- FAQ Section -->
-    <section class="py-20">
+    <section class="py-20 bg-white">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-4xl font-bold text-center text-stone-900 mb-12">
-                Häufige Fragen
-            </h2>
+            <div class="text-center mb-16">
+                <h2 class="text-4xl lg:text-5xl font-bold text-stone-900 mb-4">
+                    Häufige <span class="bg-gradient-to-r from-amber-600 to-orange-600 text-transparent bg-clip-text">Fragen</span>
+                </h2>
+            </div>
 
             <div class="space-y-6">
-                <div class="bg-white rounded-xl p-6 shadow-lg border border-stone-200">
-                    <h3 class="text-xl font-bold text-stone-800 mb-2">Brauche ich einen API-Key?</h3>
-                    <p class="text-stone-600">Ja, du benötigst einen Claude API-Key von Anthropic. Das ist ganz einfach einzurichten und kostet nur wenige Cent pro Nutzung. Die €29,99 sind für das Tool selbst.</p>
-                </div>
+                <details class="bg-stone-50 rounded-xl p-6 group">
+                    <summary class="font-semibold text-lg text-stone-900 cursor-pointer flex justify-between items-center">
+                        <span>Was ist ein "Workflow"?</span>
+                        <svg class="w-5 h-5 text-amber-600 group-open:rotate-180 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </summary>
+                    <p class="mt-4 text-stone-600">
+                        Ein kompletter Workflow bedeutet: Ideengenerierung → Brainstorming → PRD erstellen → Prototyp generieren.
+                        Also der gesamte Prozess von der ersten Idee bis zum fertigen Code.
+                    </p>
+                </details>
 
-                <div class="bg-white rounded-xl p-6 shadow-lg border border-stone-200">
-                    <h3 class="text-xl font-bold text-stone-800 mb-2">Wie viel kosten die API-Aufrufe?</h3>
-                    <p class="text-stone-600">Claude API kostet ca. €0,01-0,05 pro Generierung. Das bedeutet: Für €1 kannst du 20-100 Ideen, PRDs oder Prototypen generieren. Extrem günstig!</p>
-                </div>
+                <details class="bg-stone-50 rounded-xl p-6 group">
+                    <summary class="font-semibold text-lg text-stone-900 cursor-pointer flex justify-between items-center">
+                        <span>Kann ich wirklich unbegrenzt viele Prototypen erstellen?</span>
+                        <svg class="w-5 h-5 text-amber-600 group-open:rotate-180 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </summary>
+                    <p class="mt-4 text-stone-600">
+                        Ja! Mit PRO (Monatlich oder Jährlich) gibt es keine Limits. Erstelle so viele Prototypen wie du willst.
+                    </p>
+                </details>
 
-                <div class="bg-white rounded-xl p-6 shadow-lg border border-stone-200">
-                    <h3 class="text-xl font-bold text-stone-800 mb-2">Gibt es wirklich kein Abo?</h3>
-                    <p class="text-stone-600">Nein! €29,99 einmalig, und das Tool gehört dir für immer. Alle Updates inklusive. Keine monatlichen Gebühren, keine versteckten Kosten.</p>
-                </div>
+                <details class="bg-stone-50 rounded-xl p-6 group">
+                    <summary class="font-semibold text-lg text-stone-900 cursor-pointer flex justify-between items-center">
+                        <span>Brauche ich eine Kreditkarte für die Free-Version?</span>
+                        <svg class="w-5 h-5 text-amber-600 group-open:rotate-180 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </summary>
+                    <p class="mt-4 text-stone-600">
+                        Nein! Registriere dich einfach mit E-Mail und Passwort. Keine Kreditkarte, keine automatische Verlängerung.
+                    </p>
+                </details>
 
-                <div class="bg-white rounded-xl p-6 shadow-lg border border-stone-200">
-                    <h3 class="text-xl font-bold text-stone-800 mb-2">Wie funktioniert die Geld-zurück-Garantie?</h3>
-                    <p class="text-stone-600">Wenn du nicht zufrieden bist, bekommst du innerhalb von 30 Tagen dein Geld zurück. Keine Fragen gestellt. Einfach eine Email an uns.</p>
-                </div>
+                <details class="bg-stone-50 rounded-xl p-6 group">
+                    <summary class="font-semibold text-lg text-stone-900 cursor-pointer flex justify-between items-center">
+                        <span>Kann ich jederzeit kündigen?</span>
+                        <svg class="w-5 h-5 text-amber-600 group-open:rotate-180 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </summary>
+                    <p class="mt-4 text-stone-600">
+                        Ja! Kündige mit einem Klick in den Einstellungen. Keine Kündigungsfristen, keine versteckten Bedingungen.
+                    </p>
+                </details>
 
-                <div class="bg-white rounded-xl p-6 shadow-lg border border-stone-200">
-                    <h3 class="text-xl font-bold text-stone-800 mb-2">Kann ich die Prototypen kommerziell nutzen?</h3>
-                    <p class="text-stone-600">Absolut! Alle generierten PRDs und Prototypen gehören dir. Du kannst sie frei verwenden, verkaufen oder weiterentwickeln.</p>
-                </div>
+                <details class="bg-stone-50 rounded-xl p-6 group">
+                    <summary class="font-semibold text-lg text-stone-900 cursor-pointer flex justify-between items-center">
+                        <span>Welche Programmiersprachen werden unterstützt?</span>
+                        <svg class="w-5 h-5 text-amber-600 group-open:rotate-180 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </summary>
+                    <p class="mt-4 text-stone-600">
+                        Aktuell generieren wir HTML/CSS/JavaScript Prototypen. Perfekt für Web-Apps, Landing Pages und interaktive Demos.
+                        Weitere Sprachen sind in Planung!
+                    </p>
+                </details>
 
-                <div class="bg-white rounded-xl p-6 shadow-lg border border-stone-200">
-                    <h3 class="text-xl font-bold text-stone-800 mb-2">Funktioniert es auf allen Geräten?</h3>
-                    <p class="text-stone-600">Ja! Das Tool ist eine Web-App und funktioniert auf Desktop, Tablet und Smartphone. Alles was du brauchst ist ein moderner Browser.</p>
-                </div>
-
-                <div class="bg-white rounded-xl p-6 shadow-lg border border-stone-200">
-                    <h3 class="text-xl font-bold text-stone-800 mb-2">Welche Programmiersprache wird für Prototypen verwendet?</h3>
-                    <p class="text-stone-600">Die Prototypen sind in HTML mit Tailwind CSS erstellt - universell, modern und sofort im Browser lauffähig. Kein Setup nötig!</p>
-                </div>
-
-                <div class="bg-white rounded-xl p-6 shadow-lg border border-stone-200">
-                    <h3 class="text-xl font-bold text-stone-800 mb-2">Gibt es Support?</h3>
-                    <p class="text-stone-600">Ja! Wir bieten Email-Support. Bei Fragen oder Problemen sind wir für dich da.</p>
-                </div>
+                <details class="bg-stone-50 rounded-xl p-6 group">
+                    <summary class="font-semibold text-lg text-stone-900 cursor-pointer flex justify-between items-center">
+                        <span>Kann ich die generierten Prototypen kommerziell nutzen?</span>
+                        <svg class="w-5 h-5 text-amber-600 group-open:rotate-180 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </summary>
+                    <p class="mt-4 text-stone-600">
+                        Ja! Alle generierten Prototypen gehören dir. Nutze sie für Pitches, Demos, als Entwicklungs-Basis oder verkaufe sie sogar weiter.
+                    </p>
+                </details>
             </div>
         </div>
     </section>
 
-    <!-- Final CTA -->
+    <!-- CTA Section -->
     <section class="py-20 bg-gradient-to-r from-amber-600 to-orange-600">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 class="text-4xl lg:text-5xl font-bold text-white mb-6">
-                Bereit, deine Ideen zum Leben zu erwecken?
+                Bereit für deinen ersten Prototyp?
             </h2>
-            <p class="text-xl text-white/90 mb-8">
-                Schließe dich hunderten Entrepreneurs, Product Managern und Designern an, die bereits erfolgreiche Prototypen erstellt haben.
+            <p class="text-xl text-amber-100 mb-8 max-w-2xl mx-auto">
+                Starte jetzt kostenlos und erstelle 3 komplette Workflows. Keine Kreditkarte nötig.
             </p>
-            <button onclick="showPurchaseModal()" class="bg-white text-amber-700 px-12 py-4 rounded-lg font-bold text-xl hover:bg-stone-100 transition shadow-lg mb-6">
-                Jetzt für €29,99 kaufen
-            </button>
-            <p class="text-white/80 flex items-center justify-center gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-                30 Tage Geld-zurück-Garantie
+            <a href="auth.html" class="inline-block bg-white text-amber-600 px-10 py-4 rounded-lg font-bold text-xl hover:bg-amber-50 transition shadow-2xl">
+                Jetzt kostenlos starten →
+            </a>
+            <p class="mt-6 text-amber-100 text-sm">
+                In 2 Minuten registriert • 8 Minuten bis zum ersten Prototyp
             </p>
         </div>
     </section>
@@ -518,121 +487,60 @@
     <!-- Footer -->
     <footer class="bg-stone-900 text-white py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid md:grid-cols-4 gap-8 mb-8">
+            <div class="grid md:grid-cols-4 gap-8">
                 <div>
-                    <h3 class="font-bold text-xl mb-4">Von der Idee zum Prototyp</h3>
-                    <p class="text-stone-400">KI-gestützte Prototyp-Entwicklung in Minuten.</p>
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-gradient-to-r from-amber-600 to-orange-600 rounded-lg flex items-center justify-center">
+                            <span class="text-white font-bold text-xl">💡</span>
+                        </div>
+                        <span class="font-bold text-xl">Idea to Prototype</span>
+                    </div>
+                    <p class="text-stone-400">
+                        Von der Idee zum Prototyp in Minuten.
+                    </p>
                 </div>
                 <div>
-                    <h4 class="font-semibold mb-4">Produkt</h4>
+                    <h4 class="font-bold mb-4">Produkt</h4>
                     <ul class="space-y-2 text-stone-400">
-                        <li><a href="#features" class="hover:text-white transition">Features</a></li>
-                        <li><a href="#pricing" class="hover:text-white transition">Pricing</a></li>
-                        <li><a href="#demo" class="hover:text-white transition">Demo</a></li>
+                        <li><a href="#features" class="hover:text-amber-400 transition">Features</a></li>
+                        <li><a href="#pricing" class="hover:text-amber-400 transition">Preise</a></li>
+                        <li><a href="auth.html" class="hover:text-amber-400 transition">Kostenlos testen</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4 class="font-semibold mb-4">Rechtliches</h4>
+                    <h4 class="font-bold mb-4">Rechtliches</h4>
                     <ul class="space-y-2 text-stone-400">
-                        <li><a href="impressum.html" class="hover:text-white transition">Impressum</a></li>
-                        <li><a href="privacy.html" class="hover:text-white transition">Datenschutz</a></li>
-                        <li><a href="terms.html" class="hover:text-white transition">AGB</a></li>
+                        <li><a href="privacy-policy.html" class="hover:text-amber-400 transition">Datenschutz</a></li>
+                        <li><a href="terms-and-conditions.html" class="hover:text-amber-400 transition">AGB</a></li>
+                        <li><a href="impressum.html" class="hover:text-amber-400 transition">Impressum</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4 class="font-semibold mb-4">Support</h4>
+                    <h4 class="font-bold mb-4">Kontakt</h4>
                     <ul class="space-y-2 text-stone-400">
-                        <li><a href="mailto:support@idea-to-prototype.app" class="hover:text-white transition">support@idea-to-prototype.app</a></li>
-                        <li><a href="help.html" class="hover:text-white transition">Hilfe & FAQ</a></li>
+                        <li>support@idea-to-prototype.de</li>
                     </ul>
                 </div>
             </div>
-            <div class="border-t border-stone-800 pt-8 text-center text-stone-400">
-                <p>© 2025 Ai Storm Create. Alle Rechte vorbehalten.</p>
+            <div class="border-t border-stone-800 mt-8 pt-8 text-center text-stone-400">
+                <p>&copy; 2025 Idea to Prototype. Alle Rechte vorbehalten.</p>
             </div>
         </div>
     </footer>
 
-    <!-- Purchase Modal -->
-    <div id="purchaseModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-2xl font-bold text-stone-800">Kauf abschließen</h3>
-                <button onclick="closePurchaseModal()" class="text-stone-400 hover:text-stone-600">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </button>
-            </div>
-
-            <div class="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
-                <div class="flex justify-between items-center mb-2">
-                    <span class="text-stone-700">Von der Idee zum Prototyp</span>
-                    <span class="font-bold text-stone-800">€29,99</span>
-                </div>
-                <div class="flex justify-between items-center text-sm text-stone-600">
-                    <span>Lifetime Access</span>
-                    <span>Einmalig</span>
-                </div>
-            </div>
-
-            <div class="border-t border-stone-200 py-4 mb-6">
-                <div class="flex justify-between items-center text-lg font-bold">
-                    <span>Gesamt</span>
-                    <span class="text-amber-600">€29,99</span>
-                </div>
-            </div>
-
-            <div class="space-y-3">
-                <button onclick="processPayment('stripe')" class="w-full bg-gradient-to-r from-amber-600 to-orange-600 text-white py-3 rounded-lg font-semibold hover:from-amber-700 hover:to-orange-700 transition flex items-center justify-center gap-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
-                    </svg>
-                    Mit Karte zahlen (Stripe)
-                </button>
-
-                <button onclick="processPayment('paypal')" class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition flex items-center justify-center gap-2">
-                    <span>PayPal</span>
-                </button>
-
-                <button onclick="processPayment('google')" class="w-full bg-white border-2 border-stone-300 text-stone-800 py-3 rounded-lg font-semibold hover:bg-stone-50 transition flex items-center justify-center gap-2">
-                    <span>Google Pay</span>
-                </button>
-            </div>
-
-            <p class="text-xs text-center text-stone-500 mt-6">
-                🔒 Sichere Verschlüsselung • 30 Tage Geld-zurück-Garantie
-            </p>
-        </div>
-    </div>
-
     <script>
-        function scrollToPricing() {
-            document.getElementById('pricing').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function scrollToDemo() {
-            document.getElementById('demo').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function showPurchaseModal() {
-            document.getElementById('purchaseModal').classList.remove('hidden');
-        }
-
-        function closePurchaseModal() {
-            document.getElementById('purchaseModal').classList.add('hidden');
-        }
-
-        function processPayment(method) {
-            // Placeholder - In Produktion durch echte Payment-Integration ersetzen
-            alert(`Zahlung mit ${method} wird verarbeitet...\n\nIn der Produktivversion wird hier die echte Payment-Integration von Stripe/PayPal/Google Pay aktiviert.`);
-        }
-
-        // Close modal when clicking outside
-        document.getElementById('purchaseModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closePurchaseModal();
-            }
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
         });
     </script>
 
@@ -649,21 +557,7 @@
                     });
             });
         }
-
-        // PWA Install Prompt
-        let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-
-            // Show install banner (optional - add to UI later)
-            console.log('💡 PWA kann installiert werden');
-        });
-
-        window.addEventListener('appinstalled', () => {
-            console.log('✅ PWA wurde installiert');
-            deferredPrompt = null;
-        });
     </script>
+
 </body>
 </html>

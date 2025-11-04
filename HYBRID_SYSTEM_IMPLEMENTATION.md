@@ -40,14 +40,14 @@
     workflows: 6,
     api: 'claude',
     canPurchaseExtra: true,
-    extraWorkflowPrice: 2.00
+    extraWorkflowPrice: 1.99
   }
   month: {
     price: 29.99,
     workflows: 30,
     api: 'claude',
     canPurchaseExtra: true,
-    extraWorkflowPrice: 2.00,
+    extraWorkflowPrice: 1.99,
     popular: true
   }
   year: {
@@ -55,13 +55,13 @@
     workflows: 360,
     api: 'claude',
     canPurchaseExtra: true,
-    extraWorkflowPrice: 2.00,
+    extraWorkflowPrice: 1.99,
     savings: 'Spare €109,89!'
   }
   ```
 
 - ✅ EXTRA_PURCHASES aktualisiert:
-  - single_workflow: €2.00
+  - single_workflow: €1.99
   - workflow_pack_5: €9.00 (10% discount)
   - workflow_pack_10: €16.00 (20% discount)
 
@@ -169,7 +169,7 @@
             <svg class="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
             </svg>
-            <span>Nachkauf: €2/Workflow</span>
+            <span>Nachkauf: €1,99/Workflow</span>
         </li>
     </ul>
     <a href="auth.html" class="block w-full bg-purple-600 text-white px-4 py-2.5 rounded-lg font-semibold text-center hover:bg-purple-700 transition text-sm">
@@ -210,7 +210,7 @@
             <svg class="w-5 h-5 text-white flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
             </svg>
-            <span class="text-white">Nachkauf: €2/Workflow</span>
+            <span class="text-white">Nachkauf: €1,99/Workflow</span>
         </li>
         <li class="flex items-start gap-2">
             <svg class="w-5 h-5 text-white flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -258,7 +258,7 @@
             <svg class="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
             </svg>
-            <span>Nachkauf: €2/Workflow</span>
+            <span>Nachkauf: €1,99/Workflow</span>
         </li>
         <li class="flex items-start gap-2">
             <svg class="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -287,7 +287,7 @@
   - TAG: €4,99, 6 Workflows, Claude API
   - MONAT: €29,99, 30 Workflows, Claude API
   - JAHR: €249,99, 360 Workflows, Claude API
-- Nachkauf-Regelung hinzufügen (€2/Workflow)
+- Nachkauf-Regelung hinzufügen (€1,99/Workflow)
 - Laufzeit und Kündigungsfristen anpassen
 
 ### config/api-config.json

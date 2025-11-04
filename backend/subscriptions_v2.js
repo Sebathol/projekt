@@ -8,7 +8,7 @@
  * - MONTH: 30 Workflows für €29,99/Monat (Claude API)
  * - YEAR: 360 Workflows für €249,99/Jahr (Claude API)
  *
- * Paid Plans: Nachkauf möglich für €2/Workflow
+ * Paid Plans: Nachkauf möglich für €1,99/Workflow
  */
 
 const { authenticateToken } = require('./auth');
@@ -50,7 +50,7 @@ const PLANS = {
     },
     minCompleteWorkflows: 6,
     canPurchaseExtra: true,   // Can buy extra workflows
-    extraWorkflowPrice: 2.00, // €2 per additional workflow
+    extraWorkflowPrice: 1.99, // €1,99 per additional workflow
     unlimited: false,
     description: 'Perfekt für schnelle Projekte'
   },
@@ -69,7 +69,7 @@ const PLANS = {
     },
     minCompleteWorkflows: 30,
     canPurchaseExtra: true,   // Can buy extra workflows
-    extraWorkflowPrice: 2.00, // €2 per additional workflow
+    extraWorkflowPrice: 1.99, // €1,99 per additional workflow
     unlimited: false,
     description: 'Ideal für regelmäßige Nutzung',
     popular: true       // Most popular plan
@@ -89,7 +89,7 @@ const PLANS = {
     },
     minCompleteWorkflows: 360,
     canPurchaseExtra: true,   // Can buy extra workflows
-    extraWorkflowPrice: 2.00, // €2 per additional workflow
+    extraWorkflowPrice: 1.99, // €1,99 per additional workflow
     unlimited: false,
     description: 'Beste Ersparnis für Power-User',
     savings: 'Spare €109,89 gegenüber Monats-Abo!' // 12 × 29.99 = 359.88 vs 249.99
@@ -100,17 +100,17 @@ const PLANS = {
 const EXTRA_PURCHASES = {
   single_workflow: {
     amount: 1,
-    price: 2.00,  // €2 per workflow
+    price: 1.99,  // €1,99 per workflow
     description: 'Einzelner Workflow'
   },
   workflow_pack_5: {
     amount: 5,
-    price: 9.00,  // €1.80 per workflow (10% discount)
+    price: 8.99,  // €1,80 per workflow (10% discount)
     description: '5er-Pack (10% Ersparnis)'
   },
   workflow_pack_10: {
     amount: 10,
-    price: 16.00, // €1.60 per workflow (20% discount)
+    price: 15.99, // €1,60 per workflow (20% discount)
     description: '10er-Pack (20% Ersparnis)'
   }
 };

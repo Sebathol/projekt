@@ -16,6 +16,7 @@ const subscriptionsModule = require('./subscriptions_v2'); // V3: Tool-specific 
 const workflowsModule = require('./workflows');
 const usageModule = require('./usage');
 const promoCodesModule = require('./promo-codes'); // Promo codes for influencers
+const influencerCodesModule = require('./influencer-codes'); // NEW: Influencer codes system
 // REMOVED: const werbeLinksModule = require('./werbe-links'); // Werbe-Links (deactivated on user request)
 
 const app = express();
@@ -43,12 +44,32 @@ const db = new sqlite3.Database(dbPath, (err) => {
 const schemaPath = path.join(__dirname, '../database/schema_v3.sql');
 const schema = fs.readFileSync(schemaPath, 'utf8');
 
-db.exec(schema, (err) => {
+db.exec(schema, async (err) => {
   if (err) {
     console.error('❌ Database schema error:', err);
     process.exit(1);
   }
   console.log('✅ Database schema V3 initialized (Tool-specific tracking system)');
+
+  // Initialize influencer codes tables
+  try {
+    await influencerCodesModule.initInfluencerCodesTables(db);
+    console.log('✅ Influencer codes system initialized');
+
+    // Create a default influencer code if none exist
+    const existingCodes = await influencerCodesModule.listAllCodes(db);
+    if (existingCodes.length === 0) {
+      const defaultCode = await influencerCodesModule.createInfluencerCode(db, {
+        code: 'INFLUENCER20',
+        workflowsAmount: 20,
+        maxUses: 100,
+        description: 'Default Influencer Code - 20 kostenlose Workflows'
+      });
+      console.log(`✅ Created default influencer code: ${defaultCode.code}`);
+    }
+  } catch (error) {
+    console.error('⚠️  Influencer codes initialization error:', error.message);
+  }
 });
 
 // Make db available to all modules

@@ -165,24 +165,35 @@
           <th>Preis</th>
           <th>Laufzeit</th>
           <th>Leistungsumfang</th>
+          <th>API</th>
         </tr>
         <tr>
           <td><strong>FREE</strong></td>
           <td>Kostenlos</td>
           <td>Unbegrenzt</td>
-          <td>3 komplette Workflows</td>
+          <td>3 Workflows</td>
+          <td>Gemini (Google)</td>
         </tr>
         <tr>
-          <td><strong>PRO Monatlich</strong></td>
-          <td>€14,99/Monat</td>
+          <td><strong>TAG-ABO</strong></td>
+          <td>€4,99/Tag</td>
+          <td>1 Tag</td>
+          <td>6 Workflows + Nachkauf (€2/Workflow)</td>
+          <td>Claude (Anthropic)</td>
+        </tr>
+        <tr>
+          <td><strong>MONATS-ABO</strong></td>
+          <td>€29,99/Monat</td>
           <td>Monatlich kündbar</td>
-          <td>Unbegrenzte Workflows</td>
+          <td>30 Workflows + Nachkauf (€2/Workflow)</td>
+          <td>Claude (Anthropic)</td>
         </tr>
         <tr>
-          <td><strong>PRO Jährlich</strong></td>
-          <td>€149,99/Jahr</td>
+          <td><strong>JAHRES-ABO</strong></td>
+          <td>€249,99/Jahr</td>
           <td>Jährlich kündbar</td>
-          <td>Unbegrenzte Workflows (Ersparnis: €29,89)</td>
+          <td>360 Workflows (30/Monat) + Nachkauf (€2/Workflow)<br>Ersparnis: €109,89 vs. Monats-Abo</td>
+          <td>Claude (Anthropic)</td>
         </tr>
       </table>
 
@@ -195,14 +206,28 @@
       <h3>3.3 Zahlungsmodalitäten</h3>
       <ul>
         <li>Die Zahlung erfolgt per Kreditkarte, PayPal oder anderen angebotenen Zahlungsmethoden</li>
-        <li>Bei monatlichen Abos wird der Betrag zu Beginn jeder Abrechnungsperiode fällig</li>
-        <li>Bei jährlichen Abos wird der Gesamtbetrag einmalig zu Beginn der Laufzeit fällig</li>
+        <li>Bei TAG-ABO wird der Betrag einmalig fällig (keine automatische Verlängerung)</li>
+        <li>Bei MONATS-ABO wird der Betrag zu Beginn jeder Abrechnungsperiode automatisch abgebucht</li>
+        <li>Bei JAHRES-ABO wird der Gesamtbetrag einmalig zu Beginn der Laufzeit fällig (jährliche Verlängerung)</li>
         <li>Die Abrechnung erfolgt automatisch über den gewählten Zahlungsdienstleister</li>
       </ul>
 
-      <h3>3.4 Zahlungsverzug</h3>
+      <h3>3.4 Workflow-Nachkauf (nur für kostenpflichtige Pläne)</h3>
       <p>
-        Bei Zahlungsverzug kann der Anbieter den Zugang zum PRO-Plan sperren. Nach erfolgreicher Zahlung
+        Nutzer mit TAG-ABO, MONATS-ABO oder JAHRES-ABO können zusätzliche Workflows nachkaufen:
+      </p>
+      <ul>
+        <li><strong>Einzelworkflow:</strong> €2,00 pro Workflow</li>
+        <li><strong>5er-Pack:</strong> €9,00 (10% Rabatt, €1,80/Workflow)</li>
+        <li><strong>10er-Pack:</strong> €16,00 (20% Rabatt, €1,60/Workflow)</li>
+      </ul>
+      <p>
+        Nachgekaufte Workflows sind während der aktuellen Abo-Laufzeit gültig und verfallen bei Kündigung zum Laufzeitende.
+      </p>
+
+      <h3>3.5 Zahlungsverzug</h3>
+      <p>
+        Bei Zahlungsverzug kann der Anbieter den Zugang zu kostenpflichtigen Plänen sperren. Nach erfolgreicher Zahlung
         wird der Zugang wiederhergestellt.
       </p>
     </div>
@@ -224,9 +249,21 @@
       </p>
       <ol>
         <li>Die Registrierung abschließt (für FREE-Plan)</li>
-        <li>Einen kostenpflichtigen Plan auswählt und den Bezahlvorgang abschließt (für PRO-Pläne)</li>
+        <li>Einen kostenpflichtigen Plan auswählt und den Bezahlvorgang abschließt (für TAG-ABO, MONATS-ABO, JAHRES-ABO)</li>
         <li>Eine Bestätigung per E-Mail erhält</li>
       </ol>
+
+      <h3>4.3 Hybrid-API-System</h3>
+      <p>
+        Die App nutzt ein Hybrid-API-System für optimale Qualität und Kosteneffizienz:
+      </p>
+      <ul>
+        <li><strong>FREE-Plan:</strong> Nutzt Google Gemini API (kostenlose Basisfunktionen)</li>
+        <li><strong>TAG-ABO, MONATS-ABO, JAHRES-ABO:</strong> Nutzt Anthropic Claude API (Premium-Qualität)</li>
+      </ul>
+      <p>
+        Der API-Zugriff erfolgt transparent über die Anbieter-Infrastruktur. Der Kunde benötigt keine eigenen API-Keys.
+      </p>
     </div>
 
     <div class="section">
@@ -283,23 +320,31 @@
         <li>Kann jederzeit durch Löschung des Accounts beendet werden</li>
       </ul>
 
-      <h3>6.2 PRO Monatlich</h3>
+      <h3>6.2 TAG-ABO</h3>
       <ul>
-        <li>Laufzeit: 1 Monat</li>
+        <li>Laufzeit: 1 Tag (24 Stunden ab Kaufzeitpunkt)</li>
+        <li>Verlängert sich NICHT automatisch</li>
+        <li>Nach Ablauf wird der Account automatisch auf den FREE-Plan zurückgestuft</li>
+        <li>Kann bei Bedarf jederzeit neu gebucht werden</li>
+      </ul>
+
+      <h3>6.3 MONATS-ABO</h3>
+      <ul>
+        <li>Laufzeit: 1 Monat (30 Tage)</li>
         <li>Verlängert sich automatisch um jeweils 1 Monat</li>
         <li>Kündbar bis 24 Stunden vor Ablauf der aktuellen Periode</li>
         <li>Kündigung über die App-Einstellungen oder per E-Mail an aistormcreate.service@gmail.com</li>
       </ul>
 
-      <h3>6.3 PRO Jährlich</h3>
+      <h3>6.4 JAHRES-ABO</h3>
       <ul>
-        <li>Laufzeit: 12 Monate</li>
+        <li>Laufzeit: 12 Monate (365 Tage)</li>
         <li>Verlängert sich automatisch um jeweils 12 Monate</li>
         <li>Kündbar bis 30 Tage vor Ablauf der aktuellen Periode</li>
         <li>Kündigung über die App-Einstellungen oder per E-Mail an aistormcreate.service@gmail.com</li>
       </ul>
 
-      <h3>6.4 Außerordentliche Kündigung</h3>
+      <h3>6.5 Außerordentliche Kündigung</h3>
       <p>
         Das Recht zur außerordentlichen Kündigung aus wichtigem Grund bleibt unberührt. Ein wichtiger Grund liegt
         insbesondere vor bei:
@@ -310,12 +355,13 @@
         <li>Zahlungsverzug von mehr als 14 Tagen</li>
       </ul>
 
-      <h3>6.5 Folgen der Kündigung</h3>
+      <h3>6.6 Folgen der Kündigung</h3>
       <ul>
-        <li>Nach Kündigung erlischt der Zugang zum PRO-Plan zum Ende der bezahlten Periode</li>
+        <li>Nach Kündigung erlischt der Zugang zum kostenpflichtigen Plan zum Ende der bezahlten Periode</li>
         <li>Eine anteilige Rückerstattung bei vorzeitiger Kündigung erfolgt nicht</li>
         <li>Bereits generierte Inhalte bleiben bis zum Periodenende zugänglich</li>
-        <li>Nach Ablauf kann der Account auf den FREE-Plan zurückgestuft werden</li>
+        <li>Nach Ablauf wird der Account automatisch auf den FREE-Plan zurückgestuft</li>
+        <li>Nachgekaufte Workflows verfallen zum Laufzeitende und werden nicht rückerstattet</li>
       </ul>
     </div>
 

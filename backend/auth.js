@@ -5,6 +5,7 @@
 
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const influencerCodes = require('./influencer-codes');
 
 // JWT Secret (In production, use environment variable!)
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
@@ -25,13 +26,14 @@ function init(app, database, creditsModuleInstance) {
   app.post('/api/auth/login', login);
   app.get('/api/auth/me', authenticateToken, getCurrentUser);
   app.post('/api/auth/logout', authenticateToken, logout);
+  app.post('/api/auth/redeem-code', authenticateToken, redeemInfluencerCode);
 }
 
 /**
  * Register new user
  */
 async function register(req, res) {
-  const { email, password } = req.body;
+  const { email, password, influencerCode } = req.body;
 
   // Validation
   if (!email || !password) {
@@ -102,10 +104,23 @@ async function register(req, res) {
       );
     });
 
+    // Try to redeem influencer code if provided
+    let codeRedemption = null;
+    if (influencerCode && influencerCode.trim() !== '') {
+      try {
+        codeRedemption = await influencerCodes.redeemCode(db, userId, influencerCode.trim());
+        console.log(`✅ Influencer code redeemed for user ${userId}: ${influencerCode}`);
+      } catch (codeError) {
+        console.log(`⚠️ Failed to redeem code during registration: ${codeError.message}`);
+        // Don't fail registration if code redemption fails
+        // Just log it and continue
+      }
+    }
+
     // Generate JWT token
     const token = jwt.sign({ userId, email }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
 
-    res.status(201).json({
+    const response = {
       message: 'Registrierung erfolgreich',
       userId,
       email,
@@ -140,7 +155,18 @@ async function register(req, res) {
         plan: 'free',
         active: true
       }
-    });
+    };
+
+    // Add code redemption info if successful
+    if (codeRedemption) {
+      response.codeRedeemed = {
+        success: true,
+        workflowsGranted: codeRedemption.workflowsGranted,
+        message: codeRedemption.message
+      };
+    }
+
+    res.status(201).json(response);
 
   } catch (error) {
     console.error('Register error:', error);
@@ -331,6 +357,36 @@ async function getCurrentUser(req, res) {
  */
 function logout(req, res) {
   res.json({ message: 'Logout erfolgreich' });
+}
+
+/**
+ * Redeem influencer code (for existing users)
+ */
+async function redeemInfluencerCode(req, res) {
+  const { code } = req.body;
+  const userId = req.user.userId;
+
+  if (!code || code.trim() === '') {
+    return res.status(400).json({ error: 'Code ist erforderlich' });
+  }
+
+  try {
+    const result = await influencerCodes.redeemCode(db, userId, code.trim());
+
+    res.json({
+      success: true,
+      message: result.message,
+      workflowsGranted: result.workflowsGranted,
+      subscriptionId: result.subscriptionId
+    });
+
+  } catch (error) {
+    console.error('Code redemption error:', error);
+    res.status(400).json({
+      error: 'Code-Einlösung fehlgeschlagen',
+      message: error.message
+    });
+  }
 }
 
 /**

@@ -1,80 +1,117 @@
 /**
  * Subscriptions Module V3
- * Handles subscription plans with unlimited Pro access
+ * Handles subscription plans with HYBRID API System
  *
- * AKTUELLES MODELL:
- * - FREE: 3 Workflows zum Testen (kostenlos)
- * - PRO Monthly: Unbegrenzt für €14,99/Monat
- * - PRO Yearly: Unbegrenzt für €149,99/Jahr (2 Monate gratis!)
+ * NEUES HYBRID-MODELL:
+ * - FREE: 3 Workflows (Gemini API - kostenlos!)
+ * - DAY: 6 Workflows für €4,99/Tag (Claude API)
+ * - MONTH: 30 Workflows für €29,99/Monat (Claude API)
+ * - YEAR: 360 Workflows für €249,99/Jahr (Claude API)
+ *
+ * Paid Plans: Nachkauf möglich für €2/Workflow
  */
 
 const { authenticateToken } = require('./auth');
 
 let db;
 
-// Subscription Plans Configuration
+// Subscription Plans Configuration - HYBRID API SYSTEM
 const PLANS = {
   free: {
     name: 'Free',
+    api: 'gemini',      // Uses Gemini API (Google)
     price: 0,
     workflows: 3,
     tokens: 12,
-    duration: null, // Lifetime
+    duration: null,     // Lifetime
     toolLimits: {
-      ideas: 3,        // Max 3x Ideengenerierung
-      brainstorming: 3, // Max 3x Brainstorming
-      prd: 3,          // Max 3x PRD
-      prototype: 3     // Max 3x Prototyp
+      ideas: 3,
+      brainstorming: 3,
+      prd: 3,
+      prototype: 3
     },
-    minCompleteWorkflows: 3, // Garantiert 3 komplette Workflows möglich
-    canPurchaseExtra: false,  // Kein Nachkauf in Free Version
-    unlimited: false
+    minCompleteWorkflows: 3,
+    canPurchaseExtra: false,  // No purchase option for FREE
+    unlimited: false,
+    description: 'Kostenlos testen mit Gemini AI'
   },
-  pro_monthly: {
-    name: 'PRO Monatlich',
-    price: 14.99,
-    workflows: 999999, // Praktisch unbegrenzt
-    tokens: 999999,
-    duration: 30, // days
+  day: {
+    name: 'Tag-Abo',
+    api: 'claude',      // Uses Claude API (Anthropic)
+    price: 4.99,
+    workflows: 6,
+    tokens: 24,
+    duration: 1,        // 1 day
     toolLimits: {
-      ideas: 999999,
-      brainstorming: 999999,
-      prd: 999999,
-      prototype: 999999
+      ideas: 6,
+      brainstorming: 6,
+      prd: 6,
+      prototype: 6
     },
-    minCompleteWorkflows: 999999,
-    canPurchaseExtra: false, // Nicht nötig bei unlimited
-    unlimited: true
+    minCompleteWorkflows: 6,
+    canPurchaseExtra: true,   // Can buy extra workflows
+    extraWorkflowPrice: 2.00, // €2 per additional workflow
+    unlimited: false,
+    description: 'Perfekt für schnelle Projekte'
   },
-  pro_yearly: {
-    name: 'PRO Jährlich',
-    price: 149.99,
-    workflows: 999999, // Praktisch unbegrenzt
-    tokens: 999999,
-    duration: 365, // days
+  month: {
+    name: 'Monats-Abo',
+    api: 'claude',      // Uses Claude API (Anthropic)
+    price: 29.99,
+    workflows: 30,
+    tokens: 120,
+    duration: 30,       // 30 days
     toolLimits: {
-      ideas: 999999,
-      brainstorming: 999999,
-      prd: 999999,
-      prototype: 999999
+      ideas: 30,
+      brainstorming: 30,
+      prd: 30,
+      prototype: 30
     },
-    minCompleteWorkflows: 999999,
-    canPurchaseExtra: false, // Nicht nötig bei unlimited
-    unlimited: true,
-    savings: '2 Monate gratis! (€179,88 → €149,99)'
+    minCompleteWorkflows: 30,
+    canPurchaseExtra: true,   // Can buy extra workflows
+    extraWorkflowPrice: 2.00, // €2 per additional workflow
+    unlimited: false,
+    description: 'Ideal für regelmäßige Nutzung',
+    popular: true       // Most popular plan
+  },
+  year: {
+    name: 'Jahres-Abo',
+    api: 'claude',      // Uses Claude API (Anthropic)
+    price: 249.99,
+    workflows: 360,     // 30 per month
+    tokens: 1440,
+    duration: 365,      // 365 days
+    toolLimits: {
+      ideas: 360,
+      brainstorming: 360,
+      prd: 360,
+      prototype: 360
+    },
+    minCompleteWorkflows: 360,
+    canPurchaseExtra: true,   // Can buy extra workflows
+    extraWorkflowPrice: 2.00, // €2 per additional workflow
+    unlimited: false,
+    description: 'Beste Ersparnis für Power-User',
+    savings: 'Spare €109,89 gegenüber Monats-Abo!' // 12 × 29.99 = 359.88 vs 249.99
   }
 };
 
-// Extra Purchase Options (nur mit aktivem Paid-Abo)
+// Extra Purchase Options (nur mit aktivem Paid-Abo: day, month, year)
 const EXTRA_PURCHASES = {
-  workflows: {
-    amount: 5,
-    price: 4.99, // ohne MwSt
-    tokens_equivalent: 20
+  single_workflow: {
+    amount: 1,
+    price: 2.00,  // €2 per workflow
+    description: 'Einzelner Workflow'
   },
-  tokens: {
+  workflow_pack_5: {
+    amount: 5,
+    price: 9.00,  // €1.80 per workflow (10% discount)
+    description: '5er-Pack (10% Ersparnis)'
+  },
+  workflow_pack_10: {
     amount: 10,
-    price: 4.99 // ohne MwSt
+    price: 16.00, // €1.60 per workflow (20% discount)
+    description: '10er-Pack (20% Ersparnis)'
   }
 };
 

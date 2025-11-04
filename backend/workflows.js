@@ -1,11 +1,13 @@
 /**
  * Workflows Module
- * Handles workflow CRUD operations and Claude API integration
+ * Handles workflow CRUD operations with HYBRID API System
+ * FREE users → Gemini API (Google)
+ * Paid users → Claude API (Anthropic)
  */
 
 const { authenticateToken } = require('./auth');
 const { hasWorkflowsRemaining, decrementWorkflowCount } = require('./subscriptions');
-const claudeApi = require('./claude-api');
+const apiRouter = require('./api-router');
 
 let db;
 
@@ -48,10 +50,13 @@ async function generateIdeas(req, res) {
       });
     }
 
-    // Get active subscription
+    // Get active subscription with plan info
     const subscription = await new Promise((resolve, reject) => {
       db.get(
-        `SELECT subscription_id FROM active_subscriptions WHERE user_id = ? AND active = 1`,
+        `SELECT a.subscription_id, s.plan
+         FROM active_subscriptions a
+         JOIN subscriptions s ON a.subscription_id = s.subscription_id
+         WHERE a.user_id = ? AND a.active = 1`,
         [userId],
         (err, row) => {
           if (err) reject(err);
@@ -79,8 +84,19 @@ async function generateIdeas(req, res) {
 
     const workflowId = result.workflowId;
 
-    // Generate ideas using Claude API
-    const { ideas, cost } = await claudeApi.generateIdeas(db, workflowId, mode, input, lang);
+    // Generate ideas using HYBRID API (Gemini for FREE, Claude for paid)
+    const apiInfo = apiRouter.getApiInfo(subscription.plan);
+    console.log(`🤖 Using ${apiInfo.name} API for user ${userId} (${subscription.plan} plan)`);
+
+    const { ideas, cost, usedApi, provider } = await apiRouter.callWithFallback(
+      subscription.plan,
+      'generateIdeas',
+      db,
+      workflowId,
+      mode,
+      input,
+      lang
+    );
 
     // Save ideas to workflow
     await new Promise((resolve, reject) => {
@@ -101,7 +117,12 @@ async function generateIdeas(req, res) {
       message: 'Ideen erfolgreich generiert',
       workflowId,
       ideas,
-      cost: cost.toFixed(4)
+      cost: typeof cost === 'number' ? cost.toFixed(4) : '0.00',
+      api: {
+        name: usedApi,
+        provider: provider,
+        plan: subscription.plan
+      }
     });
 
   } catch (error) {
@@ -123,10 +144,13 @@ async function chatIteration(req, res) {
   }
 
   try {
-    // Verify workflow belongs to user
+    // Verify workflow belongs to user and get subscription plan
     const workflow = await new Promise((resolve, reject) => {
       db.get(
-        `SELECT id, user_id FROM workflows WHERE id = ? AND user_id = ?`,
+        `SELECT w.id, w.user_id, w.subscription_id, s.plan
+         FROM workflows w
+         JOIN subscriptions s ON w.subscription_id = s.subscription_id
+         WHERE w.id = ? AND w.user_id = ?`,
         [workflowId, userId],
         (err, row) => {
           if (err) reject(err);
@@ -139,8 +163,16 @@ async function chatIteration(req, res) {
       return res.status(404).json({ error: 'Workflow nicht gefunden' });
     }
 
-    // Call Claude API for chat
-    const { response, cost } = await claudeApi.chatIteration(db, workflowId, chatMessages, ideas, lang);
+    // Call HYBRID API for chat
+    const { response, cost, usedApi, provider } = await apiRouter.callWithFallback(
+      workflow.plan,
+      'chatIteration',
+      db,
+      workflowId,
+      chatMessages,
+      ideas,
+      lang
+    );
 
     // Try to extract updated ideas from response
     let updatedIdeas = ideas;
@@ -195,10 +227,13 @@ async function createPRD(req, res) {
   }
 
   try {
-    // Verify workflow belongs to user
+    // Verify workflow belongs to user and get subscription plan
     const workflow = await new Promise((resolve, reject) => {
       db.get(
-        `SELECT id, user_id FROM workflows WHERE id = ? AND user_id = ?`,
+        `SELECT w.id, w.user_id, w.subscription_id, s.plan
+         FROM workflows w
+         JOIN subscriptions s ON w.subscription_id = s.subscription_id
+         WHERE w.id = ? AND w.user_id = ?`,
         [workflowId, userId],
         (err, row) => {
           if (err) reject(err);
@@ -211,8 +246,15 @@ async function createPRD(req, res) {
       return res.status(404).json({ error: 'Workflow nicht gefunden' });
     }
 
-    // Generate PRD using Claude API
-    const { prd, cost } = await claudeApi.createPRD(db, workflowId, idea, lang);
+    // Generate PRD using HYBRID API
+    const { prd, cost, usedApi, provider } = await apiRouter.callWithFallback(
+      workflow.plan,
+      'createPRD',
+      db,
+      workflowId,
+      idea,
+      lang
+    );
 
     // Update workflow
     await new Promise((resolve, reject) => {
@@ -256,10 +298,13 @@ async function generatePrototype(req, res) {
   }
 
   try {
-    // Verify workflow belongs to user
+    // Verify workflow belongs to user and get subscription plan
     const workflow = await new Promise((resolve, reject) => {
       db.get(
-        `SELECT id, user_id FROM workflows WHERE id = ? AND user_id = ?`,
+        `SELECT w.id, w.user_id, w.subscription_id, s.plan
+         FROM workflows w
+         JOIN subscriptions s ON w.subscription_id = s.subscription_id
+         WHERE w.id = ? AND w.user_id = ?`,
         [workflowId, userId],
         (err, row) => {
           if (err) reject(err);
@@ -272,8 +317,15 @@ async function generatePrototype(req, res) {
       return res.status(404).json({ error: 'Workflow nicht gefunden' });
     }
 
-    // Generate prototype using Claude API
-    const { prototype, cost } = await claudeApi.generatePrototype(db, workflowId, prd, lang);
+    // Generate prototype using HYBRID API
+    const { prototype, cost, usedApi, provider } = await apiRouter.callWithFallback(
+      workflow.plan,
+      'generatePrototype',
+      db,
+      workflowId,
+      prd,
+      lang
+    );
 
     // Update workflow
     await new Promise((resolve, reject) => {

@@ -12,6 +12,13 @@
       margin: 0 auto;
       padding: 20px;
       color: #333;
+      background: #fafafa;
+    }
+    .container {
+      background: white;
+      padding: 40px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
     h1 {
       color: #f59e0b;
@@ -27,15 +34,23 @@
     }
     .last-updated {
       background: #f3f4f6;
-      padding: 10px;
+      padding: 15px;
       border-radius: 6px;
       font-size: 14px;
       margin-bottom: 30px;
+      border-left: 4px solid #f59e0b;
     }
     .highlight {
       background: #fef3c7;
       padding: 2px 6px;
       border-radius: 3px;
+    }
+    .important {
+      background: #fee2e2;
+      border-left: 4px solid #ef4444;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
     }
     ul {
       line-height: 1.8;
@@ -50,298 +65,432 @@
     .section {
       margin-bottom: 40px;
     }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+    table th {
+      background: #f59e0b;
+      color: white;
+      padding: 12px;
+      text-align: left;
+    }
+    table td {
+      border: 1px solid #e5e7eb;
+      padding: 12px;
+    }
+    table tr:nth-child(even) {
+      background: #f9fafb;
+    }
+    .back-link {
+      display: inline-block;
+      margin-bottom: 20px;
+      color: #f59e0b;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .back-link:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
-  <h1>📜 Datenschutzerklärung</h1>
+  <div class="container">
+    <a href="landing.html" class="back-link">← Zurück zur Startseite</a>
 
-  <div class="last-updated">
-    <strong>Letzte Aktualisierung:</strong> 31. Oktober 2025<br>
-    <strong>Version:</strong> 1.0<br>
-    <strong>Gültig für:</strong> Von der Idee zum Prototyp (App Version 3.0.0)
+    <h1>🔒 Datenschutzerklärung</h1>
+
+    <div class="last-updated">
+      <strong>Letzte Aktualisierung:</strong> 4. November 2025<br>
+      <strong>Version:</strong> 2.0<br>
+      <strong>Gültig für:</strong> Von der Idee zum Prototyp (App Version 3.0.0)
+    </div>
+
+    <div class="section">
+      <h2>1. Verantwortlicher und Datenschutzbeauftragter</h2>
+
+      <h3>1.1 Verantwortlicher</h3>
+      <p>Verantwortlich für die Datenverarbeitung im Sinne der DSGVO:</p>
+      <p>
+        <strong>AI Storm Create - Sebastian Beyer</strong><br>
+        [Vollständige Adresse]<br>
+        E-Mail: privacy@idea-to-prototype.de<br>
+        Website: https://idea-to-prototype.de
+      </p>
+
+      <h3>1.2 Kontakt</h3>
+      <p>
+        Bei Fragen zum Datenschutz erreichen Sie uns unter:<br>
+        E-Mail: privacy@idea-to-prototype.de
+      </p>
+    </div>
+
+    <div class="section">
+      <h2>2. Grundsätze der Datenverarbeitung</h2>
+      <p>Wir verarbeiten Ihre personenbezogenen Daten nach folgenden Grundsätzen:</p>
+      <ul>
+        <li><strong>Rechtmäßigkeit:</strong> Verarbeitung nur auf Rechtsgrundlage</li>
+        <li><strong>Zweckbindung:</strong> Nur für definierte Zwecke</li>
+        <li><strong>Datenminimierung:</strong> Nur notwendige Daten</li>
+        <li><strong>Richtigkeit:</strong> Aktuelle und korrekte Daten</li>
+        <li><strong>Speicherbegrenzung:</strong> Nur so lange wie nötig</li>
+        <li><strong>Integrität und Vertraulichkeit:</strong> Angemessene Sicherheit</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>3. Welche Daten wir erheben und verarbeiten</h2>
+
+      <h3>3.1 Registrierungsdaten (Pflicht)</h3>
+      <table>
+        <tr>
+          <th>Datenart</th>
+          <th>Zweck</th>
+          <th>Rechtsgrundlage</th>
+        </tr>
+        <tr>
+          <td>E-Mail-Adresse</td>
+          <td>Account-Verwaltung, Login, Kommunikation</td>
+          <td>Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung)</td>
+        </tr>
+        <tr>
+          <td>Passwort (verschlüsselt)</td>
+          <td>Authentifizierung</td>
+          <td>Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung)</td>
+        </tr>
+        <tr>
+          <td>Registrierungsdatum</td>
+          <td>Account-Verwaltung</td>
+          <td>Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung)</td>
+        </tr>
+      </table>
+
+      <h3>3.2 Abo- und Zahlungsdaten</h3>
+      <table>
+        <tr>
+          <th>Datenart</th>
+          <th>Zweck</th>
+          <th>Rechtsgrundlage</th>
+        </tr>
+        <tr>
+          <td>Gewählter Abo-Plan</td>
+          <td>Bereitstellung der gebuchten Leistungen</td>
+          <td>Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung)</td>
+        </tr>
+        <tr>
+          <td>Zahlungsinformationen</td>
+          <td>Abrechnung (verarbeitet durch Zahlungsdienstleister)</td>
+          <td>Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung)</td>
+        </tr>
+        <tr>
+          <td>Rechnungsdaten</td>
+          <td>Erstellung von Rechnungen, Buchhaltung</td>
+          <td>Art. 6 Abs. 1 lit. c DSGVO (rechtliche Verpflichtung)</td>
+        </tr>
+        <tr>
+          <td>Abo-Status</td>
+          <td>Zugriffskontrolle, Feature-Freischaltung</td>
+          <td>Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung)</td>
+        </tr>
+      </table>
+
+      <h3>3.3 Nutzungsdaten</h3>
+      <table>
+        <tr>
+          <th>Datenart</th>
+          <th>Zweck</th>
+          <th>Rechtsgrundlage</th>
+        </tr>
+        <tr>
+          <td>Erstellte Workflows</td>
+          <td>Bereitstellung der Kernfunktion</td>
+          <td>Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung)</td>
+        </tr>
+        <tr>
+          <td>Nutzungsstatistiken</td>
+          <td>Workflow-Limit-Verwaltung, Verbesserung</td>
+          <td>Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse)</td>
+        </tr>
+        <tr>
+          <td>Promo-Code-Nutzung</td>
+          <td>Einlösung und Missbrauchsprävention</td>
+          <td>Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung)</td>
+        </tr>
+      </table>
+
+      <h3>3.4 Technische Daten</h3>
+      <ul>
+        <li><strong>IP-Adresse:</strong> Für Session-Management und Sicherheit (automatisch gelöscht nach 7 Tagen)</li>
+        <li><strong>Browser-Typ und -Version:</strong> Für Kompatibilität</li>
+        <li><strong>Betriebssystem:</strong> Für technischen Support</li>
+        <li><strong>Zugriffszeitpunkte:</strong> Für Sicherheit und Fehleranalyse</li>
+      </ul>
+      <p><strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an Sicherheit und Funktionsfähigkeit)</p>
+    </div>
+
+    <div class="section">
+      <h2>4. Weitergabe an Dritte und Auftragsverarbeiter</h2>
+
+      <h3>4.1 Zahlungsdienstleister</h3>
+      <p>
+        Für die Abwicklung von Zahlungen nutzen wir folgende Dienstleister:
+      </p>
+      <ul>
+        <li><strong>Stripe:</strong> Kreditkarten-Zahlungen (Stripe Inc., USA - auf Basis von EU-Standardvertragsklauseln)</li>
+        <li><strong>PayPal:</strong> PayPal-Zahlungen (PayPal Europe, Luxemburg)</li>
+      </ul>
+      <p>
+        Diese Dienstleister erhalten nur die für die Zahlungsabwicklung notwendigen Daten.
+        Wir speichern keine vollständigen Kreditkartendaten.
+      </p>
+
+      <h3>4.2 Hosting-Provider</h3>
+      <p>
+        Unsere App wird gehostet bei:<br>
+        <strong>[Ihr Hosting-Provider]</strong><br>
+        Serverstandort: [EU/Deutschland]
+      </p>
+      <p>
+        Der Hosting-Provider verarbeitet Daten ausschließlich nach unseren Weisungen (Auftragsverarbeitung nach Art. 28 DSGVO).
+      </p>
+
+      <h3>4.3 KI-Dienste (Claude API)</h3>
+      <p>
+        Für die KI-gestützte Generierung von Inhalten nutzen wir die Claude API von Anthropic.
+      </p>
+      <div class="important">
+        <p><strong>Wichtig:</strong> Ihre eingegebenen Texte und Ideen werden an Anthropic übermittelt.
+        Anthropic nutzt diese Daten NICHT zum Training von KI-Modellen.</p>
+      </div>
+      <p>
+        <strong>Übermittelte Daten:</strong> Ihre Texteingaben zur Ideengenerierung<br>
+        <strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung)<br>
+        <strong>Anthropic Datenschutz:</strong> <a href="https://www.anthropic.com/privacy" target="_blank">https://www.anthropic.com/privacy</a>
+      </p>
+
+      <h3>4.4 Keine sonstige Weitergabe</h3>
+      <p>
+        Wir geben Ihre Daten nicht an weitere Dritte weiter, es sei denn:
+      </p>
+      <ul>
+        <li>Sie haben ausdrücklich eingewilligt (Art. 6 Abs. 1 lit. a DSGVO)</li>
+        <li>Es besteht eine gesetzliche Verpflichtung (Art. 6 Abs. 1 lit. c DSGVO)</li>
+        <li>Es ist zur Rechtsverfolgung erforderlich (Art. 6 Abs. 1 lit. f DSGVO)</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>5. Speicherdauer</h2>
+
+      <table>
+        <tr>
+          <th>Datenart</th>
+          <th>Speicherdauer</th>
+        </tr>
+        <tr>
+          <td>Account-Daten (aktiv)</td>
+          <td>Bis zur Löschung des Accounts</td>
+        </tr>
+        <tr>
+          <td>Account-Daten (gelöscht)</td>
+          <td>30 Tage (Wiederherstellungsfrist), dann vollständige Löschung</td>
+        </tr>
+        <tr>
+          <td>Rechnungsdaten</td>
+          <td>10 Jahre (steuerrechtliche Aufbewahrungspflicht)</td>
+        </tr>
+        <tr>
+          <td>Nutzungsdaten</td>
+          <td>Bis zur Löschung des Accounts</td>
+        </tr>
+        <tr>
+          <td>Server-Logs</td>
+          <td>7 Tage, dann automatische Löschung</td>
+        </tr>
+        <tr>
+          <td>Zahlungsdaten</td>
+          <td>Bis zum Ende des Abos + 3 Monate</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="section">
+      <h2>6. Cookies und Tracking</h2>
+
+      <h3>6.1 Notwendige Cookies</h3>
+      <p>Wir verwenden ausschließlich technisch notwendige Cookies:</p>
+      <ul>
+        <li><strong>Session-Cookie:</strong> Für die Aufrechterhaltung Ihrer Login-Session</li>
+        <li><strong>Speicherdauer:</strong> Bis zum Schließen des Browsers oder Logout</li>
+        <li><strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. f DSGVO (technisch notwendig)</li>
+      </ul>
+
+      <h3>6.2 Kein Tracking</h3>
+      <p>
+        Wir verwenden <strong>keine</strong> Tracking-Tools wie Google Analytics, Facebook Pixel oder ähnliche Dienste.
+      </p>
+    </div>
+
+    <div class="section">
+      <h2>7. Ihre Rechte als betroffene Person</h2>
+
+      <p>Sie haben folgende Rechte gemäß DSGVO:</p>
+
+      <h3>7.1 Auskunftsrecht (Art. 15 DSGVO)</h3>
+      <p>
+        Sie haben das Recht, Auskunft über die von uns verarbeiteten personenbezogenen Daten zu erhalten.
+      </p>
+
+      <h3>7.2 Recht auf Berichtigung (Art. 16 DSGVO)</h3>
+      <p>
+        Sie können die Berichtigung unrichtiger Daten verlangen. Dies können Sie auch direkt in den
+        Account-Einstellungen vornehmen.
+      </p>
+
+      <h3>7.3 Recht auf Löschung (Art. 17 DSGVO)</h3>
+      <p>
+        Sie können die Löschung Ihrer Daten verlangen, sofern keine gesetzlichen Aufbewahrungspflichten bestehen.
+        Die Löschung können Sie in den Account-Einstellungen vornehmen oder per E-Mail anfordern.
+      </p>
+
+      <h3>7.4 Recht auf Einschränkung (Art. 18 DSGVO)</h3>
+      <p>
+        Sie können die Einschränkung der Verarbeitung Ihrer Daten verlangen.
+      </p>
+
+      <h3>7.5 Recht auf Datenübertragbarkeit (Art. 20 DSGVO)</h3>
+      <p>
+        Sie haben das Recht, Ihre Daten in einem strukturierten, gängigen und maschinenlesbaren Format zu erhalten.
+        Export-Funktion verfügbar in den Account-Einstellungen.
+      </p>
+
+      <h3>7.6 Widerspruchsrecht (Art. 21 DSGVO)</h3>
+      <p>
+        Sie können der Verarbeitung Ihrer Daten aus Gründen, die sich aus Ihrer besonderen Situation ergeben,
+        jederzeit widersprechen.
+      </p>
+
+      <h3>7.7 Beschwerderecht</h3>
+      <p>
+        Sie haben das Recht, sich bei einer Datenschutz-Aufsichtsbehörde zu beschweren.
+        Zuständig ist die Aufsichtsbehörde Ihres Wohnsitzes oder unseres Firmensitzes.
+      </p>
+
+      <div class="contact-box">
+        <h4>Ausübung Ihrer Rechte</h4>
+        <p>Zur Ausübung Ihrer Rechte wenden Sie sich bitte an:</p>
+        <p>
+          <strong>E-Mail:</strong> privacy@idea-to-prototype.de<br>
+          <strong>Betreff:</strong> "Datenschutzanfrage"
+        </p>
+        <p>Wir bearbeiten Ihre Anfrage innerhalb von 30 Tagen.</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>8. Datensicherheit</h2>
+
+      <h3>8.1 Technische Maßnahmen</h3>
+      <ul>
+        <li><strong>Verschlüsselung:</strong> Alle Verbindungen über HTTPS/TLS</li>
+        <li><strong>Passwort-Sicherheit:</strong> Passwörter werden mit bcrypt gehasht (nie im Klartext gespeichert)</li>
+        <li><strong>Zugriffskontrolle:</strong> Nur autorisierte Mitarbeiter haben Zugriff auf Daten</li>
+        <li><strong>Regelmäßige Updates:</strong> Sicherheitsupdates der Software</li>
+        <li><strong>Backups:</strong> Verschlüsselte Backups mit eingeschränktem Zugriff</li>
+      </ul>
+
+      <h3>8.2 Organisatorische Maßnahmen</h3>
+      <ul>
+        <li>Vertraulichkeitsverpflichtung aller Mitarbeiter</li>
+        <li>Regelmäßige Sicherheitsschulungen</li>
+        <li>Incident-Response-Plan bei Datenschutzverletzungen</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>9. Datenübermittlung in Drittländer</h2>
+
+      <h3>9.1 Claude API (Anthropic, USA)</h3>
+      <p>
+        Die Verarbeitung durch Anthropic erfolgt in den USA. Die Datenübermittlung basiert auf:
+      </p>
+      <ul>
+        <li>EU-Standardvertragsklauseln (Art. 46 Abs. 2 lit. c DSGVO)</li>
+        <li>Angemessene technische und organisatorische Maßnahmen</li>
+      </ul>
+
+      <h3>9.2 Stripe (USA)</h3>
+      <p>
+        Stripe ist nach dem EU-US Data Privacy Framework zertifiziert und bietet ein angemessenes Datenschutzniveau.
+      </p>
+    </div>
+
+    <div class="section">
+      <h2>10. Kinder und Jugendliche</h2>
+      <p>
+        Unsere App richtet sich an Personen ab 18 Jahren. Wir erheben wissentlich keine Daten von Personen unter 18 Jahren.
+        Sollten wir feststellen, dass wir Daten von Minderjährigen erhalten haben, werden diese umgehend gelöscht.
+      </p>
+    </div>
+
+    <div class="section">
+      <h2>11. Änderungen dieser Datenschutzerklärung</h2>
+      <p>
+        Wir behalten uns vor, diese Datenschutzerklärung anzupassen, um sie an geänderte Rechtslage oder Änderungen
+        unserer Dienste anzupassen.
+      </p>
+      <p>
+        Wesentliche Änderungen werden wir Ihnen per E-Mail mitteilen. Die aktuelle Version ist stets unter
+        <a href="privacy-policy.html" style="color: #f59e0b;">privacy-policy.html</a> abrufbar.
+      </p>
+    </div>
+
+    <div class="section">
+      <h2>12. Google Play Store</h2>
+
+      <h3>12.1 Play Store Anforderungen</h3>
+      <p>
+        Diese App ist über den Google Play Store verfügbar. Google erhebt dabei eigene Daten gemäß der
+        <a href="https://policies.google.com/privacy" target="_blank" style="color: #f59e0b;">Google Datenschutzerklärung</a>.
+      </p>
+
+      <h3>12.2 Play Store Berechtigungen</h3>
+      <p>Die App benötigt folgende Berechtigungen:</p>
+      <ul>
+        <li><strong>Internet:</strong> Für die Nutzung der KI-Funktionen und Synchronisation</li>
+        <li><strong>Netzwerkstatus:</strong> Zur Prüfung der Internetverbindung</li>
+      </ul>
+
+      <h3>12.3 Data Safety (Play Store)</h3>
+      <p><strong>Erfasste Daten:</strong></p>
+      <ul>
+        <li>E-Mail-Adresse (für Account-Verwaltung)</li>
+        <li>Nutzungsdaten (für Workflow-Verwaltung)</li>
+        <li>Zahlungsinformationen (über sichere Zahlungsdienstleister)</li>
+      </ul>
+      <p><strong>Datenweitergabe:</strong> Nur an Zahlungsdienstleister und KI-Anbieter wie oben beschrieben</p>
+      <p><strong>Verschlüsselung:</strong> Alle Daten werden bei Übertragung und Speicherung verschlüsselt</p>
+    </div>
+
+    <div class="contact-box">
+      <h3>📧 Datenschutz-Kontakt</h3>
+      <p>Bei Fragen zum Datenschutz erreichen Sie uns unter:</p>
+      <p>
+        <strong>E-Mail:</strong> privacy@idea-to-prototype.de<br>
+        <strong>Betreff:</strong> "Datenschutzanfrage"<br>
+        <strong>Website:</strong> <a href="landing.html" style="color: #f59e0b;">Von der Idee zum Prototyp</a>
+      </p>
+    </div>
+
+    <div style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #e5e7eb; color: #6b7280; font-size: 14px;">
+      <p>© 2025 AI Storm Create - Sebastian Beyer. Alle Rechte vorbehalten.</p>
+      <p>
+        <a href="landing.html" style="color: #f59e0b; text-decoration: none; margin: 0 10px;">Startseite</a> •
+        <a href="terms-and-conditions.html" style="color: #f59e0b; text-decoration: none; margin: 0 10px;">AGB</a> •
+        <a href="impressum.html" style="color: #f59e0b; text-decoration: none; margin: 0 10px;">Impressum</a>
+      </p>
+    </div>
   </div>
-
-  <div class="section">
-    <h2>1. Einleitung</h2>
-    <p>
-      Willkommen bei <strong>Von der Idee zum Prototyp</strong>. Wir nehmen den Schutz Ihrer persönlichen Daten sehr ernst.
-      Diese Datenschutzerklärung informiert Sie darüber, wie wir Ihre Daten erheben, verarbeiten und schützen.
-    </p>
-    <p>
-      Verantwortlich für die Datenverarbeitung:
-    </p>
-    <ul>
-      <li><strong>Name:</strong> AI Storm Create</li>
-      <li><strong>E-Mail:</strong> privacy@aistormcreate.com</li>
-      <li><strong>Website:</strong> https://aistormcreate.com</li>
-    </ul>
-  </div>
-
-  <div class="section">
-    <h2>2. Welche Daten wir erheben</h2>
-
-    <h3>2.1 Registrierungsdaten</h3>
-    <p>Bei der Registrierung erheben wir:</p>
-    <ul>
-      <li><strong>E-Mail-Adresse</strong> (Pflichtfeld) - zur Kontenverwaltung und Kommunikation</li>
-      <li><strong>Benutzername</strong> (optional) - zur Personalisierung</li>
-      <li><strong>Passwort</strong> (verschlüsselt gespeichert) - zur Authentifizierung</li>
-      <li><strong>Telefonnummer</strong> (optional) - für erweiterte Sicherheit</li>
-    </ul>
-
-    <h3>2.2 Nutzungsdaten</h3>
-    <p>Während der Nutzung der App erfassen wir:</p>
-    <ul>
-      <li>Erstellte <strong>Workflows</strong> (Ideen, Brainstorming, PRD, Prototypen)</li>
-      <li><strong>Nutzungsstatistiken</strong> (Anzahl der genutzten Tools und Tokens)</li>
-      <li><strong>Abonnement-Informationen</strong> (gewählter Plan, Laufzeit, Status)</li>
-      <li><strong>Promo-Code-Einlösungen</strong> (falls genutzt)</li>
-      <li><strong>Zeitstempel</strong> (Erstellungsdatum, letzte Änderung)</li>
-    </ul>
-
-    <h3>2.3 Technische Daten</h3>
-    <ul>
-      <li><strong>Gerätetyp</strong> (z.B. Android-Smartphone, Tablet)</li>
-      <li><strong>Betriebssystem-Version</strong></li>
-      <li><strong>App-Version</strong></li>
-      <li><strong>IP-Adresse</strong> (anonymisiert nach 7 Tagen)</li>
-      <li><strong>Fehlerberichte</strong> (bei App-Abstürzen)</li>
-    </ul>
-
-    <h3>2.4 Zahlungsdaten</h3>
-    <p>
-      <span class="highlight">Wichtig:</span> Wir speichern <strong>keine Kreditkartendaten</strong>.
-      Alle Zahlungen werden sicher über <strong>Google Play Billing</strong> abgewickelt.
-      Wir erhalten lediglich eine Transaktionsbestätigung ohne sensible Zahlungsinformationen.
-    </p>
-  </div>
-
-  <div class="section">
-    <h2>3. Wie wir Ihre Daten verwenden</h2>
-    <p>Wir verwenden Ihre Daten ausschließlich für folgende Zwecke:</p>
-
-    <h3>3.1 Bereitstellung der App-Funktionen</h3>
-    <ul>
-      <li>Verwaltung Ihres Benutzerkontos</li>
-      <li>Speicherung Ihrer Workflows und Projekte</li>
-      <li>Bereitstellung von KI-generierten Inhalten</li>
-      <li>Tracking Ihres Nutzungskontingents (Workflows, Tokens)</li>
-    </ul>
-
-    <h3>3.2 Abonnement-Verwaltung</h3>
-    <ul>
-      <li>Aktivierung und Verwaltung von Abonnements</li>
-      <li>Verarbeitung von Extra-Käufen</li>
-      <li>Einlösung von Promo-Codes</li>
-      <li>Benachrichtigungen über Ablaufdatum</li>
-    </ul>
-
-    <h3>3.3 Verbesserung der App</h3>
-    <ul>
-      <li>Analyse von Nutzungsmustern (anonymisiert)</li>
-      <li>Behebung von Fehlern und Bugs</li>
-      <li>Entwicklung neuer Features</li>
-      <li>Performance-Optimierung</li>
-    </ul>
-
-    <h3>3.4 Kommunikation</h3>
-    <ul>
-      <li>Wichtige Benachrichtigungen zu Ihrem Konto</li>
-      <li>Antworten auf Support-Anfragen</li>
-      <li>Informationen über Updates (optional)</li>
-    </ul>
-  </div>
-
-  <div class="section">
-    <h2>4. Rechtsgrundlage der Verarbeitung (DSGVO)</h2>
-    <p>Die Verarbeitung Ihrer Daten erfolgt auf Basis folgender Rechtsgrundlagen:</p>
-    <ul>
-      <li><strong>Art. 6 Abs. 1 lit. b DSGVO</strong> - Vertragserfüllung (Bereitstellung der App-Funktionen)</li>
-      <li><strong>Art. 6 Abs. 1 lit. a DSGVO</strong> - Einwilligung (optionale Newsletter, Marketing)</li>
-      <li><strong>Art. 6 Abs. 1 lit. f DSGVO</strong> - Berechtigtes Interesse (Fehleranalyse, Sicherheit)</li>
-    </ul>
-  </div>
-
-  <div class="section">
-    <h2>5. Datenspeicherung und -sicherheit</h2>
-
-    <h3>5.1 Wo werden Daten gespeichert?</h3>
-    <ul>
-      <li><strong>Lokal:</strong> SQLite-Datenbank auf unserem Server (EU-Hosting)</li>
-      <li><strong>Cloud:</strong> Optional - nur mit Ihrer Zustimmung</li>
-      <li><strong>Backups:</strong> Verschlüsselte tägliche Backups (30 Tage Aufbewahrung)</li>
-    </ul>
-
-    <h3>5.2 Sicherheitsmaßnahmen</h3>
-    <ul>
-      <li>✅ <strong>Verschlüsselte Übertragung</strong> (HTTPS/TLS)</li>
-      <li>✅ <strong>Passwort-Hashing</strong> (bcrypt mit Salt)</li>
-      <li>✅ <strong>JWT-Token-Authentifizierung</strong></li>
-      <li>✅ <strong>Rate-Limiting</strong> gegen Brute-Force-Angriffe</li>
-      <li>✅ <strong>Regelmäßige Sicherheitsupdates</strong></li>
-      <li>✅ <strong>Zugriffskontrollen</strong> für Server</li>
-    </ul>
-
-    <h3>5.3 Wie lange speichern wir Daten?</h3>
-    <ul>
-      <li><strong>Kontodaten:</strong> Bis zur Löschung Ihres Kontos</li>
-      <li><strong>Workflows:</strong> Bis zur manuellen Löschung durch Sie</li>
-      <li><strong>Nutzungsstatistiken:</strong> 12 Monate (dann anonymisiert)</li>
-      <li><strong>Transaktionsdaten:</strong> 10 Jahre (gesetzliche Aufbewahrungspflicht)</li>
-      <li><strong>Support-Anfragen:</strong> 3 Jahre nach letztem Kontakt</li>
-    </ul>
-  </div>
-
-  <div class="section">
-    <h2>6. Weitergabe von Daten an Dritte</h2>
-    <p><span class="highlight">Wir verkaufen Ihre Daten nicht!</span></p>
-    <p>Wir geben Ihre Daten nur in folgenden Fällen an Dritte weiter:</p>
-
-    <h3>6.1 Technische Dienstleister</h3>
-    <ul>
-      <li><strong>Hosting-Anbieter:</strong> Server-Betrieb (EU-basiert)</li>
-      <li><strong>Google Play Billing:</strong> Abonnement-Verwaltung (Google Ireland Limited)</li>
-      <li><strong>OpenAI/Anthropic:</strong> KI-Textgenerierung (API-Nutzung, keine Speicherung Ihrer Daten)</li>
-    </ul>
-    <p>
-      Alle Dienstleister sind vertraglich zur Einhaltung der DSGVO verpflichtet und
-      verarbeiten Daten nur im Rahmen unserer Weisungen.
-    </p>
-
-    <h3>6.2 Gesetzliche Verpflichtungen</h3>
-    <p>
-      Wir können Daten weitergeben, wenn dies gesetzlich vorgeschrieben ist
-      (z.B. bei gerichtlichen Anordnungen oder Behördenanfragen).
-    </p>
-  </div>
-
-  <div class="section">
-    <h2>7. Ihre Rechte (DSGVO)</h2>
-    <p>Sie haben folgende Rechte bezüglich Ihrer personenbezogenen Daten:</p>
-
-    <h3>7.1 Auskunftsrecht (Art. 15 DSGVO)</h3>
-    <p>Sie können jederzeit Auskunft über die zu Ihrer Person gespeicherten Daten verlangen.</p>
-
-    <h3>7.2 Recht auf Berichtigung (Art. 16 DSGVO)</h3>
-    <p>Sie können die Korrektur falscher oder unvollständiger Daten verlangen.</p>
-
-    <h3>7.3 Recht auf Löschung (Art. 17 DSGVO)</h3>
-    <p>Sie können die Löschung Ihrer Daten verlangen ("Recht auf Vergessenwerden").</p>
-    <p><strong>So löschen Sie Ihr Konto:</strong></p>
-    <ul>
-      <li>In der App: Einstellungen → Konto → "Konto löschen"</li>
-      <li>Per E-Mail: privacy@aistormcreate.com</li>
-    </ul>
-
-    <h3>7.4 Recht auf Datenübertragbarkeit (Art. 20 DSGVO)</h3>
-    <p>Sie können Ihre Daten in einem strukturierten, maschinenlesbaren Format erhalten.</p>
-    <p><strong>Export in der App:</strong> Einstellungen → Daten → "Daten exportieren" (JSON-Format)</p>
-
-    <h3>7.5 Widerspruchsrecht (Art. 21 DSGVO)</h3>
-    <p>Sie können der Verarbeitung Ihrer Daten aus berechtigtem Interesse widersprechen.</p>
-
-    <h3>7.6 Beschwerderecht</h3>
-    <p>
-      Sie haben das Recht, sich bei einer Datenschutz-Aufsichtsbehörde zu beschweren:
-    </p>
-    <ul>
-      <li><strong>Deutschland:</strong> Bundesbeauftragte für den Datenschutz und die Informationsfreiheit (BfDI)</li>
-      <li><strong>Website:</strong> https://www.bfdi.bund.de</li>
-      <li><strong>Telefon:</strong> +49 (0)228 997799-0</li>
-    </ul>
-  </div>
-
-  <div class="section">
-    <h2>8. Cookies und Tracking-Technologien</h2>
-
-    <h3>8.1 Notwendige Cookies</h3>
-    <p>Wir verwenden ausschließlich technisch notwendige Cookies:</p>
-    <ul>
-      <li><strong>Session-Token (JWT):</strong> Zur Authentifizierung (lokal gespeichert)</li>
-      <li><strong>Präferenzen:</strong> Sprache, Theme (Dark Mode)</li>
-    </ul>
-
-    <h3>8.2 Kein Tracking von Dritten</h3>
-    <p>
-      <span class="highlight">Wir verwenden keine Tracking-Tools von Drittanbietern</span>
-      (kein Google Analytics, Facebook Pixel, etc.).
-      Ihre Privatsphäre ist uns wichtig!
-    </p>
-  </div>
-
-  <div class="section">
-    <h2>9. Kinder und Jugendliche</h2>
-    <p>
-      Unsere App richtet sich an Nutzer ab 16 Jahren. Personen unter 16 Jahren dürfen die App
-      nur mit Zustimmung der Erziehungsberechtigten nutzen. Wir erheben wissentlich keine
-      Daten von Kindern unter 13 Jahren.
-    </p>
-  </div>
-
-  <div class="section">
-    <h2>10. Änderungen dieser Datenschutzerklärung</h2>
-    <p>
-      Wir behalten uns vor, diese Datenschutzerklärung bei Bedarf zu aktualisieren
-      (z.B. bei neuen Features oder gesetzlichen Änderungen).
-    </p>
-    <p>
-      <strong>Bei wesentlichen Änderungen:</strong> Wir informieren Sie per E-Mail oder
-      In-App-Benachrichtigung mindestens 14 Tage vor Inkrafttreten.
-    </p>
-    <p>
-      <strong>Aktuelle Version:</strong> Immer verfügbar unter
-      <a href="https://aistormcreate.com/privacy">aistormcreate.com/privacy</a>
-    </p>
-  </div>
-
-  <div class="contact-box">
-    <h2>📧 Kontakt zum Datenschutz</h2>
-    <p>Bei Fragen zum Datenschutz oder zur Ausübung Ihrer Rechte kontaktieren Sie uns:</p>
-    <ul style="list-style: none; padding: 0;">
-      <li><strong>📧 E-Mail:</strong> privacy@aistormcreate.com</li>
-      <li><strong>🌐 Website:</strong> https://aistormcreate.com/contact</li>
-      <li><strong>⏱️ Antwortzeit:</strong> In der Regel innerhalb von 48 Stunden</li>
-    </ul>
-    <p>
-      <strong>Datenschutzbeauftragter:</strong> Falls erforderlich (ab 20 Mitarbeitern),
-      finden Sie die Kontaktdaten auf unserer Website.
-    </p>
-  </div>
-
-  <div class="section">
-    <h2>11. Internationale Datenübermittlung</h2>
-    <p>
-      Unsere Server befinden sich in der Europäischen Union (Deutschland/Niederlande).
-      Bei der Nutzung von KI-Diensten (OpenAI, Anthropic) können Daten in die USA übertragen werden:
-    </p>
-    <ul>
-      <li>✅ <strong>Rechtsgrundlage:</strong> EU-US Data Privacy Framework</li>
-      <li>✅ <strong>Standardvertragsklauseln:</strong> Gemäß Art. 46 DSGVO</li>
-      <li>✅ <strong>Keine dauerhafte Speicherung:</strong> API-Anfragen werden nicht gespeichert</li>
-    </ul>
-  </div>
-
-  <div class="section">
-    <h2>12. Datenschutz-Zusammenfassung</h2>
-    <p><strong>Kurz gesagt:</strong></p>
-    <ul>
-      <li>✅ Wir erheben nur notwendige Daten</li>
-      <li>✅ Ihre Daten bleiben privat und verschlüsselt</li>
-      <li>✅ Keine Weitergabe an Werbepartner</li>
-      <li>✅ Kein Tracking von Drittanbietern</li>
-      <li>✅ Sie haben volle Kontrolle (Export, Löschung)</li>
-      <li>✅ DSGVO-konform</li>
-      <li>✅ EU-Server-Standort</li>
-    </ul>
-  </div>
-
-  <hr style="margin: 40px 0; border: none; border-top: 1px solid #e5e7eb;">
-
-  <p style="text-align: center; color: #6b7280; font-size: 14px;">
-    <strong>Von der Idee zum Prototyp</strong><br>
-    AI Storm Create © 2025<br>
-    Datenschutzerklärung Version 1.0 - Stand: 31. Oktober 2025
-  </p>
-
 </body>
 </html>

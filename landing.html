@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Simple Weather App - Einfach. Günstig. Werbefrei. Nur €1,99 einmalig. Kein Abo!">
+    <meta name="description" content="Simple Weather App - Flexible Abo-Modelle ab €4,90. Workflows nach Bedarf.">
     <meta name="theme-color" content="#667eea">
-    <title>Simple Weather App - Einfach. Günstig. Werbefrei.</title>
+    <title>Simple Weather App - Flexible Abo-Modelle</title>
     <link rel="stylesheet" href="landing-style.css">
     <link rel="icon" type="image/png" href="icon-192.png">
 </head>
@@ -15,21 +15,21 @@
         <div class="container">
             <div class="hero-content">
                 <div class="hero-text">
-                    <span class="badge">Werbefrei • Kein Abo • Nur €1,99</span>
-                    <h1>Das Wetter.<br><span class="gradient-text">Einfach erklärt.</span></h1>
+                    <span class="badge">Werbefrei • Flexible Abos • Ab €4,90</span>
+                    <h1>Das Wetter.<br><span class="gradient-text">Professionelle Workflows.</span></h1>
                     <p class="hero-subtitle">
-                        Keine nervige Werbung. Keine versteckten Kosten. Keine komplizierten Features, die du nie nutzt.
-                        <strong>Nur das Wetter - simpel und funktional.</strong>
+                        Wähle das Abo, das zu dir passt. Von täglich bis jährlich.
+                        <strong>Workflows nach Bedarf - flexibel zukaufbar.</strong>
                     </p>
                     <div class="cta-buttons">
-                        <button class="btn btn-primary" onclick="showPurchase()">
-                            Jetzt für €1,99 kaufen
+                        <button class="btn btn-primary" onclick="showPricing()">
+                            Abo-Modelle ansehen
                         </button>
                         <button class="btn btn-secondary" onclick="scrollToFeatures()">
                             Mehr erfahren
                         </button>
                     </div>
-                    <p class="money-back">💯 30 Tage Geld-zurück-Garantie</p>
+                    <p class="money-back">💯 Jederzeit kündbar</p>
                 </div>
                 <div class="hero-image">
                     <div class="phone-mockup">
@@ -64,12 +64,12 @@
                 <div class="comparison-card good">
                     <h3>✅ Simple Weather App</h3>
                     <ul>
-                        <li>Komplett werbefrei - für immer</li>
-                        <li>Nur €1,99 - einmalig, kein Abo!</li>
-                        <li>Nur das, was du wirklich brauchst</li>
+                        <li>Komplett werbefrei</li>
+                        <li>Flexible Abo-Modelle ab €4,90</li>
+                        <li>Workflows nach Bedarf zukaufbar</li>
                         <li>Intuitiv und übersichtlich</li>
                         <li>Deine Privatsphäre ist sicher</li>
-                        <li>Du entscheidest über Benachrichtigungen</li>
+                        <li>Jederzeit kündbar</li>
                     </ul>
                 </div>
             </div>
@@ -97,8 +97,8 @@
 
                 <div class="feature-card">
                     <div class="feature-icon">💰</div>
-                    <h3>Einmalzahlung €1,99</h3>
-                    <p>Zahle einmal, nutze für immer. Kein Abo, keine versteckten Kosten, keine Überraschungen.</p>
+                    <h3>Flexible Abos</h3>
+                    <p>Wähle zwischen Tages-, Wochen-, Monats- oder Jahresabo. Jederzeit kündbar.</p>
                 </div>
 
                 <div class="feature-card">
@@ -132,8 +132,8 @@
                     <p>Eine Aufgabe, perfekt gemacht: Dir das Wetter zeigen.</p>
                 </div>
                 <div class="value-item">
-                    <h3>💸 Ehrlich</h3>
-                    <p>€1,99 einmalig. Keine Abos, keine In-App-Käufe, keine Tricks.</p>
+                    <h3>💸 Transparent</h3>
+                    <p>Klare Preise, faire Abos. Workflows zusätzlich kaufbar für nur €1,90.</p>
                 </div>
                 <div class="value-item">
                     <h3>🧘 Stressfrei</h3>
@@ -144,31 +144,108 @@
     </section>
 
     <!-- Pricing Section -->
-    <section class="pricing">
+    <section id="pricing" class="pricing">
         <div class="container">
-            <div class="pricing-card">
-                <div class="price-header">
-                    <h2>Simple Weather App</h2>
-                    <div class="price">
-                        <span class="currency">€</span>
-                        <span class="amount">1,99</span>
-                        <span class="period">einmalig</span>
+            <h2>Wähle dein Abo-Modell</h2>
+            <p class="section-subtitle">Alle Abos beinhalten zusätzlich kaufbare Workflows für nur €1,90 pro Stück</p>
+
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="price-header">
+                        <h3>Tagesabo</h3>
+                        <div class="price">
+                            <span class="currency">€</span>
+                            <span class="amount">4,90</span>
+                            <span class="period">/Tag</span>
+                        </div>
                     </div>
-                    <p class="price-note">Kein Abo • Für immer dein</p>
+                    <ul class="price-features">
+                        <li>✅ 6 Workflows pro Tag</li>
+                        <li>✅ Werbefrei</li>
+                        <li>✅ Jederzeit kündbar</li>
+                        <li>✅ Workflows zukaufbar (+€1,90)</li>
+                    </ul>
+                    <button class="btn btn-primary" onclick="selectPlan('daily')">
+                        Tagesabo wählen
+                    </button>
                 </div>
-                <ul class="price-features">
-                    <li>✅ Komplette App - keine Einschränkungen</li>
-                    <li>✅ Lebenslange Updates</li>
-                    <li>✅ Alle zukünftigen Features</li>
-                    <li>✅ Werbefrei - für immer</li>
-                    <li>✅ Prioritäts-Support</li>
-                    <li>✅ 30 Tage Geld-zurück-Garantie</li>
-                </ul>
-                <button class="btn btn-primary btn-large" onclick="showPurchase()">
-                    Jetzt kaufen für €1,99
-                </button>
-                <p class="security-note">🔒 Sichere Zahlung via Stripe</p>
+
+                <div class="pricing-card">
+                    <div class="price-header">
+                        <h3>Wochenabo</h3>
+                        <div class="price">
+                            <span class="currency">€</span>
+                            <span class="amount">9,90</span>
+                            <span class="period">/Woche</span>
+                        </div>
+                    </div>
+                    <ul class="price-features">
+                        <li>✅ 12 Workflows pro Woche</li>
+                        <li>✅ Werbefrei</li>
+                        <li>✅ Jederzeit kündbar</li>
+                        <li>✅ Workflows zukaufbar (+€1,90)</li>
+                    </ul>
+                    <button class="btn btn-primary" onclick="selectPlan('weekly')">
+                        Wochenabo wählen
+                    </button>
+                </div>
+
+                <div class="pricing-card popular">
+                    <div class="popular-badge">Beliebt</div>
+                    <div class="price-header">
+                        <h3>Monatsabo</h3>
+                        <div class="price">
+                            <span class="currency">€</span>
+                            <span class="amount">29,90</span>
+                            <span class="period">/Monat</span>
+                        </div>
+                    </div>
+                    <ul class="price-features">
+                        <li>✅ 35 Workflows pro Monat</li>
+                        <li>✅ Werbefrei</li>
+                        <li>✅ Jederzeit kündbar</li>
+                        <li>✅ Workflows zukaufbar (+€1,90)</li>
+                        <li>✅ Prioritäts-Support</li>
+                    </ul>
+                    <button class="btn btn-primary" onclick="selectPlan('monthly')">
+                        Monatsabo wählen
+                    </button>
+                </div>
+
+                <div class="pricing-card best-value">
+                    <div class="popular-badge">Bester Wert</div>
+                    <div class="price-header">
+                        <h3>Jahresabo</h3>
+                        <div class="price">
+                            <span class="currency">€</span>
+                            <span class="amount">249,90</span>
+                            <span class="period">/Jahr</span>
+                        </div>
+                        <p class="price-note">35 Workflows/Monat • Spare €109</p>
+                    </div>
+                    <ul class="price-features">
+                        <li>✅ 35 Workflows jeden Monat</li>
+                        <li>✅ Werbefrei</li>
+                        <li>✅ Jederzeit kündbar</li>
+                        <li>✅ Workflows zukaufbar (+€1,90)</li>
+                        <li>✅ Prioritäts-Support</li>
+                        <li>✅ Früher Zugang zu neuen Features</li>
+                    </ul>
+                    <button class="btn btn-primary" onclick="selectPlan('yearly')">
+                        Jahresabo wählen
+                    </button>
+                </div>
             </div>
+
+            <div class="workflow-addon">
+                <h3>🔥 Zusätzliche Workflows</h3>
+                <p>Workflows aufgebraucht? Kaufe einzelne Workflows für nur <strong>€1,90</strong> nach!</p>
+                <button class="btn btn-secondary" onclick="showWorkflowPurchase()">
+                    Workflows kaufen
+                </button>
+            </div>
+
+            <p class="security-note">🔒 Sichere Zahlung via Stripe • Jederzeit kündbar</p>
         </div>
     </section>
 
@@ -197,28 +274,28 @@
             <h2>Häufige Fragen</h2>
             <div class="faq-grid">
                 <div class="faq-item">
-                    <h3>Warum nur €1,99?</h3>
-                    <p>Weil ich glaube, dass ehrliche Apps nicht teuer sein müssen. Ich möchte, dass sich jeder eine werbefreie App leisten kann.</p>
+                    <h3>Was sind Workflows?</h3>
+                    <p>Workflows sind Nutzungseinheiten. Jede Wetterabfrage oder Aktion in der App zählt als ein Workflow.</p>
                 </div>
                 <div class="faq-item">
-                    <h3>Gibt es wirklich kein Abo?</h3>
-                    <p>Nein, wirklich nicht! €1,99 einmalig, und die App gehört dir für immer. Alle Updates inklusive.</p>
+                    <h3>Welches Abo passt zu mir?</h3>
+                    <p>Das hängt von deiner Nutzung ab. Gelegentliche Nutzer wählen das Tages- oder Wochenabo. Vielnutzer profitieren vom Monats- oder Jahresabo.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Kann ich zusätzliche Workflows kaufen?</h3>
+                    <p>Ja! Bei jedem Abo kannst du zusätzliche Workflows für nur €1,90 pro Stück nachkaufen.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Kann ich jederzeit kündigen?</h3>
+                    <p>Ja, alle Abos sind jederzeit kündbar. Keine Kündigungsfristen, keine Tricks.</p>
                 </div>
                 <div class="faq-item">
                     <h3>Woher kommen die Wetterdaten?</h3>
                     <p>Von WeatherAPI.com - einem zuverlässigen Anbieter mit präzisen, aktuellen Daten.</p>
                 </div>
                 <div class="faq-item">
-                    <h3>Funktioniert die App offline?</h3>
-                    <p>Ja! Nach dem ersten Laden werden Daten gecached. Du siehst die letzten Wetterdaten auch ohne Internet.</p>
-                </div>
-                <div class="faq-item">
-                    <h3>Geld-zurück-Garantie?</h3>
-                    <p>Absolut! Wenn du nicht zufrieden bist, bekommst du innerhalb von 30 Tagen dein Geld zurück. Ohne Fragen.</p>
-                </div>
-                <div class="faq-item">
                     <h3>Auf welchen Geräten läuft die App?</h3>
-                    <p>Android, iOS, und als Progressive Web App sogar im Browser. Einmal kaufen, überall nutzen!</p>
+                    <p>Android, iOS, und als Progressive Web App sogar im Browser. Ein Abo, überall nutzen!</p>
                 </div>
             </div>
         </div>
@@ -227,12 +304,12 @@
     <!-- CTA Section -->
     <section class="final-cta">
         <div class="container">
-            <h2>Bereit für eine ehrliche Wetter-App?</h2>
-            <p>Schließe dich hunderten zufriedenen Nutzern an.</p>
-            <button class="btn btn-primary btn-large" onclick="showPurchase()">
-                Ja, ich will Simple Weather App für €1,99
+            <h2>Bereit für professionelle Workflows?</h2>
+            <p>Wähle das Abo, das zu dir passt.</p>
+            <button class="btn btn-primary btn-large" onclick="showPricing()">
+                Jetzt Abo wählen
             </button>
-            <p class="cta-note">✨ Instant Download • 🔒 Sichere Zahlung • 💯 30 Tage Garantie</p>
+            <p class="cta-note">✨ Sofort starten • 🔒 Sichere Zahlung • 💯 Jederzeit kündbar</p>
         </div>
     </section>
 
@@ -272,38 +349,69 @@
         </div>
     </footer>
 
-    <!-- Purchase Modal -->
-    <div id="purchase-modal" class="modal">
+    <!-- Subscription Modal -->
+    <div id="subscription-modal" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="closePurchase()">&times;</span>
-            <h2>Simple Weather App kaufen</h2>
+            <span class="close" onclick="closeSubscription()">&times;</span>
+            <h2 id="modal-plan-title">Abo abschließen</h2>
             <div class="purchase-summary">
                 <div class="purchase-item">
-                    <span>Simple Weather App</span>
-                    <span class="purchase-price">€1,99</span>
+                    <span id="modal-plan-name">Abo auswählen</span>
+                    <span class="purchase-price" id="modal-plan-price">€0,00</span>
+                </div>
+                <div class="purchase-item">
+                    <span>Workflows inkl.</span>
+                    <span id="modal-plan-workflows">0</span>
                 </div>
                 <div class="purchase-total">
                     <span><strong>Gesamt</strong></span>
-                    <span class="purchase-price"><strong>€1,99</strong></span>
+                    <span class="purchase-price"><strong id="modal-total-price">€0,00</strong></span>
                 </div>
             </div>
-            <p class="purchase-note">🔒 Sichere Zahlung • 💯 30 Tage Geld-zurück</p>
+            <p class="purchase-note">🔒 Sichere Zahlung • 💯 Jederzeit kündbar</p>
 
             <div class="payment-methods">
-                <button class="btn btn-payment" onclick="processPayment('stripe')">
+                <button class="btn btn-payment" onclick="processSubscription('stripe')">
                     💳 Mit Karte zahlen (Stripe)
                 </button>
-                <button class="btn btn-payment" onclick="processPayment('paypal')">
+                <button class="btn btn-payment" onclick="processSubscription('paypal')">
                     <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='20' height='20'%3E%3Cpath fill='%23003087' d='M20.905 9.5c.21-1.337-.015-2.247-.674-3.065C19.437 5.438 17.78 5 15.817 5H9.021c-.456 0-.848.332-.919.785L6.127 19.533c-.054.34.209.645.554.645h4.035l-.228 1.437c-.047.297.183.563.485.563h3.29c.4 0 .741-.291.805-.687l.033-.171.632-3.997.041-.221c.064-.396.405-.687.805-.687h.507c3.184 0 5.676-1.292 6.402-5.029.303-1.559.146-2.861-.583-3.767'/%3E%3C/svg%3E" alt="PayPal" style="width: 20px; vertical-align: middle;"> PayPal
                 </button>
-                <button class="btn btn-payment" onclick="processPayment('google')">
+                <button class="btn btn-payment" onclick="processSubscription('google')">
                     🛒 Google Pay
                 </button>
             </div>
 
             <p class="payment-info">
-                Nach dem Kauf erhältst du sofort Zugang zur App.<br>
-                Keine versteckten Kosten. Keine Abos.
+                Dein Abo startet sofort nach der Zahlung.<br>
+                Du kannst jederzeit kündigen.
+            </p>
+        </div>
+    </div>
+
+    <!-- Workflow Purchase Modal -->
+    <div id="workflow-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeWorkflowModal()">&times;</span>
+            <h2>Zusätzliche Workflows kaufen</h2>
+            <p>Kaufe zusätzliche Workflows zu deinem bestehenden Abo hinzu.</p>
+
+            <div class="workflow-selector">
+                <label for="workflow-quantity">Anzahl Workflows:</label>
+                <input type="number" id="workflow-quantity" min="1" max="100" value="1" onchange="updateWorkflowPrice()">
+                <p class="workflow-price">
+                    Preis: <strong id="workflow-total-price">€1,90</strong>
+                </p>
+            </div>
+
+            <div class="payment-methods">
+                <button class="btn btn-payment btn-large" onclick="processWorkflowPurchase()">
+                    💳 Workflows kaufen
+                </button>
+            </div>
+
+            <p class="payment-info">
+                Die Workflows werden sofort deinem Konto gutgeschrieben.
             </p>
         </div>
     </div>

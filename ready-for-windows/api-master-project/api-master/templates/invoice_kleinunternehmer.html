@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rechnung {{INVOICE_NUMBER}}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            color: #333;
+        }
+        .header {
+            border-bottom: 3px solid #0ea5e9;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .company-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #0ea5e9;
+        }
+        .company-tagline {
+            font-size: 14px;
+            color: #666;
+        }
+        .invoice-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin: 30px 0;
+            text-align: center;
+            color: #0ea5e9;
+        }
+        .info-box {
+            background: #f8f9fa;
+            padding: 15px;
+            margin: 20px 0;
+            border-left: 4px solid #0ea5e9;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th {
+            background: #0ea5e9;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .total-row {
+            font-weight: bold;
+            font-size: 18px;
+            background: #f0f9ff;
+        }
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #ddd;
+            font-size: 12px;
+            color: #666;
+        }
+        .vat-notice {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+        .reverse-charge {
+            background: #d1ecf1;
+            border-left: 4px solid #0c5460;
+            padding: 15px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="company-name">Ai Storm Create</div>
+        <div class="company-tagline">Softwareentwicklung und KI Lösungen</div>
+        <p style="margin: 10px 0 0 0;">
+            Sebastian Beyer<br>
+            Bahnhofstraße 71<br>
+            66636 Tholey<br>
+            Deutschland
+        </p>
+        <p style="margin: 10px 0 0 0;">
+            Telefon: 068738579828<br>
+            E-Mail: aistormcreate.service@gmail.com<br>
+            Steuernummer: 060/206/00215
+        </p>
+    </div>
+
+    <!-- Invoice Title -->
+    <h1 class="invoice-title">RECHNUNG</h1>
+
+    <!-- Customer Address -->
+    <div class="info-box">
+        <strong>Rechnungsempfänger:</strong><br>
+        {{CUSTOMER_NAME}}<br>
+        {{CUSTOMER_STREET}}<br>
+        {{CUSTOMER_ZIP}} {{CUSTOMER_CITY}}<br>
+        {{CUSTOMER_COUNTRY}}<br>
+        {{#if CUSTOMER_VAT_ID}}<br>USt-ID: {{CUSTOMER_VAT_ID}}{{/if}}
+    </div>
+
+    <!-- Invoice Details -->
+    <div class="info-box">
+        <table style="border: none;">
+            <tr>
+                <td style="border: none; width: 50%;"><strong>Rechnungsnummer:</strong></td>
+                <td style="border: none;">{{INVOICE_NUMBER}}</td>
+            </tr>
+            <tr>
+                <td style="border: none;"><strong>Rechnungsdatum:</strong></td>
+                <td style="border: none;">{{INVOICE_DATE}}</td>
+            </tr>
+            <tr>
+                <td style="border: none;"><strong>Leistungsdatum:</strong></td>
+                <td style="border: none;">{{SERVICE_DATE}}</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Line Items -->
+    <table>
+        <thead>
+            <tr>
+                <th>Pos.</th>
+                <th>Beschreibung</th>
+                <th style="text-align: center;">Menge</th>
+                <th style="text-align: right;">Einzelpreis</th>
+                <th style="text-align: right;">Gesamt</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each ITEMS}}
+            <tr>
+                <td>{{this.position}}</td>
+                <td>{{this.description}}</td>
+                <td style="text-align: center;">{{this.quantity}}</td>
+                <td style="text-align: right;">{{this.price}}</td>
+                <td style="text-align: right;">{{this.total}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+    <!-- Totals -->
+    <table style="width: 50%; margin-left: auto;">
+        <tr>
+            <td style="text-align: right; border: none;"><strong>Zwischensumme:</strong></td>
+            <td style="text-align: right; border: none;">{{SUBTOTAL}}</td>
+        </tr>
+        <tr class="total-row">
+            <td style="text-align: right; border: none;"><strong>GESAMTBETRAG:</strong></td>
+            <td style="text-align: right; border: none;">{{TOTAL}}</td>
+        </tr>
+    </table>
+
+    <!-- Kleinunternehmer Notice -->
+    <div class="vat-notice">
+        ⚠️ Gemäß § 19 UStG wird keine Umsatzsteuer berechnet.
+    </div>
+
+    <!-- Reverse Charge (if applicable) -->
+    {{#if IS_REVERSE_CHARGE}}
+    <div class="reverse-charge">
+        <strong>Reverse-Charge-Verfahren:</strong><br>
+        Die Steuerschuld geht auf den Leistungsempfänger über.<br>
+        USt-ID des Kunden: {{CUSTOMER_VAT_ID}}
+    </div>
+    {{/if}}
+
+    <!-- Payment Details -->
+    <div class="info-box">
+        <strong>Zahlungsziel:</strong> {{PAYMENT_TERMS}} Tage<br>
+        <strong>Zahlbar bis:</strong> {{DUE_DATE}}
+
+        <p style="margin-top: 15px;">
+            <strong>Bankverbindung:</strong><br>
+            Kontoinhaber: Sebastian Beyer<br>
+            IBAN: {{BANK_IBAN}}<br>
+            BIC: {{BANK_BIC}}<br>
+            Bank: {{BANK_NAME}}
+        </p>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p><strong>Vielen Dank für Ihren Auftrag!</strong></p>
+        <p>
+            Sebastian Beyer<br>
+            Geschäftsführer<br>
+            Ai Storm Create
+        </p>
+
+        <p style="margin-top: 20px; font-size: 10px; color: #999;">
+            Klein- und Nebengewerbe • Steuernummer: 060/206/00215<br>
+            Bahnhofstraße 71 • 66636 Tholey • Deutschland<br>
+            E-Mail: aistormcreate.service@gmail.com • Telefon: 068738579828
+        </p>
+    </div>
+</body>
+</html>

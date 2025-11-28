@@ -115,7 +115,17 @@ export const useAppStore = create(
             ideafinder: { ...state.ideafinder, generatedIdeas: ideas },
           })),
 
+        setIdefinderIdeas: (ideas) =>
+          set((state) => ({
+            ideafinder: { ...state.ideafinder, generatedIdeas: ideas },
+          })),
+
         selectIdea: (idea) =>
+          set((state) => ({
+            ideafinder: { ...state.ideafinder, selectedIdea: idea },
+          })),
+
+        setIdefinderSelectedIdea: (idea) =>
           set((state) => ({
             ideafinder: { ...state.ideafinder, selectedIdea: idea },
           })),

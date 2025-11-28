@@ -1,0 +1,172 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// User Model
+model User {
+  id        String     @id @default(cuid())
+  email     String     @unique
+  username  String     @unique
+  password  String     // hashed with bcrypt
+  name      String?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  // Relations
+  projects  Project[]
+  sessions  Session[]
+  costs     CostLog[]
+  quotas    UserQuota?
+
+  @@index([email])
+}
+
+// User Quota/Limits
+model UserQuota {
+  id                    String   @id @default(cuid())
+  userId                String   @unique
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  monthlyTokenLimit     Int      @default(100000)  // 100k tokens per month
+  tokensUsedThisMonth   Int      @default(0)
+  monthlyBudgetLimit    Float    @default(10.0)    // $10 per month
+  spentThisMonth        Float    @default(0.0)
+  resetDate             DateTime @default(now())
+
+  @@index([userId])
+}
+
+// Project Model (saved ideas/brainstorms)
+model Project {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  title         String
+  description   String?
+  mode          String   // "brainstorming" or "ideafinder"
+  topic         String
+
+  // Brainstorming specific
+  brainstormingData BrainstormingData?
+
+  // Ideafinder specific
+  ideafinderData IdeafinderData?
+
+  // Shared
+  prdContent    String?
+  prototypeHtml String?
+
+  // Metadata
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  isArchived    Boolean  @default(false)
+
+  // Relations
+  sessions      Session[]
+
+  @@index([userId])
+  @@index([createdAt])
+}
+
+// Brainstorming Mode Data
+model BrainstormingData {
+  id        String   @id @default(cuid())
+  projectId String   @unique
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  topic     String
+  chatHistory String  // JSON serialized
+  prdData   String?  // JSON serialized
+  prototypeData String? // JSON serialized
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Ideafinder Mode Data
+model IdeafinderData {
+  id              String   @id @default(cuid())
+  projectId       String   @unique
+  project         Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  topic           String
+  generatedIdeas  String   // JSON serialized array
+  selectedIdea    String?  // JSON serialized
+  chatHistory     String   // JSON serialized
+  prdData         String?  // JSON serialized
+  prototypeData   String?  // JSON serialized
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+// Session Model (API usage tracking)
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  projectId String
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  sessionType String  // "brainstorm-chat", "ideafinder-generate", etc.
+  inputTokens Int     @default(0)
+  outputTokens Int    @default(0)
+  totalTokens Int     @default(0)
+  estimatedCost Float @default(0.0)
+
+  status    String   @default("completed") // "completed", "failed"
+  error     String?
+
+  createdAt DateTime @default(now())
+
+  // Relation to cost logs
+  costLogs  CostLog[]
+
+  @@index([userId])
+  @@index([projectId])
+  @@index([createdAt])
+}
+
+// Cost Log for tracking spending
+model CostLog {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sessionId String
+  session   Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  inputTokens Int
+  outputTokens Int
+  totalTokens Int
+
+  inputCost  Float
+  outputCost Float
+  totalCost  Float
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([createdAt])
+}
+
+// Refresh Token Model (for JWT rotation)
+model RefreshToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([expiresAt])
+}

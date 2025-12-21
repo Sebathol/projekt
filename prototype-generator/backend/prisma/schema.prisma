@@ -17,6 +17,8 @@ model User {
   username  String     @unique
   password  String     // hashed with bcrypt
   name      String?
+  avatar    String?    // URL to avatar image
+  bio       String?
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
 
@@ -25,6 +27,11 @@ model User {
   sessions  Session[]
   costs     CostLog[]
   quotas    UserQuota?
+  subscription Subscription?
+  billing   Billing[]
+  apiKeys   APIKey[]
+  notifications NotificationSettings?
+  analytics ProjectAnalytics[]
 
   @@index([email])
 }
@@ -65,6 +72,13 @@ model Project {
   prdContent    String?
   prototypeHtml String?
 
+  // Advanced Features
+  isFavorite    Boolean  @default(false)
+  templateId    String?
+  template      ProjectTemplate? @relation("ProjectTemplate", fields: [templateId], references: [id])
+  versions      ProjectVersion[]
+  tags          String?  // JSON array of tags
+
   // Metadata
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
@@ -72,9 +86,11 @@ model Project {
 
   // Relations
   sessions      Session[]
+  analytics     ProjectAnalytics[]
 
   @@index([userId])
   @@index([createdAt])
+  @@index([isFavorite])
 }
 
 // Brainstorming Mode Data
@@ -169,4 +185,147 @@ model RefreshToken {
 
   @@index([userId])
   @@index([expiresAt])
+}
+
+// Stripe Subscription Model
+model Subscription {
+  id                    String   @id @default(cuid())
+  userId                String   @unique
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  stripeCustomerId      String   @unique
+  stripeSubscriptionId  String?  @unique
+  stripePriceId         String?
+  stripeProductId       String?
+
+  plan                  String   @default("free")   // "free", "pro", "enterprise"
+  status                String   @default("active") // "active", "canceled", "past_due"
+  currentPeriodStart    DateTime?
+  currentPeriodEnd      DateTime?
+  cancelAtPeriodEnd     Boolean  @default(false)
+
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@index([userId])
+  @@index([stripeCustomerId])
+}
+
+// Billing History Model
+model Billing {
+  id                String   @id @default(cuid())
+  userId            String
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  stripeInvoiceId   String?  @unique
+  amount            Float
+  currency          String   @default("usd")
+  status            String   // "paid", "draft", "open", "void"
+  description       String?
+
+  invoicePdfUrl     String?
+  createdAt         DateTime @default(now())
+  dueDate           DateTime?
+  paidAt            DateTime?
+
+  @@index([userId])
+  @@index([createdAt])
+}
+
+// API Key Model
+model APIKey {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  key       String   @unique  // hashed for security
+  name      String
+  lastUsed  DateTime?
+  rateLimit Int      @default(1000) // requests per hour
+  isActive  Boolean  @default(true)
+
+  createdAt DateTime @default(now())
+  expiresAt DateTime?
+
+  @@index([userId])
+  @@index([key])
+}
+
+// Project Template Model
+model ProjectTemplate {
+  id            String   @id @default(cuid())
+  name          String
+  description   String?
+  category      String?  // "saas", "mobile", "ecommerce", etc.
+
+  prdTemplate   String?  // PRD template content
+  prototypeCode String?  // Sample prototype code
+  defaultStyle  String?  // Default styling preferences
+
+  isPublic      Boolean  @default(false)
+  usageCount    Int      @default(0)
+
+  projects      Project[]
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([category])
+}
+
+// Project Version Model (for versioning)
+model ProjectVersion {
+  id            String   @id @default(cuid())
+  projectId     String
+  project       Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  versionNumber Int
+  title         String?
+  prdContent    String?
+  prototypeHtml String?
+  description   String?
+
+  createdAt     DateTime @default(now())
+
+  @@index([projectId])
+  @@unique([projectId, versionNumber])
+}
+
+// Project Analytics Model
+model ProjectAnalytics {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  projectId     String
+  project       Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  viewCount     Int      @default(0)
+  editCount     Int      @default(0)
+  exportCount   Int      @default(0)
+  totalTokensUsed Int    @default(0)
+  totalCost     Float    @default(0.0)
+
+  lastViewedAt  DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([userId])
+  @@index([projectId])
+}
+
+// Notification Settings Model
+model NotificationSettings {
+  id            String   @id @default(cuid())
+  userId        String   @unique
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  emailOnComplete    Boolean @default(true)
+  emailOnQuotaWarning Boolean @default(true)
+  emailOnBilling     Boolean @default(true)
+  emailWeeklyDigest  Boolean @default(false)
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([userId])
 }

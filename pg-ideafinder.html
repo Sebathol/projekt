@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ideenfinder Modus - Prototype Generator</title>
+    <link rel="stylesheet" href="pg-styles.css">
+    <link rel="stylesheet" href="pg-mode-styles.css">
+    <link rel="stylesheet" href="pg-ideafinder-styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header with back button -->
+        <header class="mode-header">
+            <div class="mode-header-content">
+                <button class="back-btn" onclick="goBack()">← Zurück</button>
+                <h1 class="mode-title">💡 Ideenfinder Modus</h1>
+                <div class="mode-progress">
+                    <span id="phase-label">Phase 1/4</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="mode-main">
+            <!-- Phase 1: Topic Input -->
+            <section id="phase-topic-input" class="phase-section active">
+                <div class="phase-container">
+                    <div class="phase-header">
+                        <h2>Schritt 1: Thema eingeben</h2>
+                        <p>Beschreibe ein Thema, eine Industrie oder ein Problem-Gebiet. Das System generiert dann 3 innovative Geschäftsideen.</p>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="topic-input">Thema oder Industrie:</label>
+                        <textarea
+                            id="topic-input"
+                            class="topic-textarea"
+                            placeholder="Z.B.: SaaS für kleine Unternehmen / Fitness & Wellness / Education Tech / Remote Work Tools..."
+                            maxlength="500"
+                        ></textarea>
+                        <div class="char-count">
+                            <span id="char-count">0</span>/500
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary btn-large" onclick="generateIdeas()">
+                        3 Ideen generieren 🚀
+                    </button>
+
+                    <div class="phase-tips">
+                        <h4>💡 Tipps:</h4>
+                        <ul>
+                            <li>Sei breit - z.B. "SaaS für Teams" statt zu spezifisch</li>
+                            <li>Nenne Trends, die du interessant findest</li>
+                            <li>Oder beschreibe ein Problem, das du lösen möchtest</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Phase 2: Generating Ideas Loading -->
+            <section id="phase-generating" class="phase-section">
+                <div class="loading-container">
+                    <div class="spinner"></div>
+                    <h2>3 Geschäftsideen werden generiert...</h2>
+                    <p>Der AI analysiert Markttrends und erstellt innovative Ideen mit Scoring.</p>
+                    <p class="loading-tips">Dies dauert ca. 5-10 Sekunden</p>
+                </div>
+            </section>
+
+            <!-- Phase 3: Ideas Selection -->
+            <section id="phase-ideas" class="phase-section">
+                <div class="phase-container">
+                    <div class="phase-header">
+                        <h2>Schritt 2: Ideen bewerten</h2>
+                        <p>Wähle eine Idee aus oder erfahre mehr über alle drei. Die Scoring-Metriken helfen dir bei der Entscheidung.</p>
+                    </div>
+
+                    <div id="ideas-container" class="ideas-container">
+                        <!-- Ideas will be inserted here -->
+                    </div>
+
+                    <div class="phase-actions">
+                        <button class="btn btn-secondary" onclick="goBack()">
+                            Zurück
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Phase 4: Idea Expansion (similar to Brainstorming) -->
+            <section id="phase-expansion" class="phase-section">
+                <div class="phase-container">
+                    <div class="phase-header">
+                        <h2>Schritt 3: Idee expandieren</h2>
+                        <p id="expansion-counter">Chat 1/8</p>
+                    </div>
+
+                    <!-- Chat Interface -->
+                    <div class="chat-container">
+                        <div id="chat-messages" class="chat-messages">
+                            <!-- Messages will be inserted here -->
+                        </div>
+
+                        <div class="chat-input-area">
+                            <textarea
+                                id="chat-input"
+                                class="chat-input"
+                                placeholder="Deine Frage oder Gedanke..."
+                                rows="3"
+                            ></textarea>
+                            <button class="btn btn-primary" onclick="sendChatMessage()">
+                                Senden
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="phase-actions">
+                        <button class="btn btn-secondary" onclick="backToIdeasSelection()">
+                            Zurück zu Ideen
+                        </button>
+                        <button class="btn btn-primary" id="continue-btn" onclick="continueToPRD()" style="display: none;">
+                            Zu PRD Generation →
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Phase 4: PRD Generation Loading -->
+            <section id="phase-prd-generating" class="phase-section">
+                <div class="loading-container">
+                    <div class="spinner"></div>
+                    <h2>PRD wird generiert...</h2>
+                    <p>Der AI erstellt ein professionelles Product Requirements Document basierend auf deiner Idee.</p>
+                    <p class="loading-tips">Dies dauert ca. 5-10 Sekunden</p>
+                </div>
+            </section>
+
+            <!-- Phase 5: PRD Review -->
+            <section id="phase-prd" class="phase-section">
+                <div class="phase-container">
+                    <div class="phase-header">
+                        <h2>Schritt 4: PRD Review</h2>
+                        <p id="prd-iteration-counter">Optimierung 1/8 (optional)</p>
+                    </div>
+
+                    <div class="prd-viewer">
+                        <div id="prd-content" class="prd-content">
+                            <!-- PRD will be displayed here -->
+                        </div>
+                    </div>
+
+                    <div class="prd-actions">
+                        <div class="prd-action-group">
+                            <label>PRD Anpassungen:</label>
+                            <textarea
+                                id="prd-feedback"
+                                class="prd-feedback"
+                                placeholder="Z.B.: Füge Monetisierung hinzu / Ändere Zielgruppe..."
+                                rows="3"
+                            ></textarea>
+                            <button class="btn btn-secondary" onclick="optimizePRD()">
+                                PRD optimieren
+                            </button>
+                        </div>
+
+                        <div class="prd-exports">
+                            <button class="btn btn-secondary" onclick="downloadPRDMarkdown()">
+                                📄 Markdown
+                            </button>
+                            <button class="btn btn-secondary" onclick="downloadPRDJSON()">
+                                💾 JSON
+                            </button>
+                            <button class="btn btn-secondary" onclick="copyPRDClipboard()">
+                                📋 Kopieren
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="phase-actions">
+                        <button class="btn btn-secondary" onclick="backToExpansion()">
+                            Zurück zu Chat
+                        </button>
+                        <button class="btn btn-primary" onclick="continueToPrototype()">
+                            Zum Prototyp Generator →
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Phase 6: Prototype Generation Loading -->
+            <section id="phase-prototype-generating" class="phase-section">
+                <div class="loading-container">
+                    <div class="spinner"></div>
+                    <h2>Frontend-Prototyp wird generiert...</h2>
+                    <p>Der AI erstellt ein funktionales, responsives HTML/CSS/JavaScript-Frontend.</p>
+                    <p class="loading-tips">Dies dauert ca. 10-15 Sekunden</p>
+                </div>
+            </section>
+
+            <!-- Phase 7: Prototype Preview -->
+            <section id="phase-prototype" class="phase-section">
+                <div class="phase-container">
+                    <div class="phase-header">
+                        <h2>Schritt 5: Prototyp-Vorschau</h2>
+                        <p id="prototype-iteration-counter">Anpassung 1/8 (optional)</p>
+                    </div>
+
+                    <div class="prototype-workspace">
+                        <div class="prototype-preview">
+                            <iframe id="prototype-iframe" class="prototype-iframe" title="Prototype Preview"></iframe>
+                        </div>
+
+                        <div class="prototype-customization">
+                            <h3>Anpassungen</h3>
+                            <textarea
+                                id="prototype-feedback"
+                                class="prototype-feedback"
+                                placeholder="Z.B.: Farbe ändern / Button Text anpassen..."
+                                rows="4"
+                            ></textarea>
+                            <button class="btn btn-secondary" onclick="customizePrototype()">
+                                Prototyp anpassen
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="prototype-actions">
+                        <div class="code-exports">
+                            <h3>Code exportieren:</h3>
+                            <button class="btn btn-secondary" onclick="downloadAsZIP()">
+                                📦 ZIP Download
+                            </button>
+                            <button class="btn btn-secondary" onclick="downloadAsSingleHTML()">
+                                📄 Einzelnes HTML
+                            </button>
+                            <button class="btn btn-secondary" onclick="copyCodeClipboard()">
+                                📋 Code kopieren
+                            </button>
+                        </div>
+
+                        <div class="session-actions">
+                            <h3>Session speichern:</h3>
+                            <button class="btn btn-secondary" onclick="downloadAsJSON()">
+                                💾 Als JSON
+                            </button>
+                            <button class="btn btn-secondary" onclick="shareSession()">
+                                🔗 Teilen
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="phase-actions">
+                        <button class="btn btn-secondary" onclick="backToPRD()">
+                            Zurück zu PRD
+                        </button>
+                        <button class="btn btn-primary" onclick="finishWorkflow()">
+                            Workflow beenden ✨
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Phase 8: Success/Completion -->
+            <section id="phase-complete" class="phase-section">
+                <div class="success-container">
+                    <div class="success-icon">✨</div>
+                    <h2>Glückwunsch!</h2>
+                    <p>Dein Prototyp basierend auf der AI-generierten Idee ist fertig!</p>
+
+                    <div class="completion-summary">
+                        <h3>Was du erhalten hast:</h3>
+                        <ul>
+                            <li>✅ AI-generierte Geschäftsidee</li>
+                            <li>✅ Detailliertes PRD</li>
+                            <li>✅ Funktionaler Frontend-Prototyp</li>
+                            <li>✅ Alles exportierbar & nutzbar</li>
+                        </ul>
+                    </div>
+
+                    <div class="completion-actions">
+                        <button class="btn btn-primary btn-large" onclick="startNewWorkflow()">
+                            Neue Idee
+                        </button>
+                        <button class="btn btn-secondary btn-large" onclick="goToHome()">
+                            Zur Startseite
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2025 Prototype Generator. Made with ❤️ by Ai Storm Create.</p>
+        </footer>
+    </div>
+
+    <script src="pg-script.js"></script>
+    <script src="pg-ideafinder-script.js"></script>
+</body>
+</html>

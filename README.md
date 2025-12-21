@@ -1,168 +1,412 @@
-# 🌤️ Simple Weather App
+# 🚀 Prototype Generator - AI-powered Ideation & Prototyping
 
-Eine einfache Wetter-Anwendung, die aktuelle Wetterdaten für beliebige Städte anzeigt. Jetzt als Progressive Web App (PWA) - installierbar auf Smartphone und Desktop!
+**The fastest way to turn your business idea into a production-ready frontend prototype.**
 
-## 🚀 SCHNELLSTART
+---
 
-### Windows CMD (wie Grow Master):
+## 📱 What is Prototype Generator?
 
-```cmd
-# Repository klonen
-git clone -b claude/fix-weather-app-011CUK3ejTvamsHndDe3YDJZ https://github.com/Sebathol/projekt.git simple-weather-app
+A revolutionary AI-powered system that transforms business ideas into **95% production-ready frontend prototypes in under 30 minutes**.
 
-# In den Ordner wechseln
-cd simple-weather-app
+### Two Smart Modes:
 
-# App testen
-TEST_APP.bat
+1. **🧠 Brainstorming Mode** - Expand your idea with AI (8 iterations)
+2. **💡 Ideafinder Mode** - Generate 3 business ideas with market scoring
+
+Both lead to:
+- ✅ Professional PRD (Product Requirements Document)
+- ✅ Functional Frontend Prototype (HTML5 + CSS3 + JavaScript)
+- ✅ Multiple Export Formats (ZIP, JSON, Markdown, PDF)
+
+---
+
+## 🎯 Key Features
+
+| Feature | Description |
+|---------|-------------|
+| 🤖 AI Chat | Claude-powered brainstorming & idea expansion |
+| 📋 Auto PRD | Automatically generate professional PRDs |
+| 💻 Code Gen | 95% production-ready HTML/CSS/JS prototypes |
+| 🎨 Live Customization | Edit prototypes via chat (up to 8 times) |
+| 📦 Multi-Export | ZIP, HTML, JSON, Markdown, PDF |
+| ⚡ Ultra-Fast | From idea to prototype in < 30 minutes |
+| 📱 Responsive | Works on Mobile, Tablet, Desktop |
+
+---
+
+## 📁 Project Structure
+
+```
+/prototype-generator
+├── src/                          # React Frontend
+│   ├── pages/                   # Main pages
+│   │   ├── Home.jsx            # ✅ Landing page
+│   │   ├── BrainstormingMode/  # ⏳ Brainstorm workflow
+│   │   ├── IdefinderMode/      # ⏳ Ideafinder workflow
+│   │   └── Completion/         # ⏳ Success screen
+│   ├── components/              # React components
+│   │   ├── Button.jsx          # ✅ Button component
+│   │   ├── LoadingSpinner.jsx  # ✅ Loading state
+│   │   ├── Toast.jsx           # ✅ Notifications
+│   │   └── ...                 # More components
+│   ├── services/                # API & Utilities
+│   │   ├── apiService.js       # ✅ Backend API client
+│   │   ├── storageService.js   # ✅ LocalStorage wrapper
+│   │   └── exportService.js    # ✅ Export functionality
+│   ├── store/                   # State Management
+│   │   └── appStore.js         # ✅ Zustand store
+│   ├── utils/                   # Helpers
+│   │   ├── validators.js       # ✅ Input validation
+│   │   └── constants.js        # ✅ App constants
+│   └── App.jsx                 # ⏳ Main app + routing
+│
+├── backend/                      # Express.js Backend
+│   ├── server.js               # ✅ Express server
+│   ├── .env.example            # ✅ Config template
+│   └── package.json            # ✅ Backend deps
+│
+├── SETUP.md                     # Setup & Implementation Guide
+├── PRD.md                       # Product Requirements Document
+└── package.json                 # Frontend deps
 ```
 
-**Oder noch einfacher:** Führen Sie `INSTALLATION.bat` aus - das Script macht alles automatisch!
+---
 
-📖 **Detaillierte Anleitung:** Siehe [SCHNELLSTART.md](SCHNELLSTART.md)
+## 🚀 Quick Start
 
-## Features
+### Prerequisites
+- Node.js 16+
+- Anthropic Claude API Key (free tier available)
 
-- Aktuelle Temperatur
-- Gefühlte Temperatur
-- Luftfeuchtigkeit
-- Windgeschwindigkeit
-- Wetterbeschreibung
-- Responsive Design
-- **PWA-Funktionalität** - Installierbar wie eine native App!
-- **Offline-Unterstützung** - Funktioniert auch ohne Internet (mit Cache)
-- **Native App-Feeling** - Läuft im Vollbild ohne Browser-UI
-
-## Installation auf dem Smartphone
-
-### Android (Chrome/Edge):
-
-1. Öffne die App in Chrome/Edge: Lade die Dateien auf einen Webserver hoch (z.B. GitHub Pages, Netlify, oder deinen eigenen Server)
-2. Gehe zur URL der App
-3. Tippe auf das Menü (⋮) oben rechts
-4. Wähle **"App installieren"** oder **"Zum Startbildschirm hinzufügen"**
-5. Die App erscheint auf deinem Homescreen wie jede andere App!
-
-### iOS (Safari):
-
-1. Öffne die App in Safari
-2. Tippe auf das Teilen-Symbol (□↑)
-3. Wähle **"Zum Home-Bildschirm"**
-4. Tippe auf "Hinzufügen"
-5. Die App erscheint auf deinem Homescreen!
-
-## Verwendung (Entwicklung/Test)
-
-### Methode 1: PWA lokal testen
-
-**WICHTIG:** PWAs benötigen HTTPS oder localhost. Für lokale Tests:
+### 1. Clone & Setup
 
 ```bash
-# Mit Python 3
-python3 -m http.server 8000
+# Navigate to project
+cd /home/user/projekt/prototype-generator
 
-# Oder mit Node.js
-npx http-server -p 8000
+# Install frontend dependencies (already done)
+npm install
+
+# Setup backend
+cd backend
+npm install
 ```
 
-Dann öffne `http://localhost:8000` in deinem Browser.
+### 2. Configure Environment
 
-### Methode 2: Direkt im Browser öffnen
-
-Für einfaches Testen (ohne PWA-Features):
-1. Öffne die Datei `index.html` in deinem Browser (Doppelklick oder Rechtsklick → Öffnen mit → Browser)
-2. Gib eine Stadt ein und klicke auf "Suchen"
-3. Die App verwendet standardmäßig eine kostenlose API (wttr.in), die keine Registrierung erfordert
-
-### Methode 3: Online deployen
-
-Für die volle PWA-Funktionalität mit Installation auf dem Smartphone:
-
-**GitHub Pages (Kostenlos & Einfach):**
+**Frontend** (.env):
 ```bash
-# 1. Erstelle ein GitHub Repository
-# 2. Push dein Projekt
-git add .
-git commit -m "Wetter App PWA"
-git push origin main
-
-# 3. Gehe zu Settings → Pages
-# 4. Wähle Branch: main
-# 5. Deine App ist verfügbar unter: https://DEIN-USERNAME.github.io/REPO-NAME
+echo "VITE_API_URL=http://localhost:5000/api" > .env
 ```
 
-**Netlify (Kostenlos & Einfach):**
-1. Gehe zu [netlify.com](https://netlify.com)
-2. Ziehe den Projekt-Ordner per Drag & Drop
-3. Fertig! Du bekommst eine URL wie `https://dein-projekt.netlify.app`
-
-**Vercel:**
+**Backend** (.env):
 ```bash
-npx vercel
+cp .env.example .env
+# Edit .env and add your ANTHROPIC_API_KEY
+# Get one free from: https://console.anthropic.com
 ```
 
-## 🔧 API-Konfiguration (NEU!)
+### 3. Run Development
 
-### Methode 1: Setup-Tool verwenden (Empfohlen - Einfach!)
-
-**Wir haben ein spezielles Setup-Tool für dich erstellt!**
-
-1. **Öffne `setup-tool.html` im Browser**
-2. **Login mit Passwort:** `JoHanna268219$`
-3. **Folge den Anweisungen im Tool**
-
-Das Setup-Tool bietet:
-- ✅ Passwort-geschützte Oberfläche
-- ✅ API-Key Management (mehrere Keys speichern)
-- ✅ Automatische Code-Generierung
-- ✅ Unterstützung für alle großen Wetter-APIs
-- ✅ Schritt-für-Schritt Anleitungen
-- ✅ Sichere Implementierung
-
-**Verfügbare APIs:**
-- **WeatherAPI.com** (Empfohlen) - 1 Million calls/Monat kostenlos
-- **OpenWeatherMap** - 1000 calls/Tag
-- **Visual Crossing** - 1000 records/Tag
-- **Open-Meteo** - Kein API-Key nötig!
-- **Custom API** - Eigene API verwenden
-
-**Detaillierte Infos:** Siehe `API_DOCUMENTATION.md`
-
-### Methode 2: Manuell (Fortgeschritten)
-
-Falls du den Code direkt bearbeiten möchtest:
-
-1. Registriere dich bei [WeatherAPI.com](https://www.weatherapi.com/signup.aspx)
-2. Hole dir deinen kostenlosen API-Key
-3. Öffne `script.js`
-4. Ersetze `YOUR_API_KEY_HERE` mit deinem API-Key
-5. Setze `USE_DEMO_API = false`
-
-### Methode 3: Automatisches Update-Script (Node.js)
-
-Für automatische Updates via Terminal:
-
+**Terminal 1 - Frontend:**
 ```bash
-node update-api.js
-# Passwort: JoHanna268219$
-# Folge den Anweisungen
+cd /home/user/projekt/prototype-generator
+npm run dev
+# Opens: http://localhost:5173
 ```
 
-## Technologien
+**Terminal 2 - Backend:**
+```bash
+cd /home/user/projekt/prototype-generator/backend
+npm start
+# Runs on: http://localhost:5000
+```
 
-- HTML5
-- CSS3
-- Vanilla JavaScript
-- wttr.in API (Demo-Modus) oder OpenWeatherMap API
+---
 
-## Browser-Kompatibilität
+## 🔧 Current Status
 
-Funktioniert in allen modernen Browsern:
-- Chrome
-- Firefox
-- Safari
-- Edge
+### ✅ Completed
+- [x] React + Vite setup
+- [x] Zustand state management
+- [x] Core components (Button, Spinner, Toast)
+- [x] API service layer
+- [x] Storage service (localStorage)
+- [x] Export service (ZIP, JSON, etc)
+- [x] Home page with marketing content
+- [x] Express backend with 6 API endpoints
+- [x] Claude AI integration
+- [x] Input validators & constants
 
-## Lizenz
+### ⏳ Remaining (Estimated 4-6 hours)
+- [ ] Brainstorming Mode pages
+- [ ] Ideafinder Mode pages
+- [ ] Completion screen
+- [ ] Routing setup (App.jsx)
+- [ ] End-to-end integration testing
+- [ ] Production build & optimization
 
-MIT
+---
+
+## 📖 Implementation Guide
+
+For detailed setup & implementation instructions, see **[SETUP.md](SETUP.md)**
+
+Key sections:
+- Local development setup
+- API endpoint documentation
+- Step-by-step to-do list
+- Debugging tips
+- Deployment instructions
+
+---
+
+## 🎯 API Endpoints
+
+All endpoints available at `http://localhost:5000/api`
+
+### Core Endpoints
+
+1. **POST /brainstorm/chat** - AI-powered chat for brainstorming
+2. **POST /ideafinder/generate** - Generate 3 business ideas
+3. **POST /prd/generate** - Auto-generate PRD
+4. **POST /prd/optimize** - Refine PRD via chat
+5. **POST /prototype/generate** - Generate HTML prototype
+6. **POST /prototype/customize** - Customize prototype
+
+See SETUP.md for full request/response examples.
+
+---
+
+## 💡 How It Works
+
+### Brainstorming Flow
+```
+1. Enter Idea (10-500 chars)
+   ↓
+2. AI Chat Expansion (up to 8 iterations)
+   - Answer AI questions about your idea
+   - Refine concept together
+   ↓
+3. Auto-Generate PRD
+   - Professional PRD created automatically
+   - Optionally refine via chat (up to 8x)
+   ↓
+4. Generate Prototype
+   - 95% production-ready code generated
+   - Live preview available
+   - Customize via chat (up to 8x)
+   ↓
+5. Export & Done
+   - Download as ZIP, HTML, JSON, or Markdown
+   - Ready to share or develop further
+```
+
+### Ideafinder Flow
+```
+1. Enter Topic/Industry
+   ↓
+2. Get 3 AI-Generated Ideas
+   - Each with market scoring
+   - Risk analysis
+   - Highlights
+   ↓
+3-5. Same as Brainstorming (PRD → Prototype → Export)
+```
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+- **React 18** - UI Framework
+- **Vite** - Build tool
+- **React Router** - Routing
+- **Zustand** - State management
+- **Axios** - HTTP client
+- **Tailwind CSS** - Styling (can add)
+- **JSZip** - ZIP file creation
+
+### Backend
+- **Node.js** - Runtime
+- **Express** - Web framework
+- **Claude API** - AI/LLM
+- **CORS** - Cross-origin handling
+
+### Storage
+- **LocalStorage** - Client-side (MVP)
+- **Firebase/Supabase** - Cloud (Phase 2)
+- **PostgreSQL** - Database (Phase 2)
+
+---
+
+## 📊 Project Statistics
+
+- **Total Files**: 20+
+- **Frontend Code**: ~2000 lines
+- **Backend Code**: ~600 lines
+- **Configuration**: package.json, vite.config.js, .env
+- **Documentation**: SETUP.md, PRD.md, README.md
+
+---
+
+## 🚀 Deployment
+
+### Frontend
+```bash
+npm run build  # Creates dist folder
+
+# Deploy to:
+# - Vercel: npx vercel deploy
+# - Netlify: Drag & drop dist folder
+# - GitHub Pages: Push to gh-pages branch
+```
+
+### Backend
+```bash
+# Deploy to:
+# - Heroku: git push heroku main
+# - Railway: Connect GitHub repo
+# - AWS EC2: Push Docker container
+# - Google Cloud Run: Deploy Container
+```
+
+---
+
+## 📝 Environment Configuration
+
+### Development
+```
+VITE_API_URL=http://localhost:5000/api
+ANTHROPIC_API_KEY=sk-ant-...
+```
+
+### Production
+```
+VITE_API_URL=https://api.prototypegenerator.com/api
+ANTHROPIC_API_KEY=sk-ant-...
+NODE_ENV=production
+```
+
+---
+
+## 🧪 Testing
+
+### Manual Testing
+1. Start both frontend & backend
+2. Navigate to http://localhost:5173
+3. Click "Brainstorming" or "Ideafinder"
+4. Follow the workflow
+5. Check Network tab in DevTools for API calls
+
+### API Testing
+```bash
+# Test brainstorming endpoint
+curl -X POST http://localhost:5000/api/brainstorm/chat \
+  -H "Content-Type: application/json" \
+  -d '{
+    "message": "What do you think?",
+    "topic": "A fitness app idea",
+    "chatHistory": []
+  }'
+```
+
+---
+
+## 📦 Dependencies
+
+### Frontend (see package.json)
+```json
+{
+  "react": "^18.x",
+  "react-router-dom": "^6.x",
+  "zustand": "^4.x",
+  "axios": "^1.x",
+  "jszip": "^3.x",
+  "date-fns": "^2.x"
+}
+```
+
+### Backend (see backend/package.json)
+```json
+{
+  "express": "^5.x",
+  "@anthropic-ai/sdk": "^0.7.x",
+  "cors": "^2.x",
+  "dotenv": "^17.x"
+}
+```
+
+---
+
+## 🐛 Troubleshooting
+
+### CORS Errors
+- Make sure backend is running on http://localhost:5000
+- Check CORS headers in Express middleware
+
+### Claude API Errors
+- Verify API key is valid
+- Check you have credits/quota
+- Look at response error messages
+
+### State Not Persisting
+- Check browser localStorage in DevTools
+- Verify Zustand middleware is configured correctly
+
+---
+
+## 📚 Resources
+
+- **Claude API Docs**: https://docs.anthropic.com
+- **React Docs**: https://react.dev
+- **Express Docs**: https://expressjs.com
+- **Zustand Docs**: https://github.com/pmndrs/zustand
+- **Vite Docs**: https://vitejs.dev
+
+---
+
+## 🤝 Contributing
+
+1. Create a feature branch
+2. Make your changes
+3. Test thoroughly
+4. Submit a pull request
+
+---
+
+## 📄 License
+
+MIT License - Free to use and modify
+
+---
+
+## 🎉 Next Steps
+
+1. **Complete the Brainstorming & Ideafinder pages** (see SETUP.md for templates)
+2. **Test end-to-end workflows**
+3. **Optimize performance** (Lighthouse score > 85)
+4. **Deploy to production** (Vercel + Railway/Heroku)
+
+**Total time to MVP: 6-10 hours of implementation work**
+
+---
+
+## 📞 Support
+
+- Check SETUP.md for detailed implementation guide
+- See PRD.md for technical requirements
+- Review API documentation in backend/server.js
+- Check component props in src/components/
+
+---
+
+**Built with ❤️ by Ai Storm Create**
+
+*Transforming ideas into reality, one prototype at a time.*
+
+---
+
+**Version**: 1.0 MVP
+**Last Updated**: November 2025
+**Status**: In Development

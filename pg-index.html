@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Prototype Generator - Von der Idee zum produktionsreifen Prototyp in Minuten">
+    <meta name="theme-color" content="#667eea">
+    <title>Prototype Generator - AI-gestütztes Ideation & Prototyping</title>
+    <link rel="stylesheet" href="pg-styles.css">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='75' font-size='75' fill='%23667eea'>⚡</text></svg>">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <span class="logo-icon">⚡</span>
+                    <span class="logo-text">Prototype Generator</span>
+                </div>
+                <nav class="nav-links">
+                    <a href="#" class="nav-link" onclick="scrollToSection('about'); return false;">About</a>
+                    <a href="#" class="nav-link" onclick="scrollToSection('features'); return false;">Features</a>
+                    <a href="#" class="nav-link" onclick="scrollToSection('faq'); return false;">FAQ</a>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <span class="badge">🚀 AI-powered • Instant • 95% Production Ready</span>
+                    <h1>Von der Idee zum Prototyp<br><span class="gradient-text">in Minuten, nicht Wochen</span></h1>
+                    <p class="hero-subtitle">
+                        Verwandle deine Geschäftsidee mit AI in ein professionelles, funktionales Prototyp-Frontend.
+                        <strong>Perfekt für Startups, Designer und Product Manager.</strong>
+                    </p>
+
+                    <!-- Mode Selection -->
+                    <div class="mode-selection">
+                        <div class="mode-card" id="brainstorm-card" onclick="startMode('brainstorming')">
+                            <div class="mode-icon">🧠</div>
+                            <h3>Brainstorming Modus</h3>
+                            <p>Du hast eine grobe Idee? Der AI-Agent erweitert und strukturiert sie mit dir in 8 Chat-Turns.</p>
+                            <div class="mode-features">
+                                <span>✨ Idee erweitern</span>
+                                <span>📝 PRD generieren</span>
+                                <span>💻 Prototyp erzeugen</span>
+                            </div>
+                            <button class="btn btn-primary btn-large">
+                                Brainstorming starten
+                            </button>
+                        </div>
+
+                        <div class="mode-card" id="ideafinder-card" onclick="startMode('ideafinder')">
+                            <div class="mode-icon">💡</div>
+                            <h3>Ideenfinder Modus</h3>
+                            <p>Brauchst du Inspiration? Das System generiert 3 Geschäftsideen mit Marktanalyse und Scoring.</p>
+                            <div class="mode-features">
+                                <span>🎯 3 Ideen generiert</span>
+                                <span>📊 Markt-Scoring</span>
+                                <span>🚀 Sofort umsetzbar</span>
+                            </div>
+                            <button class="btn btn-secondary btn-large">
+                                Ideen entdecken
+                            </button>
+                        </div>
+                    </div>
+
+                    <p class="cta-note">⏱️ Gesamter Workflow: < 30 Minuten • 🔒 Keine Registrierung • 💾 Alles wird lokal gespeichert</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="features">
+            <div class="container">
+                <h2>Was du bekommst</h2>
+                <p class="section-subtitle">Professionelle Output auf jedem Schritt</p>
+
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🤖</div>
+                        <h3>AI-gestützte Ideation</h3>
+                        <p>Claude AI erweitert deine Idee mit professionalen Fragen und strukturiert sie strategisch.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">📋</div>
+                        <h3>PRD-Generierung</h3>
+                        <p>Automatisches Erstellen eines vollständigen Product Requirements Documents mit allen Sektionen.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">💻</div>
+                        <h3>Frontend-Prototypen</h3>
+                        <p>95% produktionsreifer Code: HTML5, CSS3, JavaScript - modern, responsive, zugänglich.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">🎨</div>
+                        <h3>Live-Anpassungen</h3>
+                        <p>Ändere Farben, Texte, Layouts über Chat - bis zu 8 Iterationen ohne Code-Kenntnisse.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3>Ultra-schnell</h3>
+                        <p>Von Idee zu Prototyp in weniger als 30 Minuten. Ideal für Pitch-Vorbereitung.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">📦</div>
+                        <h3>Mehrere Export-Optionen</h3>
+                        <p>Exportiere als ZIP, einzelnes HTML, PDF oder JSON - perfekt für dein Team.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section class="how-it-works">
+            <div class="container">
+                <h2>Wie es funktioniert</h2>
+
+                <div class="workflow-grid">
+                    <div class="workflow-step">
+                        <div class="step-number">1</div>
+                        <h3>Idee eingeben</h3>
+                        <p>Beschreibe deine Geschäftsidee oder wähle eine aus 3 generierten Optionen.</p>
+                    </div>
+
+                    <div class="workflow-arrow">→</div>
+
+                    <div class="workflow-step">
+                        <div class="step-number">2</div>
+                        <h3>Mit AI expandieren</h3>
+                        <p>Chat mit dem AI-Agent zur Ideenverfeinerung (bis 8 Turns). Oder nutze Ideenfinder-Vorschläge.</p>
+                    </div>
+
+                    <div class="workflow-arrow">→</div>
+
+                    <div class="workflow-step">
+                        <div class="step-number">3</div>
+                        <h3>PRD generieren</h3>
+                        <p>Automatisches Erstellen eines professionellen PRD. Anpassbar im Chat.</p>
+                    </div>
+
+                    <div class="workflow-arrow">→</div>
+
+                    <div class="workflow-step">
+                        <div class="step-number">4</div>
+                        <h3>Prototyp erzeugen</h3>
+                        <p>AI generiert kompletten, funktionsfähigen Frontend-Code. 95% produktionsreif.</p>
+                    </div>
+
+                    <div class="workflow-arrow">→</div>
+
+                    <div class="workflow-step">
+                        <div class="step-number">5</div>
+                        <h3>Anpassen & Exportieren</h3>
+                        <p>Kleine Anpassungen im Chat vornehmen, dann als ZIP, HTML oder PDF exportieren.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Use Cases Section -->
+        <section class="use-cases">
+            <div class="container">
+                <h2>Für wen ist das?</h2>
+
+                <div class="personas-grid">
+                    <div class="persona-card">
+                        <div class="persona-icon">👨‍💼</div>
+                        <h3>Startup Founder</h3>
+                        <p>Präsentiere deine Idee mit einem professionellen Prototyp für Investoren. In weniger als 1 Stunde.</p>
+                    </div>
+
+                    <div class="persona-card">
+                        <div class="persona-icon">👩‍💻</div>
+                        <h3>Product Manager</h3>
+                        <p>Visualisiere Features vor der Entwicklung. Teile PRD und Prototyp mit deinem Team.</p>
+                    </div>
+
+                    <div class="persona-card">
+                        <div class="persona-icon">🎨</div>
+                        <h3>Designer</h3>
+                        <p>Erstelle schnell interactive Mockups. Teste Layouts und Interaktionen live.</p>
+                    </div>
+
+                    <div class="persona-card">
+                        <div class="persona-icon">👨‍🎓</div>
+                        <h3>Junior Developer</h3>
+                        <p>Lerne wie moderne Web-Apps gebaut werden. Analysiere den generierten Code.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section id="faq" class="faq">
+            <div class="container">
+                <h2>Häufige Fragen</h2>
+
+                <div class="faq-grid">
+                    <div class="faq-item">
+                        <h3>Brauche ich Programmier-Kenntnisse?</h3>
+                        <p>Nein! Prototype Generator ist vollständig benutzerfreundlich. Der AI generiert und erklärt den Code für dich.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3>Wie gut sind die generierten Prototypen?</h3>
+                        <p>95% produktionsreif: Vollständig debuggt, responsive, accessible, performance-optimiert. Perfekt für Demos und MVPs.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3>Kann ich den Code weiterbearbeiten?</h3>
+                        <p>Ja! Exportiere als ZIP oder HTML und nutze deinen bevorzugten Code-Editor. Der Code ist gut kommentiert und lesbar.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3>Wie lange dauert der gesamte Prozess?</h3>
+                        <p>Durchschnittlich 20-30 Minuten: Idee (2 Min) → Brainstorming (5-10 Min) → PRD (3 Min) → Prototyp (5-10 Min) → Export (2 Min).</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3>Wo werden meine Daten gespeichert?</h3>
+                        <p>Alles läuft lokal in deinem Browser (Local Storage). Nichts wird auf Server gespeichert, es sei denn du exportierst es.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3>Unterstützt ihr mehrere Sprachen?</h3>
+                        <p>Derzeit deutsch und englisch. Das generierte Prototyp kann beliebige Sprachen enthalten (Texte im PRD definieren).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="about">
+            <div class="container">
+                <h2>Über Prototype Generator</h2>
+                <p class="about-text">
+                    <strong>Prototype Generator</strong> ist ein revolutionäres Tool, das AI nutzt, um Ideation und Prototyping zu demokratisieren.
+                    Egal ob du ein Startup-Founder bist, der eine Idee validieren möchte, oder ein Designer, der schnell Mockups braucht -
+                    Prototype Generator macht es möglich.
+                </p>
+                <p class="about-text">
+                    Entwickelt mit ❤️ von <strong>Ai Storm Create</strong> - wir glauben an die Kraft von AI zur Beschleunigung von Innovation.
+                </p>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <p>&copy; 2025 Prototype Generator. Made with ❤️ by Ai Storm Create.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Hidden iframes for modes -->
+    <iframe id="mode-frame" style="display: none;" src="" title="Mode Interface"></iframe>
+
+    <script src="pg-script.js"></script>
+</body>
+</html>

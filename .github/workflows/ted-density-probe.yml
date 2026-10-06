@@ -1,0 +1,127 @@
+name: TED Density Probe
+
+on:
+  push:
+    branches:
+      - ai-ted-measure-20261006
+    paths:
+      - '.github/workflows/ted-density-probe.yml'
+  workflow_dispatch:
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Runner check
+        run: echo "TED_PUBLIC_RUNNER_OK"
+
+      - name: Probe TED Search API and measure density
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          import urllib.request
+          import urllib.error
+          from datetime import date, timedelta
+
+          URL = "https://api.ted.europa.eu/v3/notices/search"
+          FAILURE_CODES = "all-rej chan-need ins-fund no-rece no-signed one-admis other rev-body rev-buyer tch-pr-error"
+          CPV = "(classification-cpv = 302* OR classification-cpv = 320* OR classification-cpv = 480* OR classification-cpv = 720*)"
+
+          def post(query, check=False):
+              payload = {
+                  "query": query,
+                  "fields": ["publication-number"],
+                  "page": 1,
+                  "limit": 1,
+                  "scope": "ALL",
+                  "checkQuerySyntax": check,
+                  "paginationMode": "PAGE_NUMBER",
+                  "onlyLatestVersions": True,
+              }
+              req = urllib.request.Request(
+                  URL,
+                  data=json.dumps(payload).encode(),
+                  headers={
+                      "Content-Type": "application/json",
+                      "Accept": "application/json",
+                      "User-Agent": "AI-Storm-TED-Validation/1.0",
+                  },
+                  method="POST",
+              )
+              try:
+                  with urllib.request.urlopen(req, timeout=60) as r:
+                      return {"ok": True, "data": json.load(r)}
+              except urllib.error.HTTPError as e:
+                  return {"ok": False, "http": e.code, "error": e.read().decode("utf-8", "replace")[:1500]}
+              except Exception as e:
+                  return {"ok": False, "error": repr(e)}
+
+          def count(label, query):
+              out = post(query, False)
+              if not out["ok"]:
+                  print("TED_ERROR=" + json.dumps({"label": label, "query": query, **out}, sort_keys=True), flush=True)
+                  return None
+              data = out["data"]
+              total = data.get("totalNoticeCount")
+              print("TED_COUNT=" + json.dumps({
+                  "label": label,
+                  "query": query,
+                  "total": total,
+                  "timedOut": data.get("timedOut"),
+                  "keys": sorted(data.keys()),
+              }, sort_keys=True), flush=True)
+              return total if isinstance(total, int) else None
+
+          today = date.today()
+          one_start = today - timedelta(days=1)
+          basic = f"publication-date = ({one_start:%Y%m%d} <> {today:%Y%m%d})"
+          count("probe_date_only_1d", basic)
+          count("probe_cpv_1d", f"{basic} AND {CPV}")
+          count("probe_failure_1d", f"{basic} AND non-award-justification IN ({FAILURE_CODES})")
+          count("probe_combined_1d", f"{basic} AND non-award-justification IN ({FAILURE_CODES}) AND {CPV}")
+
+          results = []
+          for days in (30, 90, 365):
+              start = today - timedelta(days=days)
+              d = f"publication-date = ({start:%Y%m%d} <> {today:%Y%m%d})"
+              failures = f"non-award-justification IN ({FAILURE_CODES})"
+              base = f"{d} AND {failures} AND {CPV}"
+
+              failed = count(f"failed_it_{days}d", base)
+              de_failed = count(f"de_failed_it_{days}d", f"{base} AND buyer-country = DEU")
+              de_no_receive = count(
+                  f"de_no_receive_it_{days}d",
+                  f"{d} AND non-award-justification = no-rece AND {CPV} AND buyer-country = DEU"
+              )
+
+              relaunch = None
+              relaunch_query = None
+              for expr in (
+                  "(procurement-relaunch = true OR procurement-relaunch-proc = true)",
+                  "(procurement-relaunch = TRUE OR procurement-relaunch-proc = TRUE)",
+              ):
+                  candidate = count(f"relaunch_it_{days}d_{expr[:22]}", f"{base} AND {expr}")
+                  if isinstance(candidate, int):
+                      relaunch = candidate
+                      relaunch_query = expr
+                      break
+
+              result = {
+                  "status": "REAL_GEMESSEN" if isinstance(failed, int) else "MEASUREMENT_FAILED",
+                  "days": days,
+                  "date_from": start.isoformat(),
+                  "date_to": today.isoformat(),
+                  "failed_it_notices": failed,
+                  "explicit_relaunch_it_notices": relaunch,
+                  "explicit_relaunch_rate": (relaunch / failed) if isinstance(relaunch, int) and isinstance(failed, int) and failed else None,
+                  "germany_failed_it_notices": de_failed,
+                  "germany_it_no_receive": de_no_receive,
+                  "relaunch_query_used": relaunch_query,
+              }
+              results.append(result)
+              print("TED_RESULT=" + json.dumps(result, sort_keys=True), flush=True)
+
+          print("TED_ROLLUP=" + json.dumps(results, sort_keys=True), flush=True)
+          PY

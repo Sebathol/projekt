@@ -6,6 +6,11 @@ on:
       - evidence/public-endurance-audit-20261006
     paths:
       - .github/workflows/verify-public-endurance-witness.yml
+  pull_request:
+    branches:
+      - claude/fix-weather-app-011CUK3ejTvamsHndDe3YDJZ
+    paths:
+      - .github/workflows/verify-public-endurance-witness.yml
   workflow_dispatch:
 
 permissions:

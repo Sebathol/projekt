@@ -1,0 +1,50 @@
+name: TED Scope V7 Temporary Measure
+
+on:
+  push:
+    branches:
+      - claude/fix-weather-app-011CUK3ejTvamsHndDe3YDJZ
+
+jobs:
+  measure:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Measure TED old vs corrected IT scope
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, urllib.request, datetime as dt
+          API="https://api.ted.europa.eu/v3/notices/search"
+          FAILURE="all-rej chan-need ins-fund no-rece no-signed one-admis other rev-body rev-buyer tch-pr-error"
+          OLD="(classification-cpv = 302* OR classification-cpv = 320* OR classification-cpv = 480* OR classification-cpv = 720*)"
+          NEW="(classification-cpv = 302* OR classification-cpv = 32* OR classification-cpv = 48* OR classification-cpv = 72*)"
+
+          def count(q):
+              payload={"query":q,"fields":["publication-number"],"limit":1,"page":1,"scope":"ALL","checkQuerySyntax":False,"paginationMode":"PAGE_NUMBER","onlyLatestVersions":True}
+              req=urllib.request.Request(API,data=json.dumps(payload).encode(),headers={"Content-Type":"application/json","Accept":"application/json"},method="POST")
+              with urllib.request.urlopen(req,timeout=60) as r:
+                  d=json.load(r)
+              return int(d.get("totalNoticeCount",0))
+
+          end=dt.date(2026,10,6)
+          out={}
+          for days in (30,90,365):
+              start=end-dt.timedelta(days=days)
+              dateq=f"publication-date = ({start:%Y%m%d} <> {end:%Y%m%d})"
+              fail=f"non-award-justification IN ({FAILURE})"
+              oldbase=f"{dateq} AND {fail} AND {OLD}"
+              newbase=f"{dateq} AND {fail} AND {NEW}"
+              out[str(days)]={
+                  "old_eu":count(oldbase),
+                  "old_de":count(oldbase+" AND buyer-country = DEU"),
+                  "new_eu":count(newbase),
+                  "new_de":count(newbase+" AND buyer-country = DEU"),
+                  "new_de_no_rece":count(f"{dateq} AND non-award-justification IN (no-rece) AND {NEW} AND buyer-country = DEU"),
+                  "new_eu_relaunch":count(newbase+" AND procurement-relaunch = true"),
+                  "cpv_302":count(f"{dateq} AND {fail} AND classification-cpv = 302*"),
+                  "cpv_32":count(f"{dateq} AND {fail} AND classification-cpv = 32*"),
+                  "cpv_48":count(f"{dateq} AND {fail} AND classification-cpv = 48*"),
+                  "cpv_72":count(f"{dateq} AND {fail} AND classification-cpv = 72*"),
+              }
+          print("TED_SCOPE_V7="+json.dumps(out,sort_keys=True))
+          PY

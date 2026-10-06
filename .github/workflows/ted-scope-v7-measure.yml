@@ -1,0 +1,65 @@
+name: TED Scope V7 Measure
+
+on:
+  push:
+    branches:
+      - ai-ted-scope-v7-20261006
+
+jobs:
+  measure:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Measure corrected TED scope
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, urllib.request, datetime as dt
+
+          API = "https://api.ted.europa.eu/v3/notices/search"
+          FAILURE = "all-rej chan-need ins-fund no-rece no-signed one-admis other rev-body rev-buyer tch-pr-error"
+          OLD = "(classification-cpv = 302* OR classification-cpv = 320* OR classification-cpv = 480* OR classification-cpv = 720*)"
+          NEW = "(classification-cpv = 302* OR classification-cpv = 32* OR classification-cpv = 48* OR classification-cpv = 72*)"
+
+          def count(query):
+              payload = {
+                  "query": query,
+                  "fields": ["publication-number"],
+                  "limit": 1,
+                  "page": 1,
+                  "scope": "ALL",
+                  "checkQuerySyntax": False,
+                  "paginationMode": "PAGE_NUMBER",
+                  "onlyLatestVersions": True,
+              }
+              req = urllib.request.Request(
+                  API,
+                  data=json.dumps(payload).encode(),
+                  headers={"Content-Type":"application/json","Accept":"application/json"},
+                  method="POST",
+              )
+              with urllib.request.urlopen(req, timeout=60) as r:
+                  data = json.load(r)
+              return int(data.get("totalNoticeCount", 0))
+
+          end = dt.date(2026,10,6)
+          periods = {30:end-dt.timedelta(days=30), 90:end-dt.timedelta(days=90), 365:end-dt.timedelta(days=365)}
+          out = {}
+          for days,start in periods.items():
+              dateq=f"publication-date = ({start:%Y%m%d} <> {end:%Y%m%d})"
+              fail=f"non-award-justification IN ({FAILURE})"
+              oldbase=f"{dateq} AND {fail} AND {OLD}"
+              newbase=f"{dateq} AND {fail} AND {NEW}"
+              out[str(days)] = {
+                  "old_eu": count(oldbase),
+                  "old_de": count(oldbase+" AND buyer-country = DEU"),
+                  "new_eu": count(newbase),
+                  "new_de": count(newbase+" AND buyer-country = DEU"),
+                  "new_de_no_rece": count(f"{dateq} AND non-award-justification IN (no-rece) AND {NEW} AND buyer-country = DEU"),
+                  "new_eu_relaunch": count(newbase+" AND procurement-relaunch = true"),
+                  "new_302": count(f"{dateq} AND {fail} AND classification-cpv = 302*"),
+                  "new_32": count(f"{dateq} AND {fail} AND classification-cpv = 32*"),
+                  "new_48": count(f"{dateq} AND {fail} AND classification-cpv = 48*"),
+                  "new_72": count(f"{dateq} AND {fail} AND classification-cpv = 72*"),
+              }
+          print("TED_SCOPE_V7="+json.dumps(out, sort_keys=True))
+          PY

@@ -1,0 +1,222 @@
+name: Verify Public Endurance Witness 250
+
+on:
+  push:
+    branches:
+      - evidence/public-endurance-audit-20261006
+    paths:
+      - .github/workflows/verify-public-endurance-witness.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  independent-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Download frozen witness artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: public-endurance-witness-250-37430966038-1
+          path: witness
+          github-token: ${{ github.token }}
+          repository: Sebathol/projekt
+          run-id: 37430966038
+
+      - name: Fetch immutable GitHub metadata
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          curl -fsSL \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            https://api.github.com/repos/Sebathol/projekt/actions/runs/37430966038 \
+            > witness-run.json
+          curl -fsSL \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            https://api.github.com/repos/Sebathol/projekt/actions/artifacts/11411047578 \
+            > witness-artifact.json
+
+      - name: Independently verify chain, manifest, duration and claim boundary
+        run: |
+          set -euo pipefail
+          mkdir -p independent-audit
+          python - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          from datetime import datetime
+
+          ZERO = "0" * 64
+          EXPECTED = {
+              "repository": "Sebathol/projekt",
+              "run_id": "37430966038",
+              "attempt": "1",
+              "source_commit": "4cab5fc21209c48454e993c24dd1b5b7971196fa",
+              "artifact_id": 11411047578,
+              "artifact_name": "public-endurance-witness-250-37430966038-1",
+              "artifact_digest": "sha256:abb235969e33e4b6abc246c0e5c052aa586cb05a510e1ad8c0358ed5393dd91a",
+              "target_seconds": 15000,
+              "reference_seconds": 10320,
+              "max_gap_limit": 120,
+          }
+          root = Path("witness")
+          events_path = root / "events.jsonl"
+          report_path = root / "report.json"
+          manifest_path = root / "manifest.json"
+          errors = []
+
+          def canonical(obj):
+              return json.dumps(obj, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode()
+
+          def sha256_file(path):
+              h = hashlib.sha256()
+              with path.open("rb") as fh:
+                  for chunk in iter(lambda: fh.read(1024 * 1024), b""):
+                      h.update(chunk)
+              return h.hexdigest()
+
+          for p in (events_path, report_path, manifest_path):
+              if not p.is_file():
+                  errors.append(f"missing:{p.name}")
+
+          if errors:
+              raise SystemExit("\n".join(errors))
+
+          events = [json.loads(line) for line in events_path.read_text().splitlines() if line.strip()]
+          report = json.loads(report_path.read_text())
+          manifest = json.loads(manifest_path.read_text())
+          run_meta = json.loads(Path("witness-run.json").read_text())
+          artifact_meta = json.loads(Path("witness-artifact.json").read_text())
+
+          if run_meta.get("status") != "completed" or run_meta.get("conclusion") != "success":
+              errors.append("github_run_not_success")
+          if str(run_meta.get("id")) != EXPECTED["run_id"]:
+              errors.append("run_id_mismatch")
+          if run_meta.get("head_sha") != EXPECTED["source_commit"]:
+              errors.append("run_source_commit_mismatch")
+          if artifact_meta.get("id") != EXPECTED["artifact_id"]:
+              errors.append("artifact_id_mismatch")
+          if artifact_meta.get("name") != EXPECTED["artifact_name"]:
+              errors.append("artifact_name_mismatch")
+          if artifact_meta.get("digest") != EXPECTED["artifact_digest"]:
+              errors.append("artifact_digest_mismatch")
+          if artifact_meta.get("expired") is True:
+              errors.append("artifact_expired")
+
+          if not events or events[0].get("type") != "START" or events[-1].get("type") != "END":
+              errors.append("start_end_events_invalid")
+
+          prev = ZERO
+          elapsed = []
+          for expected_seq, event in enumerate(events, 1):
+              if event.get("seq") != expected_seq:
+                  errors.append(f"seq_mismatch:{expected_seq}")
+                  break
+              if event.get("prev_event_sha256") != prev:
+                  errors.append(f"prev_hash_mismatch:{expected_seq}")
+                  break
+              stored = event.get("event_sha256")
+              unsigned = dict(event)
+              unsigned.pop("event_sha256", None)
+              actual = hashlib.sha256(canonical(unsigned)).hexdigest()
+              if stored != actual:
+                  errors.append(f"event_hash_mismatch:{expected_seq}")
+                  break
+              prev = stored
+              elapsed.append(float(event["elapsed_seconds"]))
+
+          if any(b < a for a, b in zip(elapsed, elapsed[1:])):
+              errors.append("elapsed_not_monotonic")
+          gaps = [b-a for a,b in zip(elapsed, elapsed[1:])]
+          max_gap = max(gaps, default=0.0)
+          if max_gap >= EXPECTED["max_gap_limit"]:
+              errors.append("max_gap_limit_exceeded")
+
+          files = manifest.get("files") or {}
+          for name, path in (("events.jsonl", events_path), ("report.json", report_path)):
+              item = files.get(name) or {}
+              if item.get("sha256") != sha256_file(path):
+                  errors.append(f"manifest_sha_mismatch:{name}")
+              if item.get("bytes") != path.stat().st_size:
+                  errors.append(f"manifest_size_mismatch:{name}")
+
+          milestones = {e.get("milestone"): e for e in events if e.get("type") == "MILESTONE"}
+          required = {"5_MIN","10_MIN","30_MIN","REFERENCE_172_MIN","TARGET_250_MIN"}
+          if not required.issubset(milestones):
+              errors.append("required_milestone_missing")
+
+          duration = float(report.get("wall_clock_duration_seconds", -1))
+          if duration < EXPECTED["target_seconds"]:
+              errors.append("target_250_not_reached")
+          if duration <= EXPECTED["reference_seconds"]:
+              errors.append("reference_172_not_surpassed")
+          if report.get("event_chain_verified") is not True:
+              errors.append("report_chain_not_verified")
+          if report.get("observable_continuity_verified") is not True:
+              errors.append("observable_continuity_not_verified")
+          if report.get("human_continue_prompt_count") != 0:
+              errors.append("human_continue_detected")
+          if report.get("host_resume_count") != 0:
+              errors.append("host_resume_detected")
+          if report.get("active_compute_verified") is not False:
+              errors.append("active_compute_claim_boundary_broken")
+          if report.get("repository") != EXPECTED["repository"]:
+              errors.append("report_repository_mismatch")
+          if str(report.get("workflow_run_id")) != EXPECTED["run_id"]:
+              errors.append("report_run_id_mismatch")
+          if str(report.get("workflow_run_attempt")) != EXPECTED["attempt"]:
+              errors.append("report_attempt_mismatch")
+          if report.get("source_commit") != EXPECTED["source_commit"]:
+              errors.append("report_source_commit_mismatch")
+          if manifest.get("event_chain_head_sha256") != events[-1].get("event_sha256"):
+              errors.append("manifest_chain_head_mismatch")
+          if report.get("event_chain_head_sha256") != events[-1].get("event_sha256"):
+              errors.append("report_chain_head_mismatch")
+
+          start = datetime.fromisoformat(report["start_time_utc"])
+          end = datetime.fromisoformat(report["end_time_utc"])
+          endpoint_seconds = (end - start).total_seconds()
+          if abs(endpoint_seconds - duration) > 0.05:
+              errors.append("endpoint_duration_mismatch")
+
+          result = {
+              "schema_version": "1.0.0",
+              "status": "PASS" if not errors else "FAIL",
+              "auditor": "independent-public-github-actions",
+              "source_run_id": EXPECTED["run_id"],
+              "source_artifact_id": EXPECTED["artifact_id"],
+              "source_commit": EXPECTED["source_commit"],
+              "event_count": len(events),
+              "event_chain_verified_independently": not any("hash" in e or "seq_" in e for e in errors),
+              "manifest_verified_independently": not any("manifest_" in e for e in errors),
+              "duration_seconds": duration,
+              "endpoint_duration_seconds": endpoint_seconds,
+              "reference_172_surpassed": duration > EXPECTED["reference_seconds"],
+              "target_250_reached": duration >= EXPECTED["target_seconds"],
+              "max_gap_seconds_recomputed": max_gap,
+              "human_continue_prompt_count": report.get("human_continue_prompt_count"),
+              "host_resume_count": report.get("host_resume_count"),
+              "active_compute_verified": report.get("active_compute_verified"),
+              "claim_boundary": "Observable continuity of the public witness only. No private AI-Storm/Myzel runtime or continuous active-compute claim.",
+              "errors": errors,
+          }
+          Path("independent-audit/report.json").write_text(json.dumps(result, indent=2, sort_keys=True) + "\n")
+          print(json.dumps(result, indent=2, sort_keys=True))
+          if errors:
+              raise SystemExit(1)
+          PY
+
+      - name: Upload independent audit evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: independent-public-endurance-audit-${{ github.run_id }}-${{ github.run_attempt }}
+          path: independent-audit/
+          if-no-files-found: error
+          retention-days: 30

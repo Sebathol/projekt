@@ -11,117 +11,181 @@ on:
 jobs:
   probe:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
-      - name: Runner check
-        run: echo "TED_PUBLIC_RUNNER_OK"
-
-      - name: Probe TED Search API and measure density
+      - name: Fetch and analyze one year of IT non-award notices
         shell: bash
         run: |
           python - <<'PY'
           import json
           import urllib.request
           import urllib.error
-          from datetime import date, timedelta
+          from collections import Counter, defaultdict
+          from datetime import date, timedelta, datetime
+          from statistics import median
 
           URL = "https://api.ted.europa.eu/v3/notices/search"
           FAILURE_CODES = "all-rej chan-need ins-fund no-rece no-signed one-admis other rev-body rev-buyer tch-pr-error"
           CPV = "(classification-cpv = 302* OR classification-cpv = 320* OR classification-cpv = 480* OR classification-cpv = 720*)"
+          FIELDS = [
+              "publication-number", "publication-date", "buyer-country", "buyer-legal-type",
+              "classification-cpv", "estimated-value-proc", "estimated-value-cur-proc",
+              "non-award-justification", "procurement-relaunch", "procurement-relaunch-proc",
+          ]
 
-          def post(query, check=False):
-              payload = {
-                  "query": query,
-                  "fields": ["publication-number"],
-                  "page": 1,
-                  "limit": 1,
-                  "scope": "ALL",
-                  "checkQuerySyntax": check,
-                  "paginationMode": "PAGE_NUMBER",
-                  "onlyLatestVersions": True,
-              }
+          def flatten(v):
+              if v is None: return []
+              if isinstance(v, list):
+                  out = []
+                  for x in v: out.extend(flatten(x))
+                  return out
+              if isinstance(v, dict):
+                  out = []
+                  for x in v.values(): out.extend(flatten(x))
+                  return out
+              return [v]
+
+          def strings(v):
+              out, seen = [], set()
+              for x in flatten(v):
+                  s = str(x).strip()
+                  if s and s not in seen:
+                      seen.add(s); out.append(s)
+              return out
+
+          def truthy(v):
+              for x in flatten(v):
+                  if x is True or x == 1: return True
+                  if isinstance(x, str) and x.lower().strip() in {"true", "yes", "1"}: return True
+              return False
+
+          def first_number(v):
+              for x in flatten(v):
+                  try: return float(x)
+                  except (TypeError, ValueError): pass
+              return None
+
+          def scalar(v):
+              xs = flatten(v)
+              return xs[0] if xs else None
+
+          def post(body):
               req = urllib.request.Request(
-                  URL,
-                  data=json.dumps(payload).encode(),
-                  headers={
-                      "Content-Type": "application/json",
-                      "Accept": "application/json",
-                      "User-Agent": "AI-Storm-TED-Validation/1.0",
-                  },
+                  URL, data=json.dumps(body).encode(),
+                  headers={"Content-Type":"application/json","Accept":"application/json","User-Agent":"AI-Storm-TED-Validation/1.0"},
                   method="POST",
               )
               try:
-                  with urllib.request.urlopen(req, timeout=60) as r:
-                      return {"ok": True, "data": json.load(r)}
+                  with urllib.request.urlopen(req, timeout=90) as r: return json.load(r)
               except urllib.error.HTTPError as e:
-                  return {"ok": False, "http": e.code, "error": e.read().decode("utf-8", "replace")[:1500]}
-              except Exception as e:
-                  return {"ok": False, "error": repr(e)}
-
-          def count(label, query):
-              out = post(query, False)
-              if not out["ok"]:
-                  print("TED_ERROR=" + json.dumps({"label": label, "query": query, **out}, sort_keys=True), flush=True)
-                  return None
-              data = out["data"]
-              total = data.get("totalNoticeCount")
-              print("TED_COUNT=" + json.dumps({
-                  "label": label,
-                  "query": query,
-                  "total": total,
-                  "timedOut": data.get("timedOut"),
-                  "keys": sorted(data.keys()),
-              }, sort_keys=True), flush=True)
-              return total if isinstance(total, int) else None
+                  detail = e.read().decode("utf-8", "replace")
+                  raise RuntimeError(f"TED HTTP {e.code}: {detail[:1500]}")
 
           today = date.today()
-          one_start = today - timedelta(days=1)
-          basic = f"publication-date = ({one_start:%Y%m%d} <> {today:%Y%m%d})"
-          count("probe_date_only_1d", basic)
-          count("probe_cpv_1d", f"{basic} AND {CPV}")
-          count("probe_failure_1d", f"{basic} AND non-award-justification IN ({FAILURE_CODES})")
-          count("probe_combined_1d", f"{basic} AND non-award-justification IN ({FAILURE_CODES}) AND {CPV}")
+          start365 = today - timedelta(days=365)
+          query = f"publication-date = ({start365:%Y%m%d} <> {today:%Y%m%d}) AND non-award-justification IN ({FAILURE_CODES}) AND {CPV}"
 
-          results = []
-          for days in (30, 90, 365):
-              start = today - timedelta(days=days)
-              d = f"publication-date = ({start:%Y%m%d} <> {today:%Y%m%d})"
-              failures = f"non-award-justification IN ({FAILURE_CODES})"
-              base = f"{d} AND {failures} AND {CPV}"
-
-              failed = count(f"failed_it_{days}d", base)
-              de_failed = count(f"de_failed_it_{days}d", f"{base} AND buyer-country = DEU")
-              de_no_receive = count(
-                  f"de_no_receive_it_{days}d",
-                  f"{d} AND non-award-justification = no-rece AND {CPV} AND buyer-country = DEU"
-              )
-
-              relaunch = None
-              relaunch_query = None
-              for expr in (
-                  "(procurement-relaunch = true OR procurement-relaunch-proc = true)",
-                  "(procurement-relaunch = TRUE OR procurement-relaunch-proc = TRUE)",
-              ):
-                  candidate = count(f"relaunch_it_{days}d_{expr[:22]}", f"{base} AND {expr}")
-                  if isinstance(candidate, int):
-                      relaunch = candidate
-                      relaunch_query = expr
-                      break
-
-              result = {
-                  "status": "REAL_GEMESSEN" if isinstance(failed, int) else "MEASUREMENT_FAILED",
-                  "days": days,
-                  "date_from": start.isoformat(),
-                  "date_to": today.isoformat(),
-                  "failed_it_notices": failed,
-                  "explicit_relaunch_it_notices": relaunch,
-                  "explicit_relaunch_rate": (relaunch / failed) if isinstance(relaunch, int) and isinstance(failed, int) and failed else None,
-                  "germany_failed_it_notices": de_failed,
-                  "germany_it_no_receive": de_no_receive,
-                  "relaunch_query_used": relaunch_query,
+          rows, token, pages, total_reported = [], None, 0, None
+          while True:
+              body = {
+                  "query": query, "fields": FIELDS, "limit": 250, "scope": "ALL",
+                  "checkQuerySyntax": False, "paginationMode": "ITERATION", "onlyLatestVersions": True,
               }
-              results.append(result)
-              print("TED_RESULT=" + json.dumps(result, sort_keys=True), flush=True)
+              if token: body["iterationNextToken"] = token
+              data = post(body)
+              if data.get("timedOut"): raise RuntimeError("TED iteration query timed out")
+              if total_reported is None: total_reported = data.get("totalNoticeCount")
+              page_rows = data.get("notices") or []
+              if not isinstance(page_rows, list): raise RuntimeError("TED response notices is not a list")
+              rows.extend(page_rows); pages += 1
+              next_token = data.get("iterationNextToken")
+              print(f"TED_PAGE={pages}|ROWS={len(page_rows)}|TOTAL_SO_FAR={len(rows)}", flush=True)
+              if not next_token or next_token == token or not page_rows: break
+              token = next_token
+              if pages > 50: raise RuntimeError("Unexpectedly exceeded 50 pages")
 
-          print("TED_ROLLUP=" + json.dumps(results, sort_keys=True), flush=True)
+          by_pub = {}
+          for i, row in enumerate(rows):
+              pub = scalar(row.get("publication-number"))
+              by_pub[str(pub) if pub else f"missing-{i}"] = row
+          rows = list(by_pub.values())
+
+          periods = {30: today - timedelta(days=30), 90: today - timedelta(days=90), 365: start365}
+
+          def parse_date(row):
+              s = scalar(row.get("publication-date"))
+              if not s: return None
+              try: return datetime.fromisoformat(str(s)[:10]).date()
+              except Exception:
+                  raw = str(s).replace("-", "")[:8]
+                  try: return datetime.strptime(raw, "%Y%m%d").date()
+                  except Exception: return None
+
+          def analyze(selected):
+              reasons, countries, cpv3, buyer_types, months = Counter(), Counter(), Counter(), Counter(), Counter()
+              relaunch_by_country, no_receive_by_country = Counter(), Counter()
+              values = defaultdict(list)
+              relaunch = disclosed = 0
+              for row in selected:
+                  rs = set(strings(row.get("non-award-justification")))
+                  cs = set(strings(row.get("buyer-country")))
+                  cpvs = set(strings(row.get("classification-cpv")))
+                  bts = set(strings(row.get("buyer-legal-type")))
+                  is_relaunch = truthy(row.get("procurement-relaunch")) or truthy(row.get("procurement-relaunch-proc"))
+                  d = parse_date(row)
+                  reasons.update(rs); countries.update(cs); buyer_types.update(bts)
+                  for cpv in cpvs:
+                      digits = "".join(ch for ch in cpv if ch.isdigit())
+                      if len(digits) >= 3: cpv3[digits[:3]] += 1
+                  if d: months[d.strftime("%Y-%m")] += 1
+                  if is_relaunch:
+                      relaunch += 1; relaunch_by_country.update(cs)
+                  if "no-rece" in rs: no_receive_by_country.update(cs)
+                  value = first_number(row.get("estimated-value-proc"))
+                  currencies = strings(row.get("estimated-value-cur-proc"))
+                  if value is not None and len(currencies) == 1:
+                      values[currencies[0]].append(value); disclosed += 1
+
+              value_summary = {}
+              for cur, vals in values.items():
+                  vals = sorted(vals)
+                  value_summary[cur] = {"count":len(vals),"median":median(vals),"min":min(vals),"max":max(vals)}
+
+              return {
+                  "unique_notices":len(selected),
+                  "explicit_relaunch_notices":relaunch,
+                  "explicit_relaunch_rate":(relaunch/len(selected)) if selected else None,
+                  "reason_notice_occurrences":dict(reasons.most_common()),
+                  "countries":dict(countries.most_common(40)),
+                  "cpv3":dict(cpv3.most_common()),
+                  "buyer_legal_types":dict(buyer_types.most_common(30)),
+                  "monthly_notices":dict(sorted(months.items())),
+                  "relaunch_by_country":dict(relaunch_by_country.most_common(30)),
+                  "no_receive_by_country":dict(no_receive_by_country.most_common(30)),
+                  "disclosed_procedure_value_notices":disclosed,
+                  "value_stats_by_currency":value_summary,
+              }
+
+          results = {}
+          dated = [(parse_date(r), r) for r in rows]
+          missing_dates = sum(1 for d, _ in dated if d is None)
+          for days, threshold in periods.items():
+              selected = [r for d, r in dated if d is not None and d >= threshold]
+              results[str(days)] = analyze(selected)
+
+          payload = {
+              "status":"REAL_GEMESSEN",
+              "measured_at":datetime.utcnow().isoformat()+"Z",
+              "query":query,
+              "api_total_reported":total_reported,
+              "downloaded_rows":len(rows),
+              "pages":pages,
+              "missing_publication_dates":missing_dates,
+              "methodology":{
+                  "unit":"unique latest TED notice matching IT CPV and at least one BT-144 non-award code",
+                  "note":"A notice may contain multiple lots, reasons, countries or CPVs. Distribution counts are notice-occurrences and can exceed unique notice count. Procedure values are not summed across currencies."
+              },
+              "periods":results,
+          }
+          print("TED_DETAIL="+json.dumps(payload, ensure_ascii=False, sort_keys=True), flush=True)
           PY

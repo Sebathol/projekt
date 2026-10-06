@@ -1,0 +1,271 @@
+name: Public Endurance Witness 250
+
+on:
+  push:
+    branches:
+      - evidence/public-endurance-250-20261006
+    paths:
+      - ".github/workflows/public-endurance-witness-250.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: public-endurance-witness-250-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  endurance-witness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    env:
+      TARGET_SECONDS: "15000"
+      REFERENCE_SECONDS: "10320"
+    steps:
+      - name: Run 250-minute live endurance witness
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p endurance-witness
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          import time
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          TARGET = int(os.environ["TARGET_SECONDS"])
+          REFERENCE = int(os.environ["REFERENCE_SECONDS"])
+          HEARTBEAT = 20.0
+          ZERO = "0" * 64
+          root = Path("endurance-witness")
+          events_path = root / "events.jsonl"
+          report_path = root / "report.json"
+          manifest_path = root / "manifest.json"
+
+          start_wall = datetime.now(timezone.utc)
+          start_mono = time.monotonic()
+          prev = ZERO
+          seq = 0
+          material_seconds = 0.0
+          milestones = [
+              ("5_MIN", 300, False),
+              ("10_MIN", 600, False),
+              ("30_MIN", 1800, False),
+              ("REFERENCE_172_MIN", REFERENCE, True),
+              ("TARGET_250_MIN", TARGET, False),
+          ]
+          emitted = set()
+
+          def utc_now():
+              return datetime.now(timezone.utc).isoformat()
+
+          def canonical(obj):
+              return json.dumps(obj, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode()
+
+          def append(kind, **extra):
+              nonlocal_seq = None
+              global seq, prev
+              seq += 1
+              event = {
+                  "seq": seq,
+                  "type": kind,
+                  "observed_at": utc_now(),
+                  "elapsed_seconds": round(time.monotonic() - start_mono, 6),
+                  "prev_event_sha256": prev,
+                  **extra,
+              }
+              digest = hashlib.sha256(canonical(event)).hexdigest()
+              event["event_sha256"] = digest
+              with events_path.open("a", encoding="utf-8") as fh:
+                  fh.write(json.dumps(event, sort_keys=True, ensure_ascii=False) + "\n")
+                  fh.flush()
+                  os.fsync(fh.fileno())
+              prev = digest
+              print(f"EVENT seq={seq} type={kind} elapsed={event['elapsed_seconds']:.3f} hash={digest}", flush=True)
+              return event
+
+          def verify_chain(events):
+              expected_prev = ZERO
+              for i, event in enumerate(events, start=1):
+                  if event.get("seq") != i:
+                      return False
+                  if event.get("prev_event_sha256") != expected_prev:
+                      return False
+                  stored = event.get("event_sha256")
+                  unsigned = dict(event)
+                  unsigned.pop("event_sha256", None)
+                  actual = hashlib.sha256(canonical(unsigned)).hexdigest()
+                  if stored != actual:
+                      return False
+                  expected_prev = stored
+              return True
+
+          def file_sha256(path):
+              h = hashlib.sha256()
+              with path.open("rb") as fh:
+                  for chunk in iter(lambda: fh.read(1024 * 1024), b""):
+                      h.update(chunk)
+              return h.hexdigest()
+
+          print(f"STARTZEIT={start_wall.isoformat()}", flush=True)
+          append(
+              "START",
+              source_commit=os.environ.get("GITHUB_SHA"),
+              workflow_run_id=os.environ.get("GITHUB_RUN_ID"),
+              workflow_run_attempt=os.environ.get("GITHUB_RUN_ATTEMPT"),
+              repository=os.environ.get("GITHUB_REPOSITORY"),
+              ref=os.environ.get("GITHUB_REF"),
+              target_seconds=TARGET,
+              reference_seconds=REFERENCE,
+              claim_boundary="Observable continuity only; not continuous CPU/model active compute.",
+          )
+
+          while True:
+              elapsed = time.monotonic() - start_mono
+
+              for name, threshold, strict in milestones:
+                  if name in emitted:
+                      continue
+                  reached = elapsed > threshold if strict else elapsed >= threshold
+                  if reached:
+                      append("MILESTONE", milestone=name, threshold_seconds=threshold, strict=strict)
+                      emitted.add(name)
+
+              if elapsed >= TARGET:
+                  break
+
+              work_start = time.perf_counter()
+              payload = f"{seq}:{int(elapsed // HEARTBEAT)}:{os.getpid()}".encode()
+              digest = payload
+              for _ in range(30000):
+                  digest = hashlib.sha256(digest).digest()
+              work_seconds = time.perf_counter() - work_start
+              material_seconds += work_seconds
+
+              append(
+                  "WORK_HEARTBEAT",
+                  work_unit_sha256=digest.hex(),
+                  work_unit_seconds=round(work_seconds, 6),
+              )
+
+              remaining = TARGET - (time.monotonic() - start_mono)
+              if remaining > 0:
+                  time.sleep(min(HEARTBEAT, remaining))
+
+          total = time.monotonic() - start_mono
+          end_wall = datetime.now(timezone.utc)
+          append(
+              "END",
+              total_elapsed_seconds=round(total, 6),
+              material_work_unit_seconds_measured=round(material_seconds, 6),
+          )
+
+          events = [json.loads(line) for line in events_path.read_text(encoding="utf-8").splitlines() if line.strip()]
+          chain_ok = verify_chain(events)
+          gaps = [
+              events[i]["elapsed_seconds"] - events[i-1]["elapsed_seconds"]
+              for i in range(1, len(events))
+          ]
+          max_gap = max(gaps) if gaps else 0.0
+          milestone_names = [e["milestone"] for e in events if e.get("type") == "MILESTONE"]
+          required = {"5_MIN", "10_MIN", "30_MIN", "REFERENCE_172_MIN", "TARGET_250_MIN"}
+
+          report = {
+              "schema_version": "1.0.0",
+              "status": "PASS" if chain_ok and total >= TARGET and total > REFERENCE and max_gap < 120 and required.issubset(set(milestone_names)) else "FAIL",
+              "source_commit": os.environ.get("GITHUB_SHA"),
+              "workflow_run_id": os.environ.get("GITHUB_RUN_ID"),
+              "workflow_run_attempt": os.environ.get("GITHUB_RUN_ATTEMPT"),
+              "repository": os.environ.get("GITHUB_REPOSITORY"),
+              "ref": os.environ.get("GITHUB_REF"),
+              "start_time_utc": start_wall.isoformat(),
+              "end_time_utc": end_wall.isoformat(),
+              "wall_clock_duration_seconds": round(total, 6),
+              "target_seconds": TARGET,
+              "target_minutes": TARGET / 60,
+              "reference_seconds": REFERENCE,
+              "reference_minutes": REFERENCE / 60,
+              "reference_mark_surpassed": total > REFERENCE,
+              "target_duration_reached": total >= TARGET,
+              "instrumented_from_start": True,
+              "evidence_provenance": "LIVE_INSTRUMENTED_PUBLIC_WITNESS",
+              "event_chain_verified": chain_ok,
+              "event_chain_head_sha256": events[-1]["event_sha256"] if events else None,
+              "event_count": len(events),
+              "max_progress_gap_seconds": round(max_gap, 6),
+              "observable_continuity_verified": bool(chain_ok and total >= TARGET and total > REFERENCE and max_gap < 120),
+              "active_compute_verified": False,
+              "active_compute_seconds": None,
+              "material_work_unit_seconds_measured": round(material_seconds, 6),
+              "idle_or_other_elapsed_seconds": round(max(0.0, total - material_seconds), 6),
+              "human_continue_prompt_count": 0,
+              "host_resume_count": 0,
+              "milestones_emitted": milestone_names,
+              "claim_boundary": "This public witness verifies long-running observable execution continuity of this workflow only. It does not prove private AI-Storm/Myzel runtime execution or continuous model/CPU activity.",
+          }
+          report_path.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+          manifest = {
+              "schema_version": "1.0.0",
+              "generated_at": utc_now(),
+              "source_commit": report["source_commit"],
+              "workflow_run_id": report["workflow_run_id"],
+              "workflow_run_attempt": report["workflow_run_attempt"],
+              "event_chain_head_sha256": report["event_chain_head_sha256"],
+              "files": {
+                  "events.jsonl": {"sha256": file_sha256(events_path), "bytes": events_path.stat().st_size},
+                  "report.json": {"sha256": file_sha256(report_path), "bytes": report_path.stat().st_size},
+              },
+          }
+          manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+          print(f"ENDZEIT={end_wall.isoformat()}", flush=True)
+          print("REPORT=" + json.dumps(report, sort_keys=True), flush=True)
+
+          assert report["event_chain_verified"] is True
+          assert report["reference_mark_surpassed"] is True
+          assert report["wall_clock_duration_seconds"] > REFERENCE
+          assert report["target_duration_reached"] is True
+          assert report["wall_clock_duration_seconds"] >= TARGET
+          assert report["max_progress_gap_seconds"] < 120
+          assert report["observable_continuity_verified"] is True
+          assert report["active_compute_verified"] is False
+          assert report["human_continue_prompt_count"] == 0
+          assert report["host_resume_count"] == 0
+          assert required.issubset(set(report["milestones_emitted"]))
+          assert manifest["files"]["events.jsonl"]["sha256"]
+          assert manifest["files"]["report.json"]["sha256"]
+          PY
+
+      - name: Publish witness summary
+        if: always()
+        shell: bash
+        run: |
+          if [ -f endurance-witness/report.json ]; then
+            python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          r=json.load(open("endurance-witness/report.json"))
+          print("# Public Endurance Witness 250")
+          print(f"- status: {r['status']}")
+          print(f"- start: {r['start_time_utc']}")
+          print(f"- end: {r['end_time_utc']}")
+          print(f"- duration_seconds: {r['wall_clock_duration_seconds']}")
+          print(f"- >172m: {r['reference_mark_surpassed']}")
+          print(f"- 250m reached: {r['target_duration_reached']}")
+          print(f"- event_chain_verified: {r['event_chain_verified']}")
+          print(f"- max_gap_seconds: {r['max_progress_gap_seconds']}")
+          print(f"- active_compute_verified: {r['active_compute_verified']}")
+          PY
+          fi
+
+      - name: Upload witness evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: public-endurance-witness-250-${{ github.run_id }}-${{ github.run_attempt }}
+          path: endurance-witness/
+          if-no-files-found: error
+          retention-days: 30
